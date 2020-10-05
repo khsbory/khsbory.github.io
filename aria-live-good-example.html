@@ -8,13 +8,15 @@
 <script>
 $(document).ready(function(){
   $("button").click(function(){
-      $("input").attr("aria-live","polite");
         if ($("input:text").val() == "햄버거") {
             $("input:text").val("김밥");
         } else {
             $("input:text").val("햄버거");
         }
-  });
+        setTimeout(function() {
+            $("input").attr("aria-live","polite");
+    }, 100);     
+});
 });
 </script>
 </head>
