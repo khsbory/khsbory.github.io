@@ -8,18 +8,20 @@
 <script>
 $(document).ready(function(){
   $("button").click(function(){
-      $("input").attr("aria-live","polite");
         if ($("input:text").val() == "햄버거") {
             $("input:text").val("김밥");
         } else {
             $("input:text").val("햄버거");
         }
-  });
+        setTimeout(function() {
+            $("input").attr("aria-live","polite");
+    }, 100);     
+});
 });
 </script>
 </head>
 <body>
-    <h1>아리아 라이브 테스트</h1>
+    <h1>아리아 라이브 타임아웃 테스트</h1>
     <p>이 페이지는 aria-live 속성이 스크립트가 아닌, HTML에 추가된 데모입니다. 이 페이지 접속 시 아래 내용을 자동으로 읽을 것이며 이는 적절하지 않습니다.</p>
         <label>좋아하는 음식: <input id="good" type="text" name="food" readonly value="햄버거"></label> <br>
 <button>좋아하는 음식 변경하기</button>
