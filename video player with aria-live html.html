@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>aria-live with html</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+              .current {
+    font-weight: bold;
+    background-color: #cc33ff;
+  }
+        </style>
+            </head>
+            <body>
+                <nav>
+                    <ul style="list-style: none;">
+                        <li>
+                            <a href="video%20player%20with%20aria-live%20script.html" aria-current="false" class="current">aria-live with script</a>
+                        </li>
+                        <li>
+                            <a href="video%20player%20with%20aria-live%20html.html" aria-current="true">aria-live with html</a>
+                        </li>
+                    </ul>
+                </nav>
+                <main>
+                <h1>video player with aria-live with script test</h1>
+                
+<div style="text-align:center"> 
+  <button id="playPause" onclick="playPause()">play</button> 
+  <button id="makeBig" aria-current="false" onclick="makeBig()">Big</button>
+  <button aria-current="false" id="makeSmall" onclick="makeSmall()">Small</button>
+  <button class="current" id="makeNormal" onclick="makeNormal()" aria-current="true">Normal</button>
+  <br><br>
+  <video id="video1" width="420">
+    <source src="bird.mp4" type="video/mp4">
+    Your browser does not support HTML video.
+  </video>
+</div> 
+
+<script> 
+var myVideo = document.getElementById("video1");
+
+function playPause() { 
+document.getElementById("playPause").setAttribute("aria-live","true");
+  if (myVideo.paused) {
+
+        myVideo.play();
+document.getElementById("playPause").innerHTML = "pause";
+  } else {
+    myVideo.pause();
+    document.getElementById("playPause").innerHTML = "play";
+  };
+}
+
+function makeBig() {
+    myVideo.width = 560;
+document.getElementById("makeNormal").setAttribute("aria-current","false");
+document.getElementById("makeNormal").classList.remove("current");
+document.getElementById("makeBig").setAttribute("aria-current","true");
+document.getElementById("makeBig").classList.add("current");
+document.getElementById("makeSmall").setAttribute("aria-current","false");
+document.getElementById("makeSmall").classList.remove("current");
+}
+
+function makeSmall() { 
+    myVideo.width = 320;
+    document.getElementById("makeBig").setAttribute("aria-current","false");
+    document.getElementById("makeBig").classList.remove("current");
+    document.getElementById("makeSmall").setAttribute("aria-current","true");
+    document.getElementById("makeSmall").classList.add("current");
+        document.getElementById("makeNormal").setAttribute("aria-current","false");
+        document.getElementById("makeNormal").classList.remove("current");
+}
+
+function makeNormal() { 
+    myVideo.width = 420; 
+    document.getElementById("makeSmall").setAttribute("aria-current","false");
+    document.getElementById("makeSmall").classList.remove("current");
+document.getElementById("makeNormal").setAttribute("aria-current","true");
+document.getElementById("makeNormal").classList.add("current");
+document.getElementById("makeBig").setAttribute("aria-current","false");
+document.getElementById("makeBig").classList.remove("current");
+} 
+</script> 
+
+
+</main>
+
+            </body>
+</html>
