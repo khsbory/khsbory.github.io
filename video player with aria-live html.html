@@ -26,7 +26,7 @@
                 <h1>video player with aria-live with script test</h1>
                 
 <div style="text-align:center"> 
-  <button id="playPause" onclick="playPause()">play</button> 
+  <button id="playPause" onclick="playPause()" aria-live="polite">play</button> 
   <button id="makeBig" aria-current="false" onclick="makeBig()" aria-label="Big, change video size">Big</button>
   <button aria-current="false" id="makeSmall" onclick="makeSmall()" aria-label="Small, change video size">Small</button>
   <button class="current" id="makeNormal" onclick="makeNormal()" aria-current="true" aria-label="Normal, change video size">Normal</button>
