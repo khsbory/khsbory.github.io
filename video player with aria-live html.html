@@ -27,9 +27,9 @@
                 
 <div style="text-align:center"> 
   <button id="playPause" onclick="playPause()">play</button> 
-  <button id="makeBig" aria-current="false" onclick="makeBig()">Big</button>
-  <button aria-current="false" id="makeSmall" onclick="makeSmall()">Small</button>
-  <button class="current" id="makeNormal" onclick="makeNormal()" aria-current="true">Normal</button>
+  <button id="makeBig" aria-current="false" onclick="makeBig()" aria-label="Big, change video size">Big</button>
+  <button aria-current="false" id="makeSmall" onclick="makeSmall()" aria-label="Small, change video size">Small</button>
+  <button class="current" id="makeNormal" onclick="makeNormal()" aria-current="true" aria-label="Normal, change video size">Normal</button>
   <br><br>
   <video id="video1" width="420">
     <source src="bird.mp4" type="video/mp4">
