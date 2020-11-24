@@ -6,6 +6,55 @@
     <title>Document</title>
 </head>
 <body>
-    <button aria-label="close">x</button>
+    <h1>Test aria-live</h1>
+    <div>
+    <p>Hello, <mark role="none">accessibility   </mark> users. I'm Korean. Thank you for your help to improve <mark>accessibility</mark> issues.</p>
+    </div>
+    <div aria-live="polite">
+        <button id="myButton" onclick="buttonPressed();">hello</button>
+      </div>
+        
+      <div>
+        <button id="myButton2" value='hello' onclick="buttonPressed2();" >
+          <span>hello2</span>
+        </button>
+      </div>
+        
+      <div>
+        <button id="myButton3" onclick="buttonPressed3();">
+          hello3
+        </button>
+      </div>    
+      <script>
+          
+function buttonPressed() {
+  b = document.getElementById("myButton");
+  if (b.innerHTML == "hello") {
+    b.innerHTML = "good bye";
+  } else {
+    b.innerHTML = "hello";
+  }
+};
+
+function buttonPressed2() {
+  b = document.getElementById("myButton2");
+  if (b.value == "hello") {
+    b.innerHTML = "<span>good bye</span>";
+    b.value = 'bye'
+  } else {
+    b.innerHTML = "<span>hello2</span>";
+  }
+};
+
+function buttonPressed3() {
+  b = document.getElementById("myButton3");
+  if (b.innerText == "hello3") {
+    b.innerText = "good bye";
+  } else {
+    b.innerText = "hello3";
+  }
+};
+      </script>
 </body>
 </html>
+
