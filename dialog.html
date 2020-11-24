@@ -9,7 +9,7 @@
 <script>
 $(document).ready(function(e) {
 	$('#trigger-modal').click(function() {
-		$('main').attr('aria-hidden','true');
+		
 		//var lastFocus = document.activeElement; wont' work on iOS
 		var modalOverlay = $('<div>').attr({id:"modalOverlay", id:"modalOverlay"});
 		$(modalOverlay).appendTo('body');		
@@ -93,7 +93,7 @@ right: 0px;
 <h1>Accessible Modal Dialog</h1>
 <p>Coding instructions: <a href="http://w3c.github.io/aria-practices/#dialog_modal">http://w3c.github.io/aria-practices/#dialog_modal</a></p>
 <h2>WAI-ARIA role=dialog</h2>
-<a href="#" id="trigger-modal" aria-haspopup="dialog">Trigger modal dialog</a>
+<a href="#" id="trigger-modal" aria-haspopup="dialog">Open modal dialog</a>
 </main>
 </body>
 </html>
