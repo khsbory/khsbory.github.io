@@ -9,14 +9,14 @@
 <script>
 $(document).ready(function(e) {
 	$('#trigger-modal').click(function() {
-		$('main').attr('aria-hidden','true');
+		
 		//var lastFocus = document.activeElement; wont' work on iOS
 		var modalOverlay = $('<div>').attr({id:"modalOverlay", id:"modalOverlay"});
 		$(modalOverlay).appendTo('body');		
 		$("#trigger-modal").attr('disabled','true');
-		var dialog = $('<div role="dialog">').attr({"aria-labelledby":"dialog-heading", "aria-describedby":"dialog-description", "aria-modal":"true"});
-		$(dialog).html('<div id="firstElement" tabindex="0"></div><h1 id="dialog-heading">Account Login</h1><div id="dialog-description"><p>Enter your Username and Password below to sign in to your account. Click the Join button to create a new account.</p></div><form><label>Username <input id="username" type="text"></label><br><label>Password <input type="password"></label></form><button id="firstButton">Sign In</button><button>Join</button><button id="lastButton" aria-label="Close Account Login Dialog">X</button><div id="lastElement" tabindex="0"></div>').appendTo('body');
-		$('#username').focus();
+		var dialog = $('<div>').attr({"aria-labelledby":"dialog-heading", "aria-describedby":"dialog-description"});
+		$(dialog).html('<div id="firstElement" tabindex="0"></div><h1 id="dialog-heading" tabindex="-1">Account Login</h1><div id="dialog-description"><p>Enter your Username and Password below to sign in to your account. Click the Join button to create a new account.</p></div><form><label>Username <input id="username" type="text"></label><br><label>Password <input type="password"></label></form><button id="firstButton">Sign In</button><button>Join</button><button id="lastButton" aria-label="Close Account Login Dialog">X</button><div id="lastElement" tabindex="0"></div>').appendTo('body');
+		$('#dialog-heading').focus();
 
 $('#lastElement').focusin(function(e) {
 	   $('#username').focus();
@@ -93,7 +93,7 @@ right: 0px;
 <h1>Accessible Modal Dialog</h1>
 <p>Coding instructions: <a href="http://w3c.github.io/aria-practices/#dialog_modal">http://w3c.github.io/aria-practices/#dialog_modal</a></p>
 <h2>WAI-ARIA role=dialog</h2>
-<a href="#" id="trigger-modal" aria-haspopup="dialog">Trigger modal dialog</a>
+<a href="#" id="trigger-modal" aria-haspopup="dialog">Please open modal dialog</a>
 </main>
 </body>
 </html>
