@@ -27,7 +27,7 @@
                 
 <div style="text-align:center"> 
   <button id="playPause" onclick="playPause()">play</button>
-  <p>Below buttons are the controls of changing video size.</p>
+  <p>Hello. Below buttons are the controls of changing video size.</p>
   <button id="makeBig" aria-current="false" onclick="makeBig()" aria-label="Big, change video size">Big</button>
   <button aria-current="false" id="makeSmall" onclick="makeSmall()" aria-label="Small, change video size">Small</button>
   <button class="current" id="makeNormal" onclick="makeNormal()" aria-current="true" aria-label="Normal, change video size">Normal</button>
@@ -42,7 +42,8 @@
 var myVideo = document.getElementById("video1");
 
 function playPause() { 
-document.getElementById("playPause").setAttribute("aria-live","true");
+document.getElementById("playPause").setAttribute("aria-live","polite");
+
   if (myVideo.paused) {
 
         myVideo.play();
