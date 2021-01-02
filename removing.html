@@ -18,7 +18,7 @@
 <a href="#about">리무빙</a>
 </li>
 <li>
-<a href="#firstreport">내 생애 첫 운동 보고서</a>
+<a id="myAnchor" href="#firstreport">내 생애 첫 운동 보고서</a>
 </li>
 <li>
 <a href="http://removing.co.kr/#review">후기</a>
@@ -364,4 +364,9 @@ Step4 - 관절의 건강 상태와 근력 상태, 필요한 운동 안내가 포
 <section id="copyright">Copyright © 2019~ re:moving. All Rights Reserved.</section>
 </footer>
 
+<script>
+    document.getElementById("myAnchor").addEventListener("click", function(event) {
+        event.preventDefault()
+    });
+</script>
 </body></html>
