@@ -2,21 +2,21 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>Accessible Modal Dialog</title>
+<title>모달 대화상자 샘플</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 <script>
 $(document).ready(function(e) {
 	$('#trigger-modal').click(function() {
-		
+		$('main').attr('aria-hidden','true');
 		//var lastFocus = document.activeElement; wont' work on iOS
 		var modalOverlay = $('<div>').attr({id:"modalOverlay", id:"modalOverlay"});
 		$(modalOverlay).appendTo('body');		
 		$("#trigger-modal").attr('disabled','true');
-		var dialog = $('<div>').attr({"aria-labelledby":"dialog-heading", "aria-describedby":"dialog-description"});
-		$(dialog).html('<div id="firstElement" tabindex="0"></div><h1 id="dialog-heading" tabindex="-1">Account Login</h1><div id="dialog-description"><p>Enter your Username and Password below to sign in to your account. Click the Join button to create a new account.</p></div><form><label>Username <input id="username" type="text"></label><br><label>Password <input type="password"></label></form><button id="firstButton">Sign In</button><button>Join</button><button id="lastButton" aria-label="Close Account Login Dialog">X</button><div id="lastElement" tabindex="0"></div>').appendTo('body');
-		$('#dialog-heading').focus();
+		var dialog = $('<div role="dialog">').attr({"aria-labelledby":"dialog-heading", "aria-describedby":"dialog-description", "aria-modal":"true"});
+		$(dialog).html('<div id="firstElement" tabindex="0"></div><h1 id="dialog-heading">사용자 로그인</h1><div id="dialog-description"><p>아래 로그인 정보를 입력하세요.</p></div><form><label>아이디 <input id="username" type="text"></label><br><label>비밀번호 <input type="password"></label></form><button id="firstButton">로그인</button><button>회원가입</button><button id="lastButton" aria-label="로그인 화면 닫기">X</button><div id="lastElement" tabindex="0"></div>').appendTo('body');
+		$('#username').focus();
 
 $('#lastElement').focusin(function(e) {
 	   $('#username').focus();
@@ -90,11 +90,9 @@ right: 0px;
 
 <body>
 <main>
-<h1>Accessible Modal Dialog</h1>
-<p>Coding instructions: <a href="http://w3c.github.io/aria-practices/#dialog_modal">http://w3c.github.io/aria-practices/#dialog_modal</a></p>
-<h2>WAI-ARIA role=dialog</h2>
-<<<<<<< HEAD
-<a href="#" id="trigger-modal" aria-haspopup="dialog">Please open modal dialog, thank you</a>
+<h1>접근성이 적용된 모달 대화상자</h1>
+<p>대화상자 시뮬레이션 페이지입니다.</p>
+<button id="trigger-modal" aria-haspopup="dialog">계정 로그인</button>
 </main>
 </body>
 </html>
