@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>화면에서 콘텐츠를 숨기거나 표시할 때의 접근성</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<!-- <link rel="stylesheet" href="styles.css" /> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+
+.toggle-content{
+  height: 0;
+  overflow: hidden;
+  transition: height 350ms ease-in-out;
+}
+
+.toggle-content.is-visible {
+   height: auto;
+}
+
+.toggle-content2{display:none;}
+
+button {
+    background: none;
+    border: 0;
+    color: inherit;
+    /* cursor: default; */
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    -webkit-appearance: button; /* for input */
+    -webkit-user-select: none; /* for button */
+       -moz-user-select: none;
+        -ms-user-select: none;
+}
+
+
+</style>
+<script>
+// Show an element
+var show = function (elem) {
+
+// Get the natural height of the element
+var getHeight = function () {
+  elem.style.display = 'block'; // Make it visible
+  var height = elem.scrollHeight + 'px'; // Get it's height
+  elem.style.display = ''; //  Hide it again
+  return height;
+};
+
+var height = getHeight(); // Get the natural height
+elem.classList.add('is-visible'); // Make the element visible
+elem.style.height = height; // Update the max-height
+
+// Once the transition is complete, remove the inline max-height so the content can scale responsively
+window.setTimeout(function () {
+  elem.style.height = '';
+}, 350);
+
+};
+
+// Hide an element
+var hide = function (elem) {
+
+// Give the element a height to change from
+elem.style.height = elem.scrollHeight + 'px';
+
+// Set the height back to 0
+window.setTimeout(function () {
+  elem.style.height = '0';
+}, 1);
+
+// When the transition is complete, hide it
+window.setTimeout(function () {
+  elem.classList.remove('is-visible');
+}, 350);
+
+};
+
+// Toggle element visibility
+var toggle = function (elem, timing) {
+
+// If the element is visible, hide it
+if (elem.classList.contains('is-visible')) {
+  hide(elem);
+  return;
+}
+
+// Otherwise, show it
+show(elem);
+
+};
+
+// Listen for click events
+document.addEventListener('click', function (event) {
+
+// Make sure clicked element is our toggle
+if (!event.target.classList.contains('toggle')) return;
+
+// Prevent default link behavior
+event.preventDefault();
+
+// Get the content
+var content = document.querySelector(event.target.hash);
+if (!content) return;
+
+// Toggle the content
+toggle(content);
+
+}, false);
+
+
+</script>
+</head>
+
+<body>
+
+  <h1>화면에서 콘텐츠를 숨기거나 표시할때</h1>
+  <p>overflow hidden 을 통하여 시각적으로 콘텐츠를 숨기는 경우에는 스크린 리더에서는 콘텐츠를 읽을 수 있으므로 이에 대한 접근성 대응이 필요합니다.</p>
+
+  <div class="bad">
+  <h2>접근성 미적용 예제</h2>
+  <p>
+    <a class="toggle" href="#example">환불 규정</a>
+  </p>
+  
+  <div class="toggle-content" id="example">
+    <p>주문하신 햄버거를 드시지 않고 다시 환불하는 것은 사실 말이 되지 않습니다. 그러나 꼭 환불하기를 원하신다면 먼저 전화를 주시기 바랍니다.</p> 
+    <p>그러나 되도록 환불은 하지 마세요.</p>
+      </div>
+
+</div>
+
+
+<div class="good">
+  <h2>접근성 적용 예제</h2>
+  <p>
+    <button class="toggle2" aria-expanded="false">환불 규정</button>
+  </p>
+  <div class="toggle-content2" id="example2" aria-hidden="true">
+    <p>주문하신 햄버거를 드시지 않고 다시 환불하는 것은 사실 말이 되지 않습니다. 그러나 꼭 환불하기를 원하신다면 먼저 전화를 주시기 바랍니다.</p> 
+    <p>그러나 되도록 환불은 하지 마세요.</p>
+      </div>
+  </div>
+</body>
+<script>
+  $(function(){
+
+var btn = $(".toggle2");
+var content = $("#example2");
+
+  btn.on('click',function(){
+    content.slideToggle();
+    if(btn.attr('aria-expanded') == 'true'){
+      btn.attr('aria-expanded','false');
+      content.attr('aria-hidden','true');
+    }else{
+      btn.attr('aria-expanded','true');
+      content.attr('aria-hidden','false');
+    }
+
+    console.log(btn.attr('aria-expanded'));
+    });
+
+});
+</script>
+</html>
