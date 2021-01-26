@@ -19,8 +19,14 @@
    height: auto;
 }
 
-.toggle-content2{display:none;}
-
+.toggle-content2{
+  height: 0;
+  overflow: hidden;
+  transition: height 350ms ease-in-out;
+}
+.toggle-content2.is-visible {
+   height: auto;
+}
 button {
     background: none;
     border: 0;
@@ -137,7 +143,7 @@ toggle(content);
 <div class="good">
   <h2>접근성 적용 예제</h2>
   <p>
-    <button class="toggle2" aria-expanded="false">환불 규정</button>
+    <button aria-expanded="false">환불 규정</button>
   </p>
   <div class="toggle-content2" id="example2" aria-hidden="true">
     <p>주문하신 햄버거를 드시지 않고 다시 환불하는 것은 사실 말이 되지 않습니다. 그러나 꼭 환불하기를 원하신다면 먼저 전화를 주시기 바랍니다.</p> 
@@ -148,17 +154,20 @@ toggle(content);
 <script>
   $(function(){
 
-var btn = $(".toggle2");
+var btn = $("button");
 var content = $("#example2");
 
   btn.on('click',function(){
-    content.slideToggle();
-    if(btn.attr('aria-expanded') == 'true'){
+        if(btn.attr('aria-expanded') == 'true'){
+          $("#example2").removeClass("toggle-content2.is-visible");
+          $("#example2").addClass("toggle-content2");
       btn.attr('aria-expanded','false');
       content.attr('aria-hidden','true');
     }else{
       btn.attr('aria-expanded','true');
       content.attr('aria-hidden','false');
+      $("#example2").removeClass("toggle-content2");
+          $("#example2").addClass("content2.is-visible");
     }
 
     console.log(btn.attr('aria-expanded'));
