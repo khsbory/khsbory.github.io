@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <title>버튼 텍스트 변경 접근성 적용하기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var btn = $("#button");
+            var btn2 = $("#button2");
+            btn.on('click',function() {
+                if (btn.text() == "사용하기") {
+                    btn.text("취소하기");
+                                    } else {
+                    btn.text("사용하기");
+                }
+            });
+
+            btn2.on('click',function() {
+                if (btn2.text() == "사용하기") {
+                    btn2.text("취소하기");
+                                    } else {
+                    btn2.text("사용하기");
+                }
+            });
+                                });
+    </script>
+</head>
+<body>
+    <main>
+<div class="bad">
+<h2>접근성 미적용</h2>
+    <button id="button">사용하기</button>
+</div>
+
+<div class="good">
+    <h2>접근성 적용</h2>
+    <button role="status" id="button2">사용하기</button>
+</div>
+    
+
+</main>
+</body>
+</html>
