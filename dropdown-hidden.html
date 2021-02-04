@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>화면에서 콘텐츠를 숨기거나 표시할 때의 접근성2</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<style>
+		ul{
+			list-style: none;
+		}
+		li{
+			margin-top:10px;
+			margin-bottom:10px;
+		}
+		button {
+    background: none;
+    border: 0;
+    color: inherit;
+    /* cursor: default; */
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    -webkit-appearance: button; /* for input */
+    -webkit-user-select: none; /* for button */
+       -moz-user-select: none;
+        -ms-user-select: none;
+}
+ .content{
+ 	height:0;
+ 	overflow:hidden;
+ 	transition:height 350ms ease-in-out;
+}
+
+	</style>
+	<script>
+		$(function(){
+			var btn1=$('.toggle-btn');
+			var content1=$('.toggle-content');
+			btn1.on('click',function(){
+				var height=$('.toggle-content li').outerHeight(true);
+				var n=$('.toggle-content li').length;
+				var ch = (height * n);
+				if(content1.hasClass('active1')){
+					$('.active1').css('height',0);
+					content1.removeClass('active1');
+				}else{
+					content1.addClass('active1');
+					$('.active1').css('height',ch);
+				};
+			});
+
+			var btn2=$('.toggle-btn2');
+			var content2=$('.toggle-content2');
+			var link=$('.toggle-content2 li a');
+			btn2.on('click',function(){
+				var height=$('.toggle-content2 li').outerHeight(true);
+				var n=$('.toggle-content2 li').length;
+				var ch = (height * n);
+				if(content2.hasClass('active2')){
+					$('.active2').css('height',0);
+					link.attr('tabindex',-1);
+					btn2.attr('aria-expanded','false');
+					content2.removeClass('active2');
+					content2.attr('aria-hidden','true');
+				}else{
+					btn2.attr('aria-expanded','true');
+					link.attr('tabindex','');
+					content2.addClass('active2');
+					$('.active2').css('height',ch);
+					content2.attr('aria-hidden','false');
+				};
+			});
+
+
+		});
+	</script>
+</head>
+<body>
+	<h1>화면에서 콘텐츠를 숨기거나 표시할때-2</h1>
+  <p>overflow hidden 을 통하여 시각적으로 콘텐츠를 숨기는 경우에는 스크린 리더에서는 콘텐츠를 읽을 수 있으므로 이에 대한 접근성 대응이 필요합니다.</p> 
+  <p>또한 숨겨져있을경우 TAB키를 통한 포커스역시 작동되어선 안됩니다.</p>
+
+  <div class="bad">
+  	<h2>접근성 미적용 예시</h2>
+  	<p>
+  	<button class="btn toggle-btn">햄버거 브랜드 보기</button>
+  	</p>
+  	<ul class="content toggle-content">
+  		<li><a href="http://www.lotteria.com/" target="blank">롯데리아</a></li>
+  		<li><a href="https://www.mcdonalds.co.kr/kor/main.do" target="blank">맥도날드</a></li>
+  		<li><a href="https://www.burgerking.co.kr/#/home" target="blank">버거킹</a></li>
+  	</ul>
+  </div>
+
+  <div class="good">
+  	<h2>접근성 적용 예시</h2>
+  	<p>
+  	<button class="btn toggle-btn2" aria-expanded="false">햄버거 브랜드 보기</button>
+  	</p>
+  	<ul class="content toggle-content2" aria-hidden="true">
+  		<li><a href="http://www.lotteria.com/" target="blank" tabindex="-1">롯데리아</a></li>
+  		<li><a href="https://www.mcdonalds.co.kr/kor/main.do" target="blank" tabindex="-1">맥도날드</a></li>
+  		<li><a href="https://www.burgerking.co.kr/#/home" target="blank" tabindex="-1">버거킹</a></li>
+  	</ul>
+  </div>
+
+</body>
+</html>

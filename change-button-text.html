@@ -19,8 +19,6 @@
             });
 
             btn2.on('click',function() {
-                btn2.attr("aria-live","polite");
-                btn2.attr("aria-relevant","removals");
                 if (btn2.text() == "사용하기") {
                     btn2.text("취소하기");
                                     } else {
@@ -38,8 +36,8 @@
 </div>
 
 <div class="good">
-    <h2>접근성 적용해보기</h2>
-    <button id="button2">사용하기</button>
+    <h2>접근성 적용</h2>
+    <button aria-live="polite" aria-relevant="removals" id="button2">사용하기</button>
 </div>
 
 </main>
