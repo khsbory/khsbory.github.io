@@ -23,14 +23,14 @@
  
 <label for="searchField1">검색어</label>
 <input type="text" id="searchField1">
-<button type="button" id="btnDelete1">검색어 삭제</button>
+<button style="display: none;" type="button" id="btnDelete1">검색어 삭제</button>
   </div>
 
 <div class="good" role="group" aria-labelledby="accessible">
   <h2 id="accessible">접근성 적용 예제</h2>
   <label for="searchField2">검색어</label>
   <input type="text" id="searchField2">
-  <button type="button" id="btnDelete2">검색어 삭제</button>
+  <button style="display: none;" type="button" id="btnDelete2">검색어 삭제</button>
   </div>
 </body>
 <script>
@@ -39,13 +39,31 @@ var searchField1 = $("#searchField1");
 var searchField2 = $("#searchField2");
 var btnDelete1 = $("#btnDelete1");
 var btnDelete2 = $("#btnDelete2");
+searchField1.change(function() {
+  if (searchField1.val !== '""') {
+  btnDelete1.show();
+} else {
+  btnDelete1.hide();
+};
+});
+
   btnDelete1.on('click',function(){
     searchField1.val("");
+    btnDelete1.hide();
       });
-          
+
+          searchField2.change(function() {
+  if (searchField2.val !== '""') {
+  btnDelete2.show();
+} else {
+  btnDelete2.hide();
+};
+});
+
   btnDelete2.on('click',function(){
     searchField2.val("");
-searchField2.focus();
+    btnDelete2.hide();
+    searchField2.focus();
   });
 });
 </script>
