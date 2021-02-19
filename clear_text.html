@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>
+  검색어 삭제 접근성
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<!-- <link rel="stylesheet" href="styles.css" /> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+  <h1>
+    검색어 삭제 버튼을 구현하는 경우
+  </h1>
+  
+  <div class="bad">
+  <h2>접근성 미적용 예제</h2>
+ 
+<label for="searchField1">검색어</label>
+<input type="text" id="searchField1">
+<button id="btnDelete1">검색어 삭제</button>"
+  </div>
+
+<div class="good" role="group" aria-labelledby="accessible">
+  <h2 id="accessible">접근성 적용 예제</h2>
+  <label for="searchField2">검색어</label>
+  <input type="text" id="searchField2">
+  <button id="btnDelete2">검색어 삭제</button>
+  </div>
+</body>
+<script>
+  $(function(){
+var searchField1 = $("#searchField1");
+var searchField2 = $("#searchField2");
+var btnDelete1 = $("#btnDelete1");
+var btnDelete2 = $("#btnDelete2");
+  btnDelete1.on('click',function(){
+    searchField1.val("");
+      });
+          
+  btnDelete2.on('click',function(){
+    searchField2.val("");
+searchField2.focus();
+  });
+});
+</script>
+</html>
