@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        a:focus, a:active {
+          color: green;
+        }
+        </style>
+    <title>Document</title>
+</head>
+<body>
+<input id="myAnchor" type="text" aria-label="search keyword">
+
+
+<button onclick="getfocus()">go to focus</button>
+<input type="button" onclick="losefocus()" value="Lose focus">
+
+<script>
+function getfocus() {
+  document.getElementById("myAnchor").focus();
+}
+
+function losefocus() {
+  document.getElementById("myAnchor").blur();
+}
+</script>
+
+</body>
+</html>

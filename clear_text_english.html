@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>
-  검색어 삭제 접근성
+  NVDA browse mode testing with focus management
 </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
@@ -14,26 +14,25 @@
 
 <body>
 
-  <h1>
-    검색어 삭제 버튼을 구현하는 경우
-  </h1>
   
-  <div class="bad">
-  <h2>접근성 미적용 예제</h2>
- 
-<label for="searchField1">검색어</label>
-<input type="text" id="searchField1">
-<button style="display: none;" type="button" id="btnDelete1">검색어 삭제</button>
-  </div>
-
-<div class="good" role="group" aria-labelledby="accessible">
-  <h2 id="accessible">접근성 적용 예제</h2>
-  <label for="searchField2">검색어</label>
-  <input type="text" id="searchField2">
+  
+<div class="bad">
+  <h2>Bad example</h2>
+  <label for="searchField1">Search keyword</label>
+  <input type="text" id="searchField1">
   <p>
-    <button style="display: none;" type="button" id="btnDelete2">검색어 삭제</button>
+    <button style="display: none;" type="button" id="btnDelete1">Delete keyword</button>
   </p>
     </div>
+
+    <div class="good" role="group" aria-labelledby="accessible">
+      <h2 id="accessible">Good example</h2>
+      <label for="searchField2">Search keyword</label>
+      <input type="text" id="searchField2">
+      <p>
+        <button disabled type="button" id="btnDelete2">Delete keyword</button>
+      </p>
+        </div>
 </body>
 <script>
   $(function(){
@@ -59,15 +58,16 @@ function check() {
 
 function check2() {
   if (searchField2.val() != "") {
-  btnDelete2.show();
+  btnDelete2.removeAttr("disabled");
 } else {
-  btnDelete2.hide();
+  btnDelete2.attr("disabled","");
 };
 };
 
   btnDelete1.on('click',function(){
     searchField1.val("");
     btnDelete1.hide();
+    searchField1.focus();
       });
 
 searchField2.keyup(function() {
@@ -80,7 +80,7 @@ check2();
 
   btnDelete2.on('click',function(){
     searchField2.val("");
-    btnDelete2.hide();
+    btnDelete2.attr("disabled");
     searchField2.focus();
       });
 });
