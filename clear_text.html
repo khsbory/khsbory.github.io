@@ -19,14 +19,14 @@
   </h1>
   
   <div class="bad">
-  <h2>접근성 미적용 예제</h2>
+  <h2 id="notAccessible">접근성 미적용 예제</h2>
  
 <label for="searchField1">검색어</label>
 <input type="text" id="searchField1">
 <button style="display: none;" type="button" id="btnDelete1">검색어 삭제</button>
   </div>
 
-<div class="good" role="group" aria-labelledby="accessible">
+<div class="good">
   <h2 id="accessible">접근성 적용 예제</h2>
   <label for="searchField2">검색어</label>
   <input type="text" id="searchField2">
@@ -68,6 +68,7 @@ function check2() {
   btnDelete1.on('click',function(){
     searchField1.val("");
     btnDelete1.hide();
+    searchField1.focus();
       });
 
 searchField2.keyup(function() {

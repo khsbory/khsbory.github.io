@@ -16,8 +16,8 @@
 
   
   
-<div class="bad">
-  <h2>Bad example</h2>
+<div>
+  <h2>Example 1</h2>
   <label for="searchField1">Search keyword</label>
   <input type="text" id="searchField1">
   <p>
@@ -25,12 +25,12 @@
   </p>
     </div>
 
-    <div class="good" role="group" aria-labelledby="accessible">
-      <h2 id="accessible">Good example</h2>
+    <div role="group" aria-labelledby="example2">
+      <h2 id="example2">Example 2</h2>
       <label for="searchField2">Search keyword</label>
       <input type="text" id="searchField2">
       <p>
-        <button disabled type="button" id="btnDelete2">Delete keyword</button>
+        <button style="display: none;" type="button" id="btnDelete2">Delete keyword</button>
       </p>
         </div>
 </body>
@@ -58,9 +58,9 @@ function check() {
 
 function check2() {
   if (searchField2.val() != "") {
-  btnDelete2.removeAttr("disabled");
+  btnDelete2.show();
 } else {
-  btnDelete2.attr("disabled","");
+  btnDelete2.hide();
 };
 };
 
@@ -80,7 +80,7 @@ check2();
 
   btnDelete2.on('click',function(){
     searchField2.val("");
-    btnDelete2.attr("disabled");
+    btnDelete2.hide();
     searchField2.focus();
       });
 });
