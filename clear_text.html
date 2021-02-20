@@ -70,7 +70,10 @@ function check2() {
 searchField2.keyup(function() {
 check2();
 });
-          
+
+searchField2.change(function() {
+check2();
+});
 
   btnDelete2.on('click',function(){
     searchField2.val("");
