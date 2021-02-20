@@ -46,6 +46,9 @@ searchField1.keyup(function() {
 check();
 });
 
+searchField1.change(function() {
+check2();
+});
 function check() {
   if (searchField1.val() != "") {
   btnDelete1.show();
