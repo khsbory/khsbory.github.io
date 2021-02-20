@@ -30,8 +30,10 @@
   <h2 id="accessible">접근성 적용 예제</h2>
   <label for="searchField2">검색어</label>
   <input type="text" id="searchField2">
-  <button style="display: none;" type="button" id="btnDelete2">검색어 삭제</button>
-  </div>
+  <p>
+    <button style="display: none;" type="button" id="btnDelete2">검색어 삭제</button>
+  </p>
+    </div>
 </body>
 <script>
   $(function(){
@@ -39,32 +41,42 @@ var searchField1 = $("#searchField1");
 var searchField2 = $("#searchField2");
 var btnDelete1 = $("#btnDelete1");
 var btnDelete2 = $("#btnDelete2");
-searchField1.change(function() {
-  if (searchField1.val !== '""') {
+
+searchField1.keyup(function() {
+check();
+});
+
+function check() {
+  if (searchField1.val() != "") {
   btnDelete1.show();
 } else {
   btnDelete1.hide();
 };
-});
+};
+
+function check2() {
+  if (searchField2.val() != "") {
+  btnDelete2.show();
+} else {
+  btnDelete2.hide();
+};
+};
 
   btnDelete1.on('click',function(){
     searchField1.val("");
     btnDelete1.hide();
       });
 
-          searchField2.change(function() {
-  if (searchField2.val !== '""') {
-  btnDelete2.show();
-} else {
-  btnDelete2.hide();
-};
+searchField2.keyup(function() {
+check2();
 });
+          
 
   btnDelete2.on('click',function(){
     searchField2.val("");
     btnDelete2.hide();
     searchField2.focus();
-  });
+      });
 });
 </script>
 </html>
