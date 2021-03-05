@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+    <script defer src="nv_tab_V2.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+
+        [role=tablist]{
+            position: relative;
+            list-style-type:none;
+            display:flex; top:0.5px; z-index: 2;
+            justify-content: center;
+        }
+        [role=tablist][aria-orientation=vertical]{
+            list-style-type:none;
+            margin:0; top:0; z-index:0;
+            display:flex;
+            flex-flow: column;
+        }
+
+        [role="tablist"] li[role="none"]{
+            min-width:15%;
+        }
+
+        [role="tablist"] li[role="none"]>[role="tab"]{
+            display:block; width:100%;
+        }
+
+        [role="tablist"] [role="tab"]{
+            position:relative;
+            padding:0.2rem; box-sizing:border-box;
+            margin:0 0.1rem;
+            min-width:15%;
+            border:solid 1px;
+            border-bottom:none;
+            text-align:center;
+            transition:font-weight 0.4s;
+        }
+
+        [role="tab"][aria-selected]:after{
+            position: absolute; content:''; display:block;
+            width:100%; left:0; bottom:0; height:0.2rem;
+            background-color:#beafff;
+            transition: background-color 0.4s;
+        }
+        [role="tab"][aria-selected="true"]{
+            font-weight:bold;
+        }
+        [role="tab"][aria-selected="true"]:after{
+            background-color:#5e1aef;
+        }
+
+        [role=tabpanel]{
+            min-height:100%;
+        }
+
+        .hide{
+            display:none;
+        }
+
+        .tab-wrapper{
+            height:300px;
+        }
+
+        [role=tabpanel]{
+            border:solid 1px;
+        }
+
+        .for-a11y{
+            position: absolute;
+            width: 1px;height: 1px; top:0; left:0;
+            margin: -1px; padding: 0;
+            border: 0; clip: rect(0 0 0 0); overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <ul role="tablist" data-mode="aria1.2">
+            <li role="tab" aria-controls="IconTab1" aria-label="Fruits"><i class="fas fa-apple-alt"></i></li>
+            <li role="tab" aria-controls="IconTab2" aria-label="Vegetables"><i class="fas fa-carrot"></i></li>
+        </ul>
+        <div class="tab-wrapper no1" id="IconTab1" >
+            <h1>Fruits Tab</h1>
+            <ul role="tablist" data-mode="aria1.1">
+                <li role="tab" aria-controls="tab_panel1-1">Apple</li>
+                <li role="tab" aria-controls="tab_panel1-2" aria-selected="true"">Pear</li>
+                <li role="tab" aria-controls="tab_panel1-3">Grapes</li>
+                <li role="tab" aria-controls="tab_panel1-4">Strawberry</li>
+                <li role="tab" aria-controls="tab_panel1-5">Tangerine</li>
+            </ul>
+            <div data-role="PanelList"></div>
+            <div  id="tab_panel1-1">
+                <p>
+                    Apple is considered a representative symbol of fruits for the people of a lot of country. symbol
+                </p>
+                <p>
+                    Apple is shaped that close to shape the sphere.
+                    The color of the ripe apple is red, unripe apple is light-green.
+                </p>
+            </div>
+            <div  id="tab_panel1-2">
+                <p>
+                    Perhaps, the pears aren't popular fruit in European and American countries Because western(Europe)'s pears are almost tasteless.
+                </p>
+                <p>
+                    But In Korea, Pear is the fruit of popular. Korean(Asian) Pear is spherical like just apples, European Pears has a different shape from Asian pears. European-pear's shape looks like Arabian-Number Eight shapes.
+                </p>
+            </div>
+            <div  id="tab_panel1-3">
+                <p>
+                    Grape is not lonely because they're not alone!
+                </p>
+                <p>
+                    We don't call A Grape in English because they're not alone!
+                </p>
+                <p>
+                    Grape is not alone, They're called Grape(s). They've many friends, neighbors,  family!
+                </p>
+            </div>
+            <div  id="tab_panel1-4">
+                <p>Strawberries have many seeds. They don't grow up hanging from trees. They're growing up from the land.</p>
+            </div>
+            <div  id="tab_panel1-5">
+                <p>Tangerines are a relative of the orange that live in Asia!</p>
+                <p>a lot of types of tangerines are in Asia!</p>
+                <p>Orange has many relatives in Europe not only tangerines! </p>
+                <p>Lime, Lemon, GrapeFruit, Calamansi, etc..</p>
+            </div>
+        </div>
+        <div class="tab-wrapper no2" id="IconTab2" >
+            <h1>Vegetables Tab</h1>
+            <ul role="tablist">
+                <li>
+                    <a role="tab" aria-controls="tab_panel2-1">Carrot</a>
+                </li>
+                <li role="tab" aria-controls="tab_panel2-2">Cabbage</li>
+                <li role="tab" aria-controls="tab_panel2-3">Radish</li>
+                <li role="tab" aria-controls="tab_panel2-4">Cucumber</li>
+                <li role="tab" aria-controls="tab_panel2-5">Pumpkin</li>
+            </ul>
+            <div data-role="PanelList"></div>
+            <div  id="tab_panel2-1">
+                <p>Carrot! If we look at the carrot, what animal do you think of?</p>
+                <p>I just thought of a small and cute rabbit! And you?</p>
+            </div>
+            <div  id="tab_panel2-2">
+                <p>Cabbage, Is maybe a popular ingredient throughout the world.</p>
+                <p>European people make salads representatively by using Cabbages, German people make the Sauerkraut by using it.</p>
+                <p>Korean people make the kimchi representatively by using Asia cabbages.</p>
+            </div>
+            <div  id="tab_panel2-3">
+                <p>Radish is a popular vegetable in Asia, especially in Korea, Japan.</p>
+                <p>It Is called "Moo" in Korean, it sounds like a cow's sound and pronounced like do that. And it is called "Daikon" in Japanese.</p>
+                <p>Korean and Japanese use Radishes as an ingredient of soups.</p>
+            </div>
+            <div  id="tab_panel2-4">
+                <p>Cucumber is a very juicy and wet vegetable but is not soft. wet and juicy but very crunch.</p>
+                <p>Cucumber has some thorns, So, we wash those to remove when we eat it. Korean people eat cucumbers dip DoenJang(Korean-bean paste) when eating Korean BBQs.</p>
+            </div>
+            <div  id="tab_panel2-5">
+                <p>Pumpkin is a famous vegetable because of Holloween! Old Pumpkin is a yellow-red(orange) color.</p>
+                <p>On Holloween, Americans had been piercing a face mask that looks like a ghost on the empty pumpkins, put a lighted candle in the empty space of the carved pumpkins.</p>
+                <p>We call it "Jack O'Lantern" that pumpkin that pierced face.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

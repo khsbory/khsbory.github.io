@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>라디오 버튼 접근성 이슈</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<style>
+		.radio-btn{
+			width:auto;
+			height:30px;
+		}
+		.radio-btn p{
+			float:left;
+			margin:0 10px 0 0;
+			position:relative;
+		}
+
+	</style>
+	<script>
+		$(function(){
+			//미적용
+			$('.info').on('click',function(){
+				alert('현재 세일기간이 아닙니다.');
+
+			});
+
+			//적용
+			$('.info2, .btn').mouseup(function(){
+				if((event.button == 1)||(event.which == 1)){
+					$('.info2').removeClass('on');
+					$(this).prop('checked',true);
+				alert('현제 세일기간이 아닙니다.')
+			}else{
+				return false;
+			}
+			});
+
+			$('.info2').on('keydown', function(e){
+				var code = e.keyCode;
+				if(event.which == 32){
+						$(this).prop('checked',false);
+						$(this).blur();
+						alert('현제 세일기간이 아닙니다.');		
+				// }else if(event.which == 9){
+				// 	$(this).prop('checked',false);
+				// 		$(this).blur();
+				// 		alert('현제 세일기간이 아닙니다.');	
+					
+				}else if(event.which === 9 && event.shiftKey){
+					$(this).prop('checked',false);
+						$(this).blur();
+						alert('현제 세일기간이 아닙니다.');	
+				}else{
+					$('.info2').prop('checked',true);
+				}
+			});
+
+		});
+	</script>
+</head>
+<body>
+
+	<h1>radio버튼</h1>
+	<p></p>
+ 	<div class="bad">
+ 		<h2>접근성 미적용 예시</h2>
+		<div class="radio-btn">
+			<p><input type="radio" name="r-btn" id="mac" class="info">
+				<label for="mac">맥도날드</label>
+			</p>
+			<p><input type="radio" name="r-btn" id="lot" class="info">
+				<label for="lot">롯데리아</label>
+			</p>
+			<p><input type="radio" name="r-btn" id="kfc" class="info">
+				<label for="kfc">KFC</label>
+			</p>
+		</div>
+	</div>
+<p></p>
+	<div class="good">
+		<h2>접근성 적용 예시</h2>
+		<div class="radio-btn">
+<input type="radio" name="r-btn2" id="mac2" class="info2" aira-hidden="true">
+				<label for="mac2" class="btn">맥도날드</label>
+
+<input type="radio" name="r-btn2" id="lot2" class="info2" aira-hidden="true">
+				<label for="lot2" class="btn">롯데리아</label>
+
+<input type="radio" name="r-btn2" id="kfc2" class="info2" aira-hidden="true">
+				<label for="kfc2" class="btn">KFC</label>
+		</div>
+	</div>
+
+</body>
+</html>
