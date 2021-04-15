@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>
+  NVDA browse mode testing with focus management
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<!-- <link rel="stylesheet" href="styles.css" /> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+  
+  
+<div>
+  <h2>Example 1</h2>
+  <label for="searchField1">Search keyword</label>
+  <input type="text" id="searchField1">
+  <p>
+    <button style="display: none;" type="button" id="btnDelete1">Delete keyword</button>
+  </p>
+    </div>
+
+    <div role="group" aria-labelledby="example2">
+      <h2 id="example2">Example 2</h2>
+      <label for="searchField2">Search keyword</label>
+      <input type="text" id="searchField2">
+      <p>
+        <button style="display: none;" type="button" id="btnDelete2">Delete keyword</button>
+      </p>
+      <button id="focusTest">Focus test</button>
+        </div>
+</body>
+<script>
+  $(function(){
+var searchField1 = $("#searchField1");
+var searchField2 = $("#searchField2");
+var btnDelete1 = $("#btnDelete1");
+var btnDelete2 = $("#btnDelete2");
+var focusTest = $("#focusTest");
+searchField1.keyup(function() {
+check();
+});
+
+searchField1.change(function() {
+check();
+});
+function check() {
+  if (searchField1.val() != "") {
+  btnDelete1.show();
+} else {
+  btnDelete1.hide();
+};
+};
+
+function check2() {
+  if (searchField2.val() != "") {
+  btnDelete2.show();
+} else {
+  btnDelete2.hide();
+};
+};
+
+  btnDelete1.on('click',function(){
+    searchField1.val("");
+    btnDelete1.hide();
+    searchField1.focus();
+      });
+
+searchField2.keyup(function() {
+check2();
+});
+
+searchField2.change(function() {
+check2();
+});
+
+  btnDelete2.on('click',function(){
+    focusTest.focus();
+      });
+});
+</script>
+</html>
