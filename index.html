@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슬라이딩 랭킹</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+      rel="stylesheet">
+    <style>
+        *{margin:0;padding:0; box-sizing: border-box;}
+        html,body{width:100%;height:100%; font-family: "맑은 고딕";}
+        ul{list-style:none;}
+        a{text-decoration: none; color:#000;}
+        .rank-wrapper{position: relative; width:100%; height:100%; overflow: hidden;
+        display:grid; grid-template-columns: 18fr 2fr; grid-auto-flow:column;
+        grid-template-rows:1fr 20fr;}
+        .rank-wrapper.inline{display:grid; grid-template-columns: 8fr 10fr 2fr;grid-template-rows:1fr 20fr; grid-auto-flow: row;}
+        .rank-top{flex:1;}
+        .rank-wrapper button{border:none; color:#07f; background-color:transparent;}
+        button.btnRankExpander{display:inline-block;
+        text-align: left; padding:0.2rem;}
+        .icon{font-weight:bold;}
+
+        .list-wrapper{
+        width:100%; max-height:100%; height: 60%;
+        position:relative; transition:max-height 0.2s; overflow:hidden;
+        z-index: 0;
+        }
+        .rolling-rank{
+            display: flex; width:100%;
+            flex-flow: column; overflow:hidden; top:0; left:0;
+            position: absolute; counter-reset: rank;
+            transition:margin-top 0.3s;}
+
+        .rolling-rank>li{flex:1; width:100%; height:1.5rem;
+        counter-increment: rank;}
+        .rolling-rank>li>a{width:100%; display:inline-flex; height:100%;
+        font-size:1rem; overflow:hidden; text-overflow: ellipsis;
+        white-space:nowrap;}
+        .rolling-rank.ko>li>a:before{
+            content:counter(rank) ' ';
+            width:10%; text-align:center;
+            color:#07f; font-weight:bold;
+            font-size:1rem;
+        }
+
+        .rank-wrapper.inline .list-wrapper.collapsed{
+            max-height:1.5rem;
+            order:2;} .rank-wrapper.inline button.btnRankExpander{order:3;
+            justify-self: end;}
+        .rank-wrapper .list-wrapper.collapsed{
+            max-height:1.5rem;
+            order:3;} .rank-wrapper button.btnRankExpander{order:2; justify-self: end;}
+
+        #linkForKeyboard{
+            position: absolute;
+            width:100%; height:1.3rem; z-index:1;
+        }
+
+        #linkForKeyboard:focus{
+            border:#07f solid;
+        }
+
+        .v_gone{
+            display:none;
+        }
+
+        @media screen and (max-width:1024px){
+            body{font-size:0.8rem;}
+        }
+    </style>
+</head>
+<body>
+    <div class="rank-wrapper">
+        <div class="rank-top">
+            <h3>실시간 인기 검색어</h3>
+        </div>
+        <button class="btnRankExpander" aria-controls="list-wrapper">
+            <span class="icon material-icons">expand_more</span>
+        </button>
+        <div role="dialog" class="list-wrapper" id="list-wrapper">
+            <p id="linkForKeyboard"></p>
+            <ul class="rolling-rank ko" id="rolling-rank">
+                <li><a href="#">프로바이오틱스 유산균</a></li>
+                <li><a href="#">갤럭시s21 자급제</a></li>
+                <li><a href="#">마스크 kf94</a></li>
+                <li><a href="#">쌀 20kg</a></li>
+                <li><a href="#">귤 10kg</a></li>
+                <li><a href="#">종근당 알티지 오메가3</a></li>
+                <li><a href="#">스마트폰 장갑</a></li>
+                <li><a href="#">남자장갑</a></li>
+                <li><a href="#">셀트리온 초유단백질</a></li>
+                <li><a href="#">초유단백질분말</a></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        class ListExpander{
+                constructor(
+                    targetButton,
+                    Mode='COLLAPE_ELEMENT_HEIGHT'
+                ){
+                    const self = this;
+                    this.state = {
+                        expand:false,
+                        disabled:false
+                    };
+                    this.Mode = Mode;
+                    this.targetButton = targetButton;
+                    this.targetButton.stateIconElement = this.targetButton.querySelector('.icon');
+                    this.targetContainer = document.getElementById(this.targetButton.getAttribute('aria-controls'))
+                    this.targetContainer.classList.add(this.Mode)
+                    this.targetButton.addEventListener('click',function(){
+                        self.SET_EXPAND = !self.state.expand;
+                    });
+                    this.SET_EXPAND = false;
+                }
+            
+                set SET_EXPAND(v){
+                    if(typeof v === 'boolean'){
+                        const StateIconText = v ? "expand_less" : "expand_more";
+                        this.state.expand = v;
+                        this.targetContainer.classList.toggle('collapsed',v===false);
+                        document.querySelector('.rank-wrapper').classList.toggle('inline',!this.state.expand);
+                        this.targetButton.setAttribute('data-expanded',v);
+                        this.state.expand ? this.targetButton
+                        .setAttribute('aria-label','인기 검색어 목록 접기') : this.targetButton
+                        .setAttribute('aria-label','인기 검색어 목록 펼치기');
+                        const listContainer = this.targetContainer.querySelector('.rolling-rank');
+                        listContainer.setAttribute('aria-hidden',!v);
+                        const listItems = listContainer.querySelectorAll('li>a');
+                        for(const item of listItems){
+                            if(!v){
+                                item.setAttribute('tabindex',-1);
+                            }else{
+                                item.removeAttribute('tabindex',-1);
+                            }
+                        }
+                        this.targetButton.stateIconElement.innerHTML = StateIconText;
+                    }
+                }
+            }
+
+        class RollingList{
+            constructor(sec){
+                const self = this;   
+                this.tempIndex = 0;
+                this.roller = document.querySelector('#rolling-rank');
+                this.rankItem = document.querySelectorAll('#rolling-rank li');
+                this.expander = new ListExpander(document.querySelector('.btnRankExpander'));
+                this.primaryLink = document.querySelector('#linkForKeyboard');
+                this.milsec = sec*1000;
+                this.rollInterval;
+
+                this.autoPlay = true;
+                this.currentIndex = 0;
+
+                for(const item of self.rankItem){
+                    item.indexFromParent = Array.prototype.indexOf.call(self.rankItem,item);
+                }
+            
+                this.setAutoRoll = true;
+                this.expander.targetButton.addEventListener('click',function(){
+                    const state = this.getAttribute('data-expanded') === 'true' ? true : false;
+                    self.setAutoRoll = !state;
+                    state ? self.visualItem = 0 : self.visualItem = self.tempIndex;
+                    self.primaryLink.classList.toggle('v_gone',state);
+                })
+            }
+
+            set visualItem(v){
+                this.currentIndex = v;
+                this.roller.style.marginTop = -this.rankItem[v].offsetTop+'px';
+                this.primaryLink.href = this.rankItem[v].querySelector('a').href;
+                this.primaryLink.target = this.rankItem[v].querySelector('a').target;
+                this.primaryLink.innerHTML = this.rankItem[v].querySelector('a').innerHTML);
+            }
+
+            set setAutoRoll(v){
+                const self = this;
+                this.autoPlay = v;
+                if(this.autoPlay){
+                    self.rollInterval = setInterval(function(){
+                        if(self.currentIndex < self.rankItem.length-1){
+                            self.currentIndex = self.currentIndex + 1;
+                            self.visualItem = self.currentIndex;
+                        }else{
+                            self.currentIndex = 0;
+                            self.visualItem = self.currentIndex;
+                        }
+                    },this.milsec);
+                }else{
+                    this.tempIndex = this.currentIndex;
+                    clearInterval(self.rollInterval);
+                }
+            }
+        }
+        const rankList = new RollingList(2);
+    </script>
+</body>
+</html>
