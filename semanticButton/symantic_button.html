@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/deque-pattern-library/dist/js/pattern-library.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .btn_group {
+
+            text-align: center;
+            margin-top: 20px;
+
+        }
+
+        .btn_group div {
+            text-align: left;
+            margin-top: 40px;
+            padding: 10px;
+
+        }
+
+        .test1_btn {
+            border: 1px solid black;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: black;
+            border-radius: 3px;
+            cursor: pointer;
+            ;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="btn_group">
+        <div><a href="#" class="test1_btn" id="a_btn">test1</a><span>a 태그를 사용한 버튼입니다.(라이브러리 사용)</span></div>
+        <div> <span class="test1_btn" id="span_btn"> test2</span>span 태그를 사용한 버튼입니다.(라이브러리 사용)</div>
+        <div> <span class="test1_btn">test3</span>span 태그를 사용한 버튼 탭키로 선택 불가하며 버튼으로 인식하지도 않음</div>
+        <div> <span class="test1_btn" role="button">test4</span><span>span 태그를 사용한 버튼에 role="button"을 추가하여 버튼으로 인식하게 함
+                하지만 탭키를 사용하여 선택할 수 없음.</span></div>
+            <button class="button">kljk</button>
+
+    </div>
+
+    <div class="content">hello world<div></div>
+    <!-- <a href="#" class="deque-button deque-button-aria" id="deque-button-primary-aria">test1</a>
+    <span  class="deque-button deque-button-aria" id="deque-button-primary-aria"> test2</span> -->
+
+</body>
+
+<script src="deque-patterns.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+    /* Specify which buttons */
+
+
+    var aBtn = document.getElementById('a_btn'); /*주황색 글씨가 id 값입니다 test 1에 
+    적용된 id 값이 들어와야 하는 부분입니다.*/
+    var spanBtn = document.getElementById('span_btn');/*주황색 글씨가 id 값입니다 test 2에 
+    적용된 id 값이 들어와야 하는 부분입니다.*/
+
+
+    /* Define the functionality for the buttons */
+
+    function aBtnAlert() {
+        // 클릭 했을떄 주황색 글씨부분이 얼럿창에 나타나게 됩니다.
+        alert('You clicked the aBtnAlert button');
+    }
+    function spanBtnAlert() {
+        alert('You clicked the spanBtnAlert button');
+    }
+
+
+    /* Initialize buttons */
+    // initializeButton이라는 함수(라이브러리에서 정의)가 id값을 통해 a와 span태그에 탭키로선택가능하게 하면서 버튼으로
+    //인식시키는 역할을 수행하는 것 같습니다.
+    //아래 한줄을 복사한 후 괄호안의 변수명만 교체하여 사용하시면 됩니다.
+    // deque.button.initializeButton(aBtn, aBtnAlert);
+    // deque.button.initializeButton(spanBtn, spanBtnAlert);
+
+
+//     $(document).ready(function(){
+//     //페이지시작할때 필요한로직
+// }).on('click','#a_btn',function(){
+//         initializeButton('aBtn, aBtnAlert');
+//     });
+
+
+$(function() {
+deque.button.initializeButton(aBtn, aBtnAlert);
+});
+
+//이렇게 jquery 안에서 호출이 가능하나 말씀해주신 내용과는 거리가 있는것 같습니다
+
+var spantag = $('div').children('span')
+    var i = 0
+    while(spantag[i].id !=null){
+        deque.button.initializeButton(spantag[i], spanBtnAlert);
+        i++;
+    }
+  //이방법의 경우에는 버튼으로 의도하지 않은 태그까지 선택이 되므로 주의가 필요합니다.
+
+</script>
+
+
+</html>
