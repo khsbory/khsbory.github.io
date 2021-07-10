@@ -1,0 +1,22 @@
+/* AIR LP */
+AIRLPUI = {
+	init : function(){
+		this.setElement();
+		this.lpSwiper();
+	},
+	setElement : function(){
+		this.lpSwiperElement = $('.box__air-promotion-carousel-wrap .js-swiper-container');
+	},
+	lpSwiper : function(){
+		this.lpSwiperElement.swiperSet({
+			pageControl:true,
+			slidesPerView: 'auto',
+			spaceBetween: 11
+      	})
+	}
+
+};
+
+$(function(){
+	AIRLPUI.init();
+});

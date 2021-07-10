@@ -1,0 +1,544 @@
+@charset "utf-8";
+
+.sprite__air-common,
+.sprite__air-common--before:before,
+.sprite__air-common--after:after{display:inline-block;background:url(//pics.gmarket.co.kr/mobile/sprite/kr/vertical/air/common/sprite__air-common.png) no-repeat;background-size:275px auto}
+.sprite__air-common--before:before,
+.sprite__air-common--after:after{content:''}
+
+.service__air *{font-weight:normal;color:inherit}
+.service__air strong{font-weight:bold}
+.service__air #footer{color:#bdbdbd}
+
+/* layer */
+.box__layer-air-common{display:none;position:fixed;top:0;right:0;left:0;z-index:1000;width:100%;height:100%;-webkit-overflow-scrolling: touch;background:#fff}
+.box__layer-air-common .text__layer-header{position:absolute;z-index:1010;width:100%;height:45px;background:#fff;line-height:47px;font-size:17px;font-weight:bold;color:#000;text-align:center}
+.box__layer-air-common .button__close{overflow:hidden;position:absolute;top:8px;right:9px;z-index:1020;width:30px;height:30px;border:none;background:transparent}
+.box__layer-air-common .button__close:before{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);display:inline-block;width:17px;height:17px;border:none;background-position:-102px 0;content:''}
+.box__layer-air-common .text__layer-header-number{font-weight:bold;font-size:18px;color:#757c8a}
+.box__layer-air-common-content{overflow-y:scroll;position:absolute;top:45px;left:0;bottom:60px;width:100%;box-sizing:border-box;-webkit-overflow-scrolling:touch}
+.box__layer-air-common-content .box__layer-content *{-webkit-transform:translate3d(0, 0, 0)}
+.box__calendar-container{overflow-y:scroll;position:absolute;top:49px;left:0;bottom:0;width:100%;padding:0 8px;box-sizing:border-box;-webkit-overflow-scrolling:touch}
+.box__layer-air-finder-calendar *{font-weight:normal}
+.box__layer-air-finder-calendar .box__calendar-container{top:46px;bottom:116px;}
+.box__layer-air-finder-calendar .box__calendar-header{padding:0 19px;border-bottom:1px solid #d8d8d8}
+.box__layer-air-finder-calendar .list__calendar-week{display:table;width:100%}
+.box__layer-air-finder-calendar .list__calendar-week .list-item{display:table-cell;overflow:hidden;height:34px;line-height:34px;font-size:12px;color:#757c8a;text-align:center}
+.box__layer-air-finder-calendar .list__calendar-week .list-item--sun{color:#ed6060}
+.box__layer-air-finder-calendar .text__calendar-title{margin-top:26px;margin-bottom:14px;padding-left:8px;font-size:18px;font-weight:bold !important;line-height:24px;color:#222}
+.box__layer-air-finder-calendar .box__selected-day{position:absolute;bottom:0;left:0;right:0;z-index:10;height:116px;overflow:hidden;padding:0;background:#f0f0f0;font-size:0}
+.box__layer-air-finder-calendar--multi .box__selected-day{padding-left:0;padding-right:0}
+.box__layer-air-finder-calendar .list__selected-day{white-space:nowrap;overflow:hidden;font-size:0;}
+
+.box__layer-air-finder-calendar--roundtrip .list__selected-day:before{display:inline-block;content:'';position:absolute;top:26px;left:50%;margin-left:-8px;width:16px;height:16px;background:url(//pics.gmarket.co.kr/mobile/sprite/kr/vertical/air/common/sprite__air-common.png) no-repeat -247px 0;background-size:275px auto}
+.box__layer-air-finder-calendar .list__selected-day .list-item{position:relative;height:58px;width:50%;display:inline-block;padding:28px 0 0 8px;}
+.box__layer-air-finder-calendar .list__selected-day .list-item:first-child{padding-left:0;padding-right:15px}
+.box__layer-air-finder-calendar--multi .list__selected-day .list-item:first-child,
+.box__layer-air-finder-calendar--multi .list__selected-day .list-item{position:relative;width:33.3%;padding:28px 0 0}
+.box__layer-air-finder-calendar--multi .list__selected-day .list-item:last-child{margin-right:3px}
+.box__layer-air-finder-calendar--oneway .list__selected-day .list-item{display:none}
+.box__layer-air-finder-calendar--oneway .list__selected-day .list-item:first-child{width:100%;display:block;text-align:center;}
+.box__layer-air-finder-calendar .list__selected-day .button__selected-day{position:relative;width:100%;height:58px;}
+.box__layer-air-finder-calendar .form__input-layer-date{display:block;width:100%;padding:0;text-align:center;font-size:20px;color:#222;line-height:22px;font-weight:bold;background:transparent;border:0;text-align:center;outline:none}
+.box__layer-air-finder-calendar--multi .form__input-layer-date{font-size:17px;line-height:22px;}
+
+.box__layer-air-finder-calendar--multi .list__selected-day .list-item + .list-item:before{display:inline-block;content:'';position:absolute;top:26px;left:-8px;width:16px;height:16px;background:url(//pics.gmarket.co.kr/mobile/sprite/kr/vertical/air/common/sprite__air-common.png) no-repeat -247px 0;background-size:275px auto}
+.box__layer-air-finder-calendar--oneway .list__selected-day .form__input-layer-date{width:initial;display:inline-block;}
+.box__layer-air-finder-calendar .form__input-layer-date::placeholder{font-size:18px;color:#999;text-align:center;}
+.box__layer-air-finder-calendar--multi .form__input-layer-date::placeholder{font-size:15px;}
+.box__layer-air-finder-calendar .box__selected-day .box__button{padding:7px;}
+.box__layer-air-finder-calendar .link__selected{display:block;height:44px;width:100%;background:#cbcdd0;text-align:center;border:1px solid #c5c7ca;box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, 0.1);font-size:16px;color:#eee;line-height:44px;font-weight:bold;border-radius:2px}
+.box__layer-air-finder-calendar .link__selected--active{background:#2e8de5;border:1px solid #217fd7;color:#fff}
+.box__layer-air-finder-calendar .text__day-title{display:inline-block;position:absolute;top:12px;left:50%;-webkit-transform: translateX(-50%);transform:translateX(-50%);color:#999;font-size:13px;line-height:16px;letter-spacing:0}
+.box__layer-air-finder-calendar--roundtrip .text__day-title{margin-left:-7px;}
+.box__layer-air-finder-calendar--roundtrip .list-item + .list-item .text__day-title{margin-left:7px;}
+
+
+.box__layer-air-finder-calendar .form__input-layer-date.form__input--placeholder-shown{position:relative;top:-5px}
+.box__layer-air-finder-calendar .form__input-layer-date.form__input--placeholder-shown +.text__day-title{display:none}
+.box__calendar-container{padding:0 23px 23px}
+.box__calendar-container .table__calendar{overflow:visible;position:relative;width:100%;margin-top:-3px;table-layout:fixed}
+.box__calendar-container .table__calendar caption{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;clip:rect(0 0 0 0);overflow:hidden;text-indent:-5000em}
+.box__calendar-container .table-data{position:relative;height:44px;vertical-align:middle}
+.box__calendar-container a{display:block;height:44px;line-height:46px;font-size:14px;color:#222;text-align:center}
+.box__layer-air-finder-calendar .table-data--sun a{color:#e93737}
+.box__layer-air-finder-calendar .table-data--visible a{color:#ccc}
+.table-data .text__calendar-point{position:absolute;left:50%;top:39px;width:40px;font-size:9px;line-height:9px;color:#2e8de5;text-align:center;-webkit-transform:translate(-50%,0)}
+.table-data .text__calendar-today{position:absolute;left:50%;top:39px;width:40px;font-size:9px;line-height:9px;color:#41d241;text-align:center;-webkit-transform:translate(-50%,0)}
+.table-data--point a{font-weight:bold;color:#fff !important}
+.table-data--point a:before{display:inline-block;position:absolute;top:6px;left:50%;z-index:-1;width:32px;height:32px;border-radius:16px;background:#2e8de5;content:'';transform:translate(-50%,0);-webkit-transform:translate(-50%,0)}
+.table-data--mid a:before{position:absolute;top:6px;left:0;z-index:-2;width:100%;height:32px;background:#e0eefb;content:''}
+.table-data--point + .table-data--mid a:before{left:-50%;width:150%}
+/*.table-data--point + .table-data--point a:before{left:20%;width:130%;border-radius:0 16px 16px 0}*/
+.table-data--mid + .table-data--point a:after{position:absolute;top:6px;left:0;z-index:-2;width:50%;height:32px;background:#e0eefb;content:''}
+.box__layer-air-finder-calendar .table-head{font-size:12px;height:16px;line-height:18px;text-align:center;color:#757c8a}
+.box__layer-air-finder-calendar .table-head--sun{color:#ed6060}
+.table-data--point-default a:before{width:32px;border-radius:16px}
+.box__layer-air-finder-calendar .box__option-buttons{box-sizing:border-box;position:absolute;right:0;left:0;bottom:0;height:58px;padding:6px 7px 7px;border-top:1px solid #e7e7e7;background:#f0f0f0}
+.box__layer-air-finder-calendar .box__option-buttons-inner{padding:0}
+.box__layer-air-finder-calendar .box__option-buttons .button__reserve{width:100%;height:44px;border:1px solid #217fd7;border-radius:2px;background:#2e8de5;line-height:44px;font-weight:normal;font-size:16px;color:#fff;text-align:Center;box-sizing:border-box;box-shadow:0 1px 1px 0 rgba(0,0,0,0.1)}
+.box__layer-air-finder-calendar .box__option-buttons .button__reserve:disabled{border-color:#bbb;background-color:#ccc}
+.box__layer-air-finder-calendar .button__reserve span{font-weight:normal}
+.box__layer-air-finder-calendar .button__reserve .text__night-schedule{position:relative;padding-left:16px}
+.box__layer-air-finder-calendar .button__reserve .text__night-schedule:before{display:inline-block;position:absolute;top:2px;left:8px;width:1px;height:12px;background:#6dafec;content:''}
+.box__dimmed-layer{z-index:1100}
+.box__dimmed-layer,
+.box__dimmed-layer .box__bg-dimmed{position:fixed;top:0;right:0;left:0;bottom:0;width:100%}
+.box__dimmed-layer .box__bg-dimmed{background:rgba(0,0,0,.68)}
+.box__dimmed-layer .box__layer-simple{position:fixed;top:50%;right:23px;left:23px;border-radius:2px;background:#fff;-webkit-transform:translate(0,-50%);transform:translate(0,-50%);box-shadow:0 1.5px 1.5px 0 rgba(0,0,0,0.2)}
+.box__dimmed-layer .box__layer-simple .text__layer-title{overflow:hidden;height:40px;border-bottom:1px solid #e5e5e5;line-height:42px;font-size:16px;font-weight:bold;color:#233549;text-align:center}
+.box__dimmed-layer--location-detect .box__layer-content{padding:34px 0;text-align:center}
+.box__dimmed-layer--location-detect .text__agreement{padding:0 35px;font-size:14px;line-height:20px;color:#999;text-align:center;font-weight:normal}
+.box__dimmed-layer--location-detect .link__agreement{display:inline-block;position:relative;height:20px;margin-top:14px;padding-right:15px;line-height:20px;font-size:12px;color:#999;font-weight:normal}
+.box__dimmed-layer--location-detect .link__agreement:after{position:absolute;top:2px;right:0;width:12px;height:12px;background-position:-235px -38px}
+.box__layer-simple .button__dimmed-close{overflow:hidden;position:absolute;top:5px;right:4px;z-index:1120;width:32px;height:32px;background:transparent}
+.box__layer-simple .button__dimmed-close:before{display:inline-block;width:14px;height:14px;margin:9px;background-position:-218px -66px;content:''}
+.box__layer-simple .box__buttons{margin-top:14px}
+.box__layer-simple .box__buttons .button__primary{overflow:hidden;height:40px;padding:0 60px;border:1px solid #2383dc;border-radius:20px;background:#2e8de5;line-height:42px;font-weight:bold;font-size:16px;color:#fff}
+
+/* layer ::finder */
+.box__layer-air-finder{display:none;position:fixed;top:0;right:0;left:0;z-index:1000;width:100%;height:100%;background:#fff}
+.service__air .box__layer-air-finder .text__layer-header{position:absolute;z-index:1010;width:100%;height:46px;line-height:48px;overflow:hidden;text-align:center;font-size:17px;font-weight:bold;color:#000;text-align:center;background:#fff;}
+.box__layer-air-finder .text__layer-header:before{display:block;position:absolute;top:45px;right:0;left:0;width:100%;height:3px;background:url(//pics.gmarket.co.kr/mobile/bg_header_bot_sim.png) no-repeat;background-size:auto 3px;content:''}
+.service__air .box__layer-air-finder-calendar .text__layer-header{position:static;height:46px;line-height:48px;overflow:hidden;text-align:center;font-size:17px;font-weight:bold;background:#fff}
+.box__layer-air-common .text__layer-header:before{display:block;position:absolute;top:45px;right:0;left:0;width:100%;height:3px;background:url(//pics.gmarket.co.kr/mobile/bg_header_bot_sim.png) no-repeat;background-size:auto 3px;content:''}
+.box__layer-air-finder .button__close{overflow:hidden;position:absolute;top:8px;right:9px;z-index:1020;width:30px;height:30px;border:none;background:transparent}
+.box__layer-air-finder .button__close:before{position:absolute;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);display:inline-block;width:17px;height:17px;border:none;background-position:-102px 0;content:''}
+.box__layer-air-common .box__layer-content{overflow-y:scroll;position:absolute;top:45px;left:0;bottom:58px;width:100%;box-sizing:border-box;-webkit-overflow-scrolling:touch}
+.box__layer-air-finder .box__layer-air-finder-content{overflow-y:scroll;position:absolute;top:45px;left:0;bottom:0;width:100%;box-sizing:border-box;-webkit-overflow-scrolling:touch}
+.box__layer-air-common .box__layer-air-bottom{position:absolute;bottom:0;left:0;right:0;height:58px;padding:7px;background:#f0f0f0;}
+.box__layer-air-common .box__layer-air-bottom:before{display:block;content:'';position:absolute;top:-1px;left:0;width:100%;height:1px;background:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/bg__gray-line.png) repeat-x bottom left;background-size:1px auto;}
+.box__layer-air-common .box__layer-air-bottom .button__confirm{width:100%;height:44px;background:#2e8de5;border:1px solid #217fd7;box-shadow:0 1px 0 0 rgba(0,0,0,0.1);border-radius:2px;text-align:center;font-size:16px;font-weight:bold;color:#fff;line-height:42px}
+
+/* .box__layer-air-finder--select-airport */
+.box__layer-air-finder--select-airport .box__search-finder{position:absolute;top:45px;left:0;width:100%;height:85px;padding:20px;border-bottom:1px solid #eee;}
+.box__layer-air-finder--select-airport .box__layer-air-finder-content{top:130px;background:#fff;}
+.box__layer-air-finder--select-airport .box__search-finder-innerwrap{position:relative;height:44px;padding:0;border:2px solid #2e8de5;border-radius:24px;background:#fff;overflow:hidden;}
+.box__layer-air-finder--select-airport .form__input-finder{z-index:1;width:100%;height:40px;line-height:20px;padding:11px 72px 9px 18px;border:0;text-overflow:ellipsis;overflow:hidden;color:#2e8de5;font-size:16px;letter-spacing:-0.5px;background:#fff}
+.box__layer-air-finder--select-airport .form__input-finder::-webkit-input-placeholder{font-size:16px;line-height:20px;padding-top:0;letter-spacing:-0.36px;color:#a4a9b0;}
+.box__layer-air-finder--select-airport .button__delete-keyword{display:none;position:absolute;z-index:2;top:3px;right:44px;padding:9px;width:34px;height:34px;background:none;border:0;}
+.box__layer-air-finder--select-airport .button__delete-keyword:before{width:16px;height:16px;background-position:-199px 0;}
+.box__layer-air-finder--select-airport .form__input-finder + .button__delete-keyword{display:inline-block;}
+.box__layer-air-finder--select-airport .form__input-finder:invalid + .button__delete-keyword{display:none;}
+.box__layer-air-finder--select-airport .form__input-finder:focus::-webkit-input-placeholder{color:transparent}
+.box__layer-air-finder--select-airport .button__search{position:absolute;z-index:2;top:3px;right:10px;width:34px;height:34px;padding:6px;border:0;}
+.box__layer-air-finder--select-airport .button__search:before{width:22px;height:23px;background-position:-220px 0;}
+.box__layer-air-finder--select-airport .list__air-category{background:#fff;}
+.box__layer-air-finder--select-airport .list__air-category--recently + .list__air-category:before{display:block;content:'';height:10px;background:#eee;}
+.box__layer-air-finder--select-airport .list__air-category-info,
+.box__layer-air-finder--select-airport .list__air-keyword{padding:8px 0 9px;border-bottom:1px solid #eee;background:#fff;}
+.box__layer-air-finder--select-airport .box__airport{font-size:14px;color:#2e8de5;}
+.box__layer-air-finder--select-airport .text__city,.box__layer-air-finder--select-airport .text__country{font-size:16px;}
+.box__layer-air-finder--select-airport .text__code,.box__layer-air-finder--select-airport .text__name{font-size:14px;color:#2e8de5;}
+.box__layer-air-finder--select-airport .list__air-keyword .text__code,.box__layer-air-finder--select-airport .list__air-keyword .text__name{color:#94989f;}
+.box__layer-air-finder--select-airport .box__airport .text__code{position:relative;padding-right:9px;margin-right:8px;margin-left:8px;}
+.box__layer-air-finder--select-airport .text__code:after{display:inline-block;content:'';position:absolute;width:1px;height:12px;right:0;top:3px;background:#e5e5e5;}
+.box__layer-air-finder--select-airport .list__air-category--recently .button__remove-item{position:absolute;right:18px;top:50%;-webkit-transform:translate(0,-50%);transform:translate(0,-50%);width:26px;height:26px;padding:7px;border:none;font-size:0;}
+.box__layer-air-finder--select-airport .list__air-category--recently .button__remove-item:before{width:12px;height:12px;background-position:-17px -25px;}
+.box__layer-air-finder--select-airport .list__air-category .link{position:relative;display:block;height:49px;padding-left:20px;border-bottom:1px solid #eee;font-size:16px;font-weight:normal;line-height:50px;letter-spacing:-0.5px;color:#222;}
+.box__layer-air-finder--select-airport .list__air-category--recently .link{border-bottom:1px solid #dedede;}
+.box__layer-air-finder--select-airport .list__air-category .list-item--active .link{border-color:#eee}
+.box__layer-air-finder--select-airport .list__air-category .link *{line-height:20px;}
+.box__layer-air-finder--select-airport .list__air-category-info{display:none}
+.box__layer-air-finder--select-airport .list-item:last-child .list__air-category-info{border-bottom:1px solid #dedede}
+.box__layer-air-finder--select-airport .list__air-category-info .list-item__info{position:relative;}
+.box__layer-air-finder--select-airport .list-item--active .list__air-category-info{display:block;background:#f4f7fb}
+
+.box__layer-air-finder--select-airport .list__air-category .link-info,
+.box__layer-air-finder--select-airport .list__air-keyword .link{position:relative;display:block;overflow:hidden;padding:14px 20px 14px 20px;font-size:0}/*54*/
+
+.box__layer-air-finder--select-airport .list__air-category .link-info *,
+.box__layer-air-finder--select-airport .list__air-keyword .link *{line-height:20px}
+.box__layer-air-finder--select-airport .list__air-category .link-info .box__location,
+.box__layer-air-finder--select-airport .list__air-keyword .link .box__location{float:left;font-size:16px;color:#000}
+.box__layer-air-finder--select-airport .list__air-category .link-info .box__airport,
+.box__layer-air-finder--select-airport .list__air-keyword .link .box__airport{float:left}
+.box__layer-air-finder--select-airport .list__air-category--recently .link-info{padding-right:50px;}
+.box__layer-air-finder--select-airport .list__air-category .link:after{position:absolute;top:20px;right:24px;width:15px;height:17px;background-position:-116px -25px;}
+.box__layer-air-finder--select-airport .list__air-category  .list-item--active .link:after{background-position:-136px -25px}
+.box__layer-air-finder--select-airport .list__air-keyword .text__heightlight{color:#2e8de5 !important}
+.box__layer-air-finder--select-airport .box__empty{position:relative;margin-top:12px;padding:95px 0 50px;text-align:center;font-size:16px;line-height:24px;color:#757c8a;background:#fff;}
+.box__layer-air-finder--select-airport .box__empty:before{position:absolute;top:26px;left:50%;-webkit-transform:translate(-50%,0);transform:translate(-50%,0);width:47px;height:47px;background-position:0 -42px;}
+.box__layer-air-finder--select-airport .list__air-keyword{border-bottom:0;}
+
+/* box__layer-air-finder--select-seat */
+.box__layer-air-finder--select-seat .box__layer-air-finder-content{padding:22px 20px 30px;bottom:58px;background:#fff;}
+.box__layer-air-finder--select-seat .text__section-title{padding-bottom:10px;line-height:21px;letter-spacing:-0.5px;font-size:18px;font-weight:bold;color:#222;}
+.box__layer-air-finder--select-seat .list__seat-grade{overflow:hidden;margin:0 -5px;padding-bottom:18px;}
+.box__layer-air-finder--select-seat .list__seat-grade::before,.box__layer-air-finder--select-seat .list__seat-grade::after{content: "";display:table;}
+.box__layer-air-finder--select-seat .list__seat-grade::after{clear:both}
+.page__srp-domestic .box__layer-air-finder--select-seat .list__seat-grade--outsea{display:none;}
+.page__srp-outsea .box__layer-air-finder--select-seat .list__seat-grade--outsea{display:none;}
+
+.box__layer-air-finder--select-seat .list__seat-grade .list-item{float:left;width:50%;padding:0 5px 10px;}
+.box__layer-air-finder--select-seat .list__seat-grade .button__seat{width:100%;height:48px;line-height:48px;text-align:center;border-radius:2px;border:1px solid #d9d9d9;letter-spacing:-0.5px;font-size:17px;color:#666;}
+.box__layer-air-finder--select-seat .list__seat-grade .button__seat--active{border-color:#2e8de5;font-weight:bold;color:#2e8de5;}
+.box__layer-air-finder--select-seat .list__quantity{padding:17px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;}
+.box__layer-air-finder--select-seat .list__quantity .list-item{position:relative;}
+.box__layer-air-finder--select-seat .list__quantity .list-item + .list-item{margin-top:10px;}
+.box__layer-air-finder--select-seat .list__quantity .list-item *{line-height:32px;}
+.box__layer-air-finder--select-seat .list__quantity .text__type{font-size:18px;letter-spacing:-0.5px;margin-right:8px;}
+.box__layer-air-finder--select-seat .list__quantity .text__description{font-size:15px;letter-spacing: -0.2px;color:#757c8a;}
+.box__layer-air-finder--select-seat .list__quantity .box__quantity{display:block;position:absolute;top:0;right:0;width:108px;height:32px;}
+.box__layer-air-finder--select-seat .list__quantity .box__input{display:block;position:relative;padding:0 36px;}
+.box__layer-air-finder--select-seat .list__quantity .form__input-number{position:relative;top:-1px;width:100%;font-size:20px;color:#2e8de5;border:none;text-align:center;}
+.box__layer-air-finder--select-seat .list__quantity .button__number-control--minus[disabled] + .form__input-number{color:#222;}
+.box__layer-air-finder--select-seat .button__number-control{position:absolute;top:0;right:0;width:32px;height:32px;border:1px solid #e9e9e9;border-radius:26px}
+.box__layer-air-finder--select-seat .button__number-control--minus{left:0;}
+.box__layer-air-finder--select-seat .button__number-control:before{content:'';display:inline-block;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:12px;height:1px;background:#666}
+.box__layer-air-finder--select-seat .button__number-control[disabled]{border-color:#f2f2f2}
+.box__layer-air-finder--select-seat .button__number-control[disabled]:before,
+.box__layer-air-finder--select-seat .button__number-control[disabled]:after{background:#d1d1d1;}
+.box__layer-air-finder--select-seat .button__number-control--plus:after{content:'';display:inline-block;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:1px;height:12px;background:#666}
+.box__layer-air-finder--select-seat .box__calculate-age{position:relative;padding-top:46px;}
+.box__layer-air-finder--select-seat .box__calculate-age .box__toggle-control{position:absolute;right:0;top:16px;}
+.box__layer-air-finder--select-seat .box__calculate-age .button__toggle{position:relative;padding-right:22px;line-height:20px;border:0;font-size:14px;color:#5e636d;}
+.box__layer-air-finder--select-seat .box__calculate-age .button__toggle:after{position:absolute;top:0;right:0;width:20px;height:20px;background-position:-156px -25px;}
+.box__layer-air-finder--select-seat .box__calculate-age .button__toggle--active:after{background-position:-178px -25px;}
+.box__layer-air-finder--select-seat .box__calculate-age-info{display:none;}
+.box__layer-air-finder--select-seat .box__form{display:block;padding-right:83px;position:relative;}
+.box__layer-air-finder--select-seat .form__input-birth{width:100%;height:40px;padding:11px 12px 9px;line-height:19px;border:1px solid #d6d7d8;border-radius:2px;font-size:16px;color:#222;-webkit-text-size-adjust:none;}
+.box__layer-air-finder--select-seat .form__input-birth::-webkit-input-placeholder{font-size:14px;color:#999;letter-spacing:-0.6px;text-overflow:ellipsis}
+.box__layer-air-finder--select-seat .box__form .button__calculate{position:absolute;right:0;top:0;background:#f5f5f5;width:74px;height:40px;text-align:center;border:1px solid #d9d9d9;line-height:40px;color:#5e636d;}
+.box__layer-air-finder--select-seat .text__info{padding:12px 0 8px;text-align:right;font-size:14px;line-height:20px;letter-spacing:-0.6px;color:#757c8a;}
+.text__age-result{padding-top:11px;font-size:14px;line-height:20px;text-align:right;letter-spacing:-0.2px;color:#2e8de5;background:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/bg__dash-line.png) repeat-x left top;background-size:6px 1px;}
+.text__age-result.text__age-result--error {color:#E93737;}
+.box__layer-air-finder .box__layer-air-finder-bottom{position:absolute;bottom:0;left:0;right:0;height:58px;padding:7px;background:#f0f0f0;}
+.box__layer-air-finder--select-seat .box__layer-air-finder-bottom .button__confirm{width:100%;height:44px;background:#2e8de5;border:1px solid #217fd7;box-shadow: 0 1px 0 0 rgba(0,0,0,0.1);border-radius:2px;}
+.box__layer-air-finder--select-seat .box__layer-air-finder-bottom .button__confirm .text__seat,
+.box__layer-air-finder--select-seat .box__layer-air-finder-bottom .button__confirm .text__state{text-align:center;font-size:16px;font-weight:bold;color:#fff;line-height:42px;}
+.box__layer-air-finder--select-seat .box__layer-air-finder-bottom .button__confirm .text__state{position:relative;padding-left:9px;margin-left:8px;}
+.box__layer-air-finder--select-seat .box__layer-air-finder-bottom .button__confirm .text__state:before{position:absolute;top:4px;left:0;content:'';display:inline-block;width:1px;height:12px;background:#6dafec;}
+.box__layer-air-finder .box__layer-air-finder-bottom:before{display:block;content:'';position:absolute;top:-1px;left:0;width:100%;height:1px;background:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/bg__gray-line.png) repeat-x bottom left;background-size:1px auto;}
+.page__lp .box__layer-air-finder .link__finder-close{display:none}
+
+/* datepicker */
+.ui-widget-overlay {position:fixed;top:0;left:0;width:100%;height:100%}
+.ui-datepicker {width:17em;padding:.2em .2em 0;display:none}
+.ui-datepicker .ui-datepicker-header {position:relative;padding:.2em 0}
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {position:absolute;top:2px;width:1.8em;height:1.8em}
+.ui-datepicker .ui-datepicker-prev-hover,
+.ui-datepicker .ui-datepicker-next-hover {top:1px}
+.ui-datepicker .ui-datepicker-prev {left:2px}
+.ui-datepicker .ui-datepicker-next {right:2px}
+.ui-datepicker .ui-datepicker-prev-hover {left:1px}
+.ui-datepicker .ui-datepicker-next-hover {right:1px}
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {display:block;position:absolute;left:50%;margin-left:-8px;top:50%;margin-top:-8px}
+.ui-datepicker .ui-datepicker-title {padding:0;margin:23px 0 12px;padding-left:8px;text-align:left;color:#222;font-size:18px;line-height:24px;font-weight:bold !important}
+.ui-datepicker .ui-datepicker-title span{font-size:18px;line-height:24px;font-weight:bold !important}
+.ui-datepicker .ui-datepicker-title .ui-datepicker-month{margin-left:-5px;}
+.ui-datepicker .ui-datepicker-title select {font-size:1em;margin:1px 0}
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {width:45%}
+.ui-datepicker table {width:100%;font-size:.9em;border-collapse:collapse;margin:0 0 .4em}
+.ui-datepicker th {padding:.7em .3em;text-align:center;font-weight:bold;border:0}
+.ui-datepicker td {border:0;padding:1px}
+.ui-datepicker td span,
+.ui-datepicker td a {display:block;padding:.2em;text-align:right;text-decoration:none}
+.ui-datepicker .ui-datepicker-buttonpane {background-image:none;margin:.7em 0 0 0;padding:0 .2em;border-left:0;border-right:0;border-bottom:0}
+.ui-datepicker .ui-datepicker-buttonpane button {float:right;margin:.5em .2em .4em;cursor:pointer;padding:.2em .6em .3em .6em;width:auto;overflow:visible}
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {float:left}
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi {width:auto}
+.ui-datepicker-multi .ui-datepicker-group {float:left}
+.ui-datepicker-multi .ui-datepicker-group table {width:95%;margin:0 auto .4em}
+.ui-datepicker-multi-2 .ui-datepicker-group {width:50%}
+.ui-datepicker-multi-3 .ui-datepicker-group {width:33.3%}
+.ui-datepicker-multi-4 .ui-datepicker-group {width:25%}
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {border-left-width:0}
+.ui-datepicker-multi .ui-datepicker-buttonpane {clear:left}
+.ui-datepicker-row-break {clear:both;width:100%;font-size:0}
+
+/* RTL support */
+.ui-datepicker-rtl {direction:rtl}
+.ui-datepicker-rtl .ui-datepicker-prev {right:2px;left:auto}
+.ui-datepicker-rtl .ui-datepicker-next {left:2px;right:auto}
+.ui-datepicker-rtl .ui-datepicker-prev:hover {right:1px;left:auto}
+.ui-datepicker-rtl .ui-datepicker-next:hover {left:1px;right:auto}
+.ui-datepicker-rtl .ui-datepicker-buttonpane {clear:right}
+.ui-datepicker-rtl .ui-datepicker-buttonpane button {float:left}
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-rtl .ui-datepicker-group {float:right}
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {border-right-width:0;border-left-width:1px}
+
+/* customize */
+.ui-datepicker-hover a,
+.ui-datepicker-hover:after {background-color:#8c9baf !important;color:#fff !important}
+.ui-datepicker-select a {background-color:#434f5f;color:#fff !important}
+.ui-datepicker {background:#fff;padding:10px}
+.ui-datepicker:after {display:block;content:'';height:0;overflow:hidden;clear:both}
+.ui-datepicker .ui-datepicker-group {float:left;width:50%}
+.ui-datepicker .ui-datepicker-header {padding:0}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-prev, .ui-datepicker .ui-datepicker-header .ui-datepicker-next{background:#000;cursor:pointer;height:15px;overflow:hidden;position:absolute;text-indent:-100em;top:5px;user-select:none;width:15px}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-prev:hover, .ui-datepicker .ui-datepicker-header .ui-datepicker-next:hover{background-color:#050505}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-prev.ui-state-disabled, .ui-datepicker .ui-datepicker-header .ui-datepicker-next.ui-state-disabled{opacity:0.3}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-prev{left:10px}
+.ui-datepicker .ui-datepicker-header .ui-datepicker-next{right:10px}
+.ui-datepicker .ui-datepicker-calendar{border-collapse:collapse;font-size:12px;cursor:default}
+.ui-datepicker .ui-datepicker-calendar th, .ui-datepicker .ui-datepicker-calendar td{text-align:center;vertical-align:top;width:36px;height:50px;line-height:30px;padding:0;z-index:1}
+.ui-datepicker .ui-datepicker-calendar th{color:#62748c;font:0.4666666667 "Arial"}
+.ui-datepicker .ui-datepicker-calendar td{color:#8d8d8d;padding:0 0 1px;position:relative}
+.ui-datepicker .ui-datepicker-calendar td:before, .ui-datepicker .ui-datepicker-calendar td:after{bottom:2px;content:'';left:0;top:2px;position:absolute;z-index:-1}
+.ui-datepicker .ui-datepicker-calendar .ui-point:before, .ui-datepicker .ui-datepicker-calendar .ui-checkout:before{
+display:inline-block;position:absolute;top:9px;left:50%;z-index:-1;width:32px;height:32px;border-radius:16px;background:#2e8de5;content:'';transform:translate(-50%,0);-webkit-transform:translate(-50%,0)}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month, .ui-datepicker .ui-datepicker-calendar td.ui-state-disabled{color:#d0d0d0}
+.ui-datepicker td span, .ui-datepicker td a {display:block;height:50px;line-height:50px;font-size:15px;color:#222;text-align:center}
+.ui-datepicker .ui-datepicker-unselectable span{color:#ccc}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-highlight:after{background:#e0eefb;z-index:-2;display:inline-block;position:absolute;top:9px;width:150%;height:32px;border-radius:16px;content:'';border-radius:0}
+.ui-datepicker .ui-datepicker-calendar .ui-point:after{display:none}
+.ui-datepicker .ui-datepicker-calendar .ui-point a{color:#fff}
+.ui-datepicker .ui-datepicker-calendar .ui-point.ui-datepicker-hover .ui-state-hover{border-radius:50%}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-hover .ui-state-hover{border-radius:0 50% 50% 0}
+.ui-datepicker-trigger{float:left;height:15px;margin:13px 0 0 -35px;overflow:hidden;text-indent:-100em;width:16px}
+.ui-datepicker .ui-datepicker-calendar .ui-point + .ui-point a:before{background:#e0eefb;z-index:-2;display:inline-block;position:absolute;top:6px;left:-50%;width:100%;height:32px;border-radius:16px;content:'';border-radius:0;}
+.box__layer-air-finder-calendar--roundtrip .ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end.ui-point[title='가는날'] a:after,
+.box__layer-air-finder-calendar--roundtrip .ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end.ui-point[title='여정1'] a:after,
+.box__layer-air-finder-calendar--multi .ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end.ui-point[title='여정1'] a:after{background:#e0eefb;z-index:-2;display:inline-block;position:absolute;top:6px;left:50%;right:0;margin-left:0;height:32px;border-radius:16px;content:'';border-radius:0;}
+.box__layer-air-finder-calendar--multi .ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end.ui-point[title='여정3'] a:after,
+.box__layer-air-finder-calendar--roundtrip .ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end.ui-point[title='여정2'] a:after{background:#e0eefb;z-index:-2;display:inline-block;position:absolute;top:6px;left:0;right:50%;margin-left:-16px;height:32px;border-radius:16px;content:'';border-radius:0;}
+.box__layer-air-finder-calendar--roundtrip .ui-datepicker .ui-datepicker-calendar .ui-datepicker-current-day.ui-point[title='가는날'] a:after,
+.box__layer-air-finder-calendar--roundtrip .ui-datepicker .ui-datepicker-calendar .ui-datepicker-current-day.ui-point[title='여정1'] a:after,
+.box__layer-air-finder-calendar--multi .ui-datepicker .ui-datepicker-calendar .ui-datepicker-current-day.ui-point[title='여정1'] a:after{display:none}
+.box__layer-air-finder-calendar--roundtrip .ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end.ui-point[title='오는날'] a:after{background:#e0eefb;z-index:-2;display:inline-block;position:absolute;top:6px;left:0;right:50%;width:auto;height:32px;border-radius:16px;content:'';border-radius:0}
+.box__layer-air-finder-calendar--multi .ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end.ui-point[title='여정2'] a:after{background:#e0eefb;z-index:-2;display:inline-block;position:absolute;top:6px;left:0;right:0;margin-left:-16px;height:32px;border-radius:16px;content:'';border-radius:0}
+.box__layer-air-finder-calendar--multi .ui-datepicker .ui-datepicker-calendar .ui-datepicker-current-day.ui-point[title='여정2'] a:after{right:50%}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-holiday a{color:#e93737}
+.box__layer-air-finder-calendar--multi .ui-datepicker tr td:last-child.ui-point[title='여정2'] a:after{margin-left:0 !important;}
+
+/* air datepicker */
+.box__calendar-containe.ui-datepicker td,.box__calendar-container .ui-datepicker span,.box__calendar-container .ui-datepicker a{padding:0}
+.box__calendar-container .ui-datepicker{width:100% !important;padding:0}
+.box__calendar-container .ui-datepicker-prev,.box__calendar-container .ui-datepicker-next{display:none !important}
+.box__calendar-container .ui-datepicker-group{float:none !important;width:100% !important;overflow:hidden}
+.box__calendar-container .ui-datepicker-multi .ui-datepicker-group table{width:100% !important}
+.ui-datepicker .ui-datepicker-calendar th{color:#757c8a;font-size:12px;height:16px;line-height:18px;text-align:center}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-week-end span[title='Sunday']{color:#ed6060}
+.ui-datepicker .ui-datepicker-calendar .ui-point + .ui-datepicker-highlight{z-index:0}
+.ui-datepicker .ui-datepicker-calendar .ui-point + .ui-datepicker-highlight:after{width:200%;left:-50%}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-today:after{content:'오늘';display:inline-block;position:absolute;z-index:2;background:transparent;left:50%;top:44px;width:40px;font-size:10px;line-height:10px;color:#41d241;text-align:center;-webkit-transform:translate(-50%,0)}
+.ui-datepicker-calendar thead tr th:first-child{color:#ed6060}
+.ui-datepicker-calendar tbody tr td:first-child a{color:#e93737}
+.ui-datepicker .ui-datepicker-calendar .ui-point:after{content:'';display:inline-block;position:absolute;z-index:2;background:transparent;left:50%;top:44px;width:40px;font-size:10px;line-height:10px;color:#2e8de5;text-align:center;-webkit-transform:translate(-50%,0)}
+.ui-datepicker .ui-datepicker-calendar .ui-point + .ui-point.ui-datepicker-highlight:after{width:40px;left:50%}
+.ui-datepicker .ui-datepicker-calendar .ui-point[title='여정1']:after{content:'여정1';}
+.ui-datepicker .ui-datepicker-calendar .ui-point[title='가는날']:after{content:'가는날';}
+.ui-datepicker .ui-datepicker-calendar .ui-point[title='오는날']:after{content:'오는날';}
+.ui-datepicker .ui-datepicker-calendar .ui-point[title='여정2']:after{content:'여정2';}
+.ui-datepicker .ui-datepicker-calendar .ui-point[title='여정3']:after{content:'여정3';}
+.ui-datepicker .ui-datepicker-calendar .ui-point[title='당일']:after{content:'당일';}
+.ui-datepicker .ui-datepicker-calendar .ui-point{z-index:2;}
+.ui-datepicker .ui-datepicker-calendar .ui-point + .ui-point{z-index:1;}
+.ui-datepicker .ui-datepicker-calendar .ui-point + .ui-point + .ui-datepicker-highlight,
+.ui-datepicker .ui-datepicker-calendar .ui-point + .ui-point + .ui-point{z-index:0;}
+
+/* box__air-finder */
+.box__air-finder{overflow:hidden;background:#5c5652 url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/finder--default.png) no-repeat;background-size:100% 446px}
+.box__air-finder .list__air-type{height:70px;padding:26px 0 12px;margin:0 -8px;text-align:center;font-size:0}
+.box__air-finder .list__air-type .list-item{display:inline-block}
+.box__air-finder .link__air-type{display:inline-block;height:32px;padding:0 24px;border:1px solid #b6aeaa;color:#dad8d6;margin:0 8px;font-size:16px;font-weight:normal;line-height:31px;text-align:center;border-radius:16px}
+.box__air-finder .list-item--active .link__air-type{color:#44cd86;border-color:#44cd86}
+.box__air-finder .list__air-sets .list-item{margin:0 16px}
+.box__air-type-content{display:none} 
+.box__air-type-content--active{display:block}
+.box__air-type-content .box__area-set{position:relative}
+.box__air-type-content .box__area-set:after{display:inline-block;position:absolute;top:24px;left:50%;margin-left:-12px;width:24px;height:24px;background-position:-89px -45px}
+.box__air-type-content--oneway .box__area-set:after{top:31px;width:24px;height:10px;margin-left:-12px;background-position:-89px -45px}
+.box__air-type-content--multi .box__area-set:after{top:33px;left:50%;margin-left:-8px;width:16px;height:6px;background-position:-178px -17px}
+.box__air-type-content .box__area-set{display:table;height:72px}
+.box__air-type-content .box__area-division{display:block;float:left}
+.box__air-type-content .box__area-division--depart,
+.box__air-type-content .box__area-division--land{width:50%}
+.box__air-type-content .box__area-division .link__set-airport{display:block;text-align:center;font-size:0}
+.box__air-type-content .box__area-division--depart .link__set-airport{display:block;height:72px;overflow:hidden;padding-right:12px}
+.box__air-type-content .box__area-division--land .link__set-airport{display:block;padding-left:12px}
+.box__air-type-content .box__area-division .form__input-code{width:100%;height:30px;margin-top:11px;text-align:center;font-size:30px;line-height:1em;font-weight:bold;color:#fff;background:transparent;border:none;outline:none}
+.box__air-type-content .box__area-division .box__airport{display:block;overflow:hidden;margin-top:4px;font-size:13px;line-height:18px;color:#fff}
+.box__air-type-content .box__area-division .text__airport-name:after,
+.box__air-type-content--multi .text__date:after,
+.box__air-type-content--multi .form__input-day.form__input--placeholder-shown + .box__date-info .text__date-info:after{display:inline-block;position:relative;top:3px;right:0;width:6px;height:12px;margin-left:4px;background-position:-96px -25px;white-space:nowrap}
+.box__air-type-content .box__area-division .box__airport .text__airport-name{position:relative;display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.box__air-type-content .box__area-division .form__input-code::-webkit-input-placeholder{position:relative;top:-2px;font-size:24px;padding-top:0;color:#b6aea9;vertical-align:top}
+.os__ios .box__area-division .form__input-code::-webkit-input-placeholder{top:2px;}
+.box__air-type-content .box__area-division .form__input-code.form__input--placeholder-shown + .box__airport .text__airport-name{color:#b6aea9}
+.box__air-type-content--multi .box__area-division .form__input-code.form__input--placeholder-shown + .box__airport .text__airport-name{color:#999}
+.box__air-type-content .box__area-division .form__input-code.form__input--placeholder-shown + .box__airport .text__airport-name:after{background-position:-106px -25px}
+.box__air-type-content .box__date-set{position:relative;height:72px;margin:12px 0 0;border-radius:2px;font-size:0;background:#fff}
+.box__air-type-content .box__date-set:before{position:absolute;top:24px;left:50%;margin-left:-10px;width:19px;height:21px;background-position:-78px 0}
+.box__air-type-content--oneway .box__date-set:before{display:none}
+.box__air-type-content--oneway .box__date-set .link__set-date:before{position:relative;margin-right:12px;top:2px;width:19px;height:21px;background-position:-78px 0}
+.box__date-set .box__start,
+.box__date-set .box__end{position:relative;z-index:10;width:50%;display:inline-block}
+.box__air-type-content--oneway .box__date-set .box__start{display:block;width:100%}
+.box__air-type-content--oneway .box__date-set .box__end{display:none}
+.box__date-set .link__set-date{height:72px;padding:11px 12px 13px 0;font-size:0;display:block}
+.box__air-type-content--oneway .link__set-date{padding:22px 0 24px;text-align:center}
+.box__start + .box__end .link__set-date{padding-right:0;padding-left:12px}
+.box__date-set .form__input-day{width:100%;height:30px;text-align:center;font-size:22px;font-weight:bold;line-height:30px;color:#000;white-space:nowrap;background:transparent;border:none;outline:none}
+.box__date-set .form__input-day.form__input--placeholder-shown + .box__date-info .text__date{display:none;}
+.box__air-type-content--oneway .box__date-set .form__input-day{display:inline-block;width:auto;line-height:26px;height:26px}
+.box__air-type-content--oneway .box__date-set .form__input-day--default{font-size:22px;color:#cbcdd0}
+
+.box__air-type-content .text__date-sub{display:none}
+.box__air-type-content--oneway .text__date-sub{display:inline-block;margin-left:4px;vertical-align:top;font-size:19px;font-weight:bold;line-height:26px;color:#222}
+.box__date-set .box__date-info{display:block;text-align:center;font-size:13px;color:#757c8a;font-weight:normal;}
+.box__air-type-content--multi .box__date-set .box__date-info{margin-top:2px;line-height:18px;}
+.box__air-type-content--oneway .box__date-set .box__date-info{display:none}
+.box__date-set .form__input-day::-webkit-input-placeholder{font-size:18px;color:#cbcdd0}
+.box__date-set .text__date{display:inline-block;position:relative;padding-left:13px;color:#000}
+.box__date-set .text__date:before{content:'';display:inline-block;position:absolute;left:6px;top:5px;width:1px;height:9px;background:#d8d8d8}
+.box__air-finder .box__finder-button{padding:16px 0 26px;display:table;width:100%;table-layout:fixed;text-align:center}
+.box__finder-button .button__finder-sbmit{display:inline-block;width:200px;height:48px;line-height:50px;border-radius:24px;border:0;text-align:center;font-size:18px;letter-spacing:-0.5px;color:#fff;background:#2e8de5}
+.box__air-finder .box__seat-set{overflow:hidden;position:relative;height:56px;margin:8px 16px 0;background:#fff;border-radius:2px}
+.box__air-finder .box__seat-link{overflow:hidden;padding-right:113px;position:relative}
+.box__air-finder .link__seat-set{display:block;overflow:hidden;height:56px;font-size:16px;line-height:58px;text-align:center;color:#222;text-overflow:ellipsis;font-weight:normal;}
+.box__air-finder .link__seat-set:after{display:inline-block;position:relative;top:-2px;width:14px;height:7px;margin-left:8px;background-position:-78px -25px}
+.box__air-finder .box__check-straight{display:block;position:absolute;top:0;right:0;width:113px;height:56px}
+.box__air-finder .box__check-straight{width:114px;height:56px;text-align:center;line-height:58px}
+.box__air-finder .box__check-straight:before{content:'';display:inline-block;position:absolute;left:0;top:20px;width:1px;height:16px;background:#e5e5e5}
+.box__air-finder .form__label-check{display:inline-block;position:relative;padding-left:26px;font-size:16px;font-weight:normal;color:#222}
+.box__air-finder .form__checkbox-lp{display:inline-block;position:absolute;left:-999em}
+.box__air-finder .form__checkbox-lp + .form__label-check:before{display:inline-block;position:absolute;top:18px;left:0;width:20px;height:20px}
+.box__air-finder .form__checkbox-lp:checked + .form__label-check:before{background-position:-25px 0}
+.box__air-type-content .button__close{display:inline-block;position:absolute;top:13px;right:8px;z-index:20;width:26px;height:26px;padding:7px;border:none;font-size:0}
+.box__air-type-content .button__close:before{width:12px;height:12px;background-position:0 -25px}
+.box__air-type-content--multi .list-item{display:table;position:relative;table-layout:fixed;height:72px;border-radius:2px;background:rgba(0,0,0,.3)}
+.box__air-type-content--multi .list-item + .list-item{margin-top:1px}
+.box__air-type-content--multi .box__end,.box__air-type-content--multi .text__date-info{display:none}
+.box__air-type-content--multi .box__area-set{display:table-cell;position:relative;vertical-align:top}
+.box__air-type-content--multi .box__date-set{display:table-cell;width:119px;background:none}
+.box__air-type-content--multi .box__date-set .box__start{width:100%;font-size:0}
+.box__air-type-content--multi .box__area-division .form__input-code{font-size:24px}
+.box__air-type-content--multi .box__area-division .form__input-code::-webkit-input-placeholder{top:0;font-size:20px;color:#999;}
+.box__air-type-content--multi .box__area-division .box__airport{margin-top:2px}
+.box__air-type-content--multi .box__date-set .form__input-day{display:block;color:#fff;font-size:22px;line-height:30px}
+.box__air-type-content--multi .box__date-set .form__input-day::-webkit-input-placeholder{font-size:20px;color:#999;}
+.box__air-type-content--multi .text__date{color:#fff;padding-left:0}
+.box__air-type-content--multi .text__date:before{display:none}
+.box__air-type-content--multi .box__area-division--depart .link__set-airport{padding-right:8px}
+.box__air-type-content--multi .box__area-division--land .link__set-airport{padding-left:8px}
+.box__air-type-content--multi .box__area-division .form__input-code::-webkit-input-placeholder{font-size:20px;line-height:30px;color:#999}
+.box__air-type-content--multi .form__input-day::-webkit-input-placeholder{font-size:20px;line-height:30px;color:#999}
+.box__air-type-content--multi .form__input-day.form__input--placeholder-shown + .box__date-info .text__date-info{display:inline-block;color:#999}
+.box__air-type-content--multi .form__input-day.form__input--placeholder-shown + .box__date-info .text__date-info:after{background-position:-106px -25px}
+.box__air-type-content--roundtrip .text__date-info .text__etc{display:none}
+.box__air-type-content--roundtrip .form__input-day.form__input--placeholder-shown + .box__date-info .text__etc{display:inline-block}
+
+.box__air-type-content--multi{padding-top:4px}
+.box__air-type-content .box__add-point{margin:8px 16px}
+.box__air-type-content .button__add-point{width:100%;height:56px;border:none;border-radius:2px;background:#fff}
+.box__air-type-content .text__add-point{display:inline-block;position:relative;padding-left:26px;line-height:58px;font-size:15px}
+.box__air-type-content .text__add-point:before{position:absolute;top:18px;left:0;width:20px;height:20px;background-position:-153px 0}
+.service__air.page__lp .box__air-finder .link__finder-close{display:none}
+
+/* layer :: sns-share */
+.box__layer-sns-share{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:500;background:rgba(0,0,0,0.7)}
+.box__layer-sns-share .box__wrap{position:absolute;top:50%;left:50%;width:242px;height:241px;margin:-121px 0 0 -121px;border-radius:2px;background:#fff;box-shadow:0 1px 2px 2px rgba(0,0,0,0.2)}
+.box__layer-sns-share .text__title{display:block;height:38px;border-bottom:1px solid #e5e5e5;font-size:16px;color:#233549;text-align:center;line-height:40px;font-weight:bold;}
+.box__layer-sns-share .list__sns{overflow:hidden;padding:10px 6px 24px 26px}
+.box__layer-sns-share .list-item{float:left;padding:10px 20px 0 0}
+.box__layer-sns-share .list-item .link{display:block;overflow:hidden;width:50px;height:50px;line-height:999px}
+.box__layer-sns-share .list-item .link.url__copy {border:1px solid #d9d9d9;box-sizing:border-box;border-radius:50%;font-size:13px;color:#444;line-height:14px;padding-top:11px;text-align:center;}
+.box__layer-sns-share .list-item--kakao .link{background-position:0 -94px}
+.box__layer-sns-share .list-item--kakaostory .link{background-position:-52px -94px}
+.box__layer-sns-share .list-item--facebook .link{background-position:-104px -94px}
+.box__layer-sns-share .list-item--twitter .link{background-position:-156px -94px}
+.box__layer-sns-share .list-item--line .link{background-position:-208px -94px}
+.box__layer-sns-share .button__close{display:block;width:65px;height:28px;margin:0 auto;border:1px solid #c9cbcf !important;border-radius:14px;background:#fff;font-size:13px;font-weight:normal;color:#5e636d;line-height:28px;box-sizing:border-box}
+
+/* layer-certification*/
+.box__layer-certification-simple-member{display:none}
+.box__layer-certification-simple-member:after{position:fixed;left:0;top:0;right:0;bottom:0;z-index:1210;background:rgba(0,0,0,.4);content:''}
+.box__layer-certification-simple-member .box__content{position:fixed;top:50%;left:50%;bottom:unset;z-index:1220;width:294px;padding:30px 28px;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);border:1px solid #444;background:#fff;box-sizing:border-box}
+.box__layer-certification-simple-member .text{font-size:12px;font-weight:normal;color:#222;line-height:16px;text-align:center}
+.box__layer-certification-simple-member .button__check{display:block;height:32px;padding:0 28px;margin:18px auto 0;border:1px solid #067dfd !important;border-radius:100px;background:transparent;font-size:13px;line-height:32px;color:#067dfd}
+.box__layer-certification-simple-member .button__close{position:absolute;top:0;right:0;height:38px;padding:12px;background:transparent}
+.box__layer-certification-simple-member .button__close .image__close{display:inline-block;background:url('//pics.gmarket.co.kr/mobile/sprite/kr/vertical/common/sprite__vertical-couponbox.png') no-repeat;background-size:250px auto;overflow:hidden;width:14px;height:14px;line-height:999px;background-position:-120px 0}
+
+/* box__loading-srp */ 
+.box__loading-srp{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;overflow-y:scroll;height:100%;background:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--default.jpg) no-repeat center;background-size:cover}
+.platform__web .page__srp-loading .box__loading-srp,
+.platform__app.SFC .page__srp-loading .box__loading-srp{top:48px}
+/* .page__loading .box__loading-srp{top:50px} 예약/결제 */
+.box__loading-srp--AKL{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--AKL.jpg);}
+.box__loading-srp--BJS{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--BJS.jpg);}
+.box__loading-srp--BKI{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--BKI.jpg);}
+.box__loading-srp--BKK{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--BKK.jpg);}
+.box__loading-srp--CHI{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--CHI.jpg);}
+.box__loading-srp--DAD{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--DAD.jpg);}
+.box__loading-srp--DPS{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--DPS.jpg);}
+.box__loading-srp--FUK{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--FUK.jpg);}
+.box__loading-srp--GUM{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--GUM.jpg);}
+.box__loading-srp--HAN{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--HAN.jpg);}
+.box__loading-srp--HKG{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--HKG.jpg);}
+.box__loading-srp--HKT{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--HKT.jpg);}
+.box__loading-srp--HNL{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--HNL.jpg);}
+.box__loading-srp--KLO{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--KLO.jpg);}
+.box__loading-srp--LAX{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--LAX.jpg);}
+.box__loading-srp--LON{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--LON.jpg);}
+.box__loading-srp--MEL{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--MEL.jpg);}
+.box__loading-srp--MFM{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--MFM.jpg);}
+.box__loading-srp--MNL{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--MNL.jpg);}
+.box__loading-srp--NHA{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--NHA.jpg);}
+.box__loading-srp--NYC{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--NYC.jpg);}
+.box__loading-srp--OSA{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--OSA.jpg);}
+.box__loading-srp--PAR{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--PAR.jpg);}
+.box__loading-srp--PPS{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--PPS.jpg);}
+.box__loading-srp--AKL{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--PVG.jpg);}
+.box__loading-srp--SFO{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--SFO.jpg);}
+.box__loading-srp--SGN{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--SGN.jpg);}
+.box__loading-srp--SIN{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--SIN.jpg);}
+.box__loading-srp--SPN{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--SPN.jpg);}
+.box__loading-srp--SYD{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--SYD.jpg);}
+.box__loading-srp--TAG{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--TAG.jpg);}
+.box__loading-srp--TPE{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--TPE.jpg);}
+.box__loading-srp--TYO{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--TYO.jpg);}
+.box__loading-srp--VTE{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--VTE.jpg);}
+.box__loading-srp--WAS{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--WAS.jpg);}
+.box__loading-srp--YNY{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--YNY.jpg);}
+.box__loading-srp--YTO{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--YTO.jpg);}
+.box__loading-srp--YVR{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/srp/loading/bg__loading--YVR.jpg);}
+.box__loading-srp--CJU{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/loading/bg__loading--CJU.jpg);}
+.box__loading-srp--PUS{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/loading/bg__loading--PUS.jpg);}
+.box__loading-srp--RSU{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/loading/bg__loading--RSU.jpg);}
+.box__loading-srp .box__loading-content{height:auto;padding:72px 24px 150px;}
+.box__loading-srp .text__loading-intro{position:fixed;bottom:0;left:0;width:100%;height:76px;font-size:16pxp;line-height:22px;letter-spacing:0;color:#fff;text-align:center;padding:16px 0 0;background:rgba(0,0,0,.2);}
+.box__loading-srp .box__text-info{font-size:26px;line-height:31px;letter-spacing:-0.5px;color:#fff;text-align:center;font-weight:300}
+.box__loading-srp .box__text-info .text__emphasis{font-weight:bold}
+.box__loading-srp .box__text-notice{margin-top:40px;font-size:15px;font-weight:bold;line-height:22px;color:#fff;text-align:center}
+.box__loading-srp .list__airport-info{position:relative;overflow:hidden;margin-top:24px;padding-bottom:24px;border-bottom:1px solid rgba(256,256,256,.2);font-size:0;color:#fff;}
+.box__loading-srp .list__airport-info:before{height:1px;content:'';display:block;background:rgba(256,256,256,.2)}
+.box__loading-srp .list__airport-info:after{position:absolute;top:0;height:1px;content:'';display:block;-webkit-animation: loading-animation 20s cubic-bezier(.17,.67,.9,1) infinite;animation: loading-animation 20s cubic-bezier(.17,.67,.9,1) infinite;background:rgba(256,256,256,.6)}
+@-webkit-keyframes loading-animation{
+	from {width: 0;}
+    to {width: 100%;}
+}
+@keyframes loading-animation{
+	from {width: 0;}
+    to {width: 100%;}
+}
+.box__loading-srp .list__airport-info .list-item{position:relative;line-height:0;font-size:0;}
+.box__loading-srp .box__air{display:inline-block;width:50%;padding-right:50px;}
+.box__loading-srp .box__air--to{padding-right:0;padding-left:50px;}
+.box__loading-srp .text__code{display:block;padding-top:24px;text-align:center;font-size:26px;line-height:28px;letter-spacing:0}
+.box__loading-srp .text__name{display:block;overflow:hidden;margin:0 10px;padding-top:6px;text-align:center;font-size:13px;line-height:16px;white-space:nowrap;text-overflow:ellipsis;}
+.box__loading-srp .list__airport-info--RD .text__name{padding:6px 2px 0;}
+.box__loading-srp .box__date{position:absolute;top:28px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);width:120px;padding-top:30px;text-align:center;font-size:13px;}
+.box__loading-srp .box__date .text__day{position:relative;top:-1px;font-size:12px;}
+.box__loading-srp .box__date:before{position:absolute;top:6px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);width:24px;height:10px;background-position:-78px -64px}
+.box__loading-srp .list__airport-info--RD .box__air{position:relative;padding-right:11px;}
+.box__loading-srp .list__airport-info--RD .box__air{position:relative;padding-left:11px}
+.box__loading-srp .list__airport-info--RD .box__date{position:static;display:block;left:initial;top:initial;-webkit-transform:initial;transform:initial;padding-top:14px;width:auto;text-align:center;}
+.box__loading-srp .list__airport-info--RD .box__air--to:before{position:absolute;left:-11px;top:50px;width:24px;height:23px;background-position:-78px -64px}
+.box__loading-srp .sprite__air-srp--before:before{content:'';display:inline-block;background-image:url(//pics.gmarket.co.kr/mobile/sprite/kr/vertical/air/srp/sprite__air-srp.png);background-repeat:no-repeat;background-size:250px auto}
+
+/* SFC Header */
+/* .platform__app.SFC #header {height: 48px !important;} */
+/* .platform__app.SFC .section__air-finder, */
+.platform__app.SFC .section__room-finder,
+.platform__app.SFC .section__tour-finder .box__tour-finder{top:48px !important;position: relative;}
+.platform__app.SFC .filter__bigsmile-area{bottom:42px !important;}

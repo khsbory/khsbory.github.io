@@ -1,0 +1,633 @@
+/* air COMMON */
+
+AIRFINDER = {
+    lineType : 'RT', // 왕복 RT, 편도 OW, 다구간 MD 
+    set : {
+        //왕복
+        RT : {
+            start : [{ // 출발지
+                id : 'rt_startPoint_1',
+                val : '인천/김포',
+                code : 'SEL',
+                ncode : 'KR' //국가코드 'KR','JP'
+            }],
+            end : [{ // 도착지
+                id : 'rt_endPoint_1',
+                val : '',
+                code : '',
+                ncode : '' //국가코드
+            }]
+        },
+        //편도
+        OW : {
+            start : [{ // 출발지
+                id : 'ow_startPoint_1',
+                val : '인천/김포',
+                code : 'SEL',
+                ncode : 'KR' //국가코드
+            }],
+            end : [{ // 도착지
+                id : 'ow_endPoint_1',
+                val : '',
+                code : '',
+                ncode : '' //국가코드
+            }]
+        },
+        //다구간
+        MD : {
+            start : [{ // 출발지
+                id : 'md_startPoint_1',  // 출발 1
+                val : '인천/김포',
+                code : 'SEL',
+                ncode : 'KR' //국가코드
+            },{
+                id : 'md_startPoint_2',  // 출발 2
+                val : '',
+                code : '',
+                ncode : '' //국가코드
+            },{
+                id : 'md_startPoint_3',  // 출발 3
+                val : '',
+                code : '',
+                ncode : '' //국가코드
+            }],
+            end : [{ // 도착지
+                id : 'md_endPoint_1',  // 도착 1
+                val : '',
+                code : '',
+                ncode : '' //국가코드
+            },{
+                id : 'md_endPoint_2',  // 도착 2
+                val : '',
+                code : '',
+                ncode : '' //국가코드
+            },{
+                id : 'md_endPoint_3',  // 도착 3
+                val : '',
+                code : '',
+                ncode : '' //국가코드
+            }]
+        },
+        date :{
+            RT : [{
+                sId : 'rt_departure_1',
+                eId : 'rt_arrival_1',
+                sVal : '', // 출발일 (여정1 출발일)
+                eVal : '', // 왕복 도착일
+                sDay : '', // 출발 요일
+                eDay : '' //왕복도착 요일
+            }],
+            OW : [{
+                sId : 'ow_departure_1',
+                sVal : '', // 출발일 (여정1 출발일)
+                sDay : ''
+            }],
+            MD : [{ 
+                sId : 'md_departure_1',
+                sVal : '', // 출발일 (여정1 출발일)
+                sDay : ''
+                },{
+                sId : 'md_departure_2',
+                sVal : '', // 출발일 (여정2 출발일)
+                sDay : ''
+                },{
+                sId : 'md_departure_3',
+                sVal : '', // 출발일 (여정3 출발일)
+                sDay : ''
+            }]
+        },
+        multiCounter : 2,
+        seat: {
+            id : 'form__seattype',
+            val : '일반석',
+            code : 'Y' , //일반석(Y), 프리미엄 일반석(P), 비즈니스석(C), 일등석(F), 전체(E), 할인석(S), 특가석(D)
+            chkID : 'form__checkbox--straight',
+            chkVal : 'checked', //'checked' or ''
+        },
+        passenger : {
+            id : 'form__passenger',
+            vals : [1,0,0],  //성인, 소아, 유아 인원수
+            totalVal :1
+        }
+    }, //set
+    template : {
+        addMultiLine : function(){ //다구간 여정추가
+            var html = '<li class="list-item">';
+            html += '<div class="box__area-set  sprite__air-common--after">';
+            html += '<div class="box__area-division box__area-division--depart">';
+            html += '<a href="#box__layer-air-finder--select-airport" class="link__set-airport">';
+            html += '<input id="md_startPoint_3" type="text" class="form__input-code form__input--placeholder-shown" placeholder="출발" data-key="start" data-index="2" title="출발 공항코드" readonly="">';
+            html += '<span class="box__airport"><span class="text__airport-name sprite__air-common--after">출발지 선택</span>';
+            html += '</span></a>';
+            html += '</div>';
+            html += '<div class="box__area-division box__area-division--land">';
+            html += '<a href="#box__layer-air-finder--select-airport" class="link__set-airport">';
+            html += '<input id="md_endPoint_3" type="text" class="form__input-code form__input--placeholder-shown" placeholder="도착" data-key="end" data-index="2" title="도착 공항코드" readonly="">';
+            html += '<span class="box__airport"><span class="text__airport-name sprite__air-common--after">도착지 선택</span>';
+            html += '</span></a>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="box__date-set sprite__air-common--after">';
+            html += '<div class="box__start">';
+            html += '<a href="#box__layer-calendar" class="link__set-date sprite__air-lp--before">';
+            html += '<input type="hidden" id="md_departure_3" class="form__input-day form__input--placeholder-shown" readonly="" data-key="sVal" title="가는날 선택" />';
+            html += '<input type="text" type="text" class="form__input-day form__input--placeholder-shown form__input-day--ab" readonly="" placeholder="여정3" data-key="sVal" title="가는날 선택" />';
+            html += '<span class="box__date-info"><span class="text__date-info sprite__air-common--after">가는날 선택</span><em class="text__date sprite__air-common--after"></em></span>';
+            html += '</a>';
+            html += '</div>';
+            html += '</div>';
+            html += '<button type="button" class="button__close sprite__air-common--before js-remove-list-item"><span class="for-a11y">삭제</span></button>';
+            html += '</li>';
+            return html;
+        }
+    }
+};
+
+AIRFINDER.search = {
+    init: function(){
+        this.addAirline();
+        this.removeAirline();
+        this.finderCategorySlider();
+        this.finderInputReset();
+        this.finderToggleControl();
+        this.finderInputIsEmptyDetect();
+    },
+    set : function(setData){
+        if(setData){
+            $.extend(AIRFINDER.set,setData)
+        }
+        this.updateFinder();
+    },
+    addAirline : function(){ //다구간 여정추가
+        $(document).on('click','#box__air-type-content--multi .button__add-point',function(e){
+            e.preventDefault();
+            var $box = $('#box__air-type-content--multi .list__air-sets');
+            $box.append(AIRFINDER.template.addMultiLine());
+            AIRFINDER.set.multiCounter = 3;
+            $('#box__air-type-content--multi .box__add-point').hide();//여정추가버튼 숨김
+
+            //여정2에 삭제버튼추가
+            var buttonTemplate = '<button type="button" class="button__close sprite__air-common--before js-remove-list-item"><span class="for-a11y">삭제</span></button>';
+            $('#box__air-type-content--multi .list__air-sets .list-item').eq(1).append(buttonTemplate);
+        });
+    },
+    removeAirline : function(e){
+        $(document).on('click','.js-remove-list-item',function(e){
+            e.preventDefault();
+
+            var md1 = AIRFINDER.set.date.MD[1]; //여정2
+            var md2 = AIRFINDER.set.date.MD[2]; //여정3
+
+            if($('#box__air-type-content--multi .list-item').index($(this).parents('.list-item')) == 1){
+                //여정2 삭제의 경우 여정3 데이터를 여정2로 셋팅 후 set update
+                var rtValue = function(v){
+                    return v;
+                }
+                AIRFINDER.set.date.MD[1].sVal = rtValue(AIRFINDER.set.date.MD[2].sVal);
+                AIRFINDER.set.date.MD[1].sDay = rtValue(AIRFINDER.set.date.MD[2].sDay);
+                AIRFINDER.set.MD.start[1].val = rtValue(AIRFINDER.set.MD.start[2].val);
+                AIRFINDER.set.MD.start[1].code = rtValue(AIRFINDER.set.MD.start[2].code);
+                AIRFINDER.set.MD.start[1].ncode = rtValue(AIRFINDER.set.MD.start[2].ncode);
+                AIRFINDER.set.MD.end[1].val = rtValue(AIRFINDER.set.MD.end[2].val);
+                AIRFINDER.set.MD.end[1].code = rtValue(AIRFINDER.set.MD.end[2].code);
+                AIRFINDER.set.MD.end[1].ncode = rtValue(AIRFINDER.set.MD.end[2].ncode);
+                AIRFINDER.set.date.MD[2].sVal ='';
+                AIRFINDER.set.date.MD[2].sDay ='';
+                AIRFINDER.set.MD.start[2].val = ''
+                AIRFINDER.set.MD.start[2].code ='';
+                AIRFINDER.set.MD.start[2].ncode = '';
+                AIRFINDER.set.MD.end[2].val = ''
+                AIRFINDER.set.MD.end[2].code ='';
+                AIRFINDER.set.MD.end[2].ncode = '';
+                
+                AIRFINDER.search.set();
+            }
+
+            $('#box__air-type-content--multi .list__air-sets').find('.list-item').eq(2).remove();
+            $('#box__air-type-content--multi .list__air-sets').find('.list-item').eq(1).find('.js-remove-list-item').remove();
+
+            AIRFINDER.set.multiCounter = 2;
+            
+            md2.sVal ='';
+            md2.sDay ='';
+            $('#box__air-type-content--multi .box__add-point').show();//여정추가버튼 보이기
+            
+        })
+    },
+    updateFinder : function(){
+        var line  = AIRFINDER.lineType;
+        //tab setting
+        var $tabRT = $('#box__air-finder .js-link__air-type.link__air-type--roundtrip');
+        var $tabOW = $('#box__air-finder .js-link__air-type.link__air-type--oneway');
+        var $tabMD = $('#box__air-finder .js-link__air-type.link__air-type--multi');
+        var $tabobj = eval('$tab'+line);
+        $tabobj.click();
+        var dataRoot  = AIRFINDER.set;
+
+        // 다구간 여정 추가 삭제 셋팅
+        if(dataRoot.date.MD[2].sVal !=='' && $('#box__air-type-content--multi .list__air-sets .list-item').length == 2){
+            $('#box__air-type-content--multi .button__add-point').click();
+            $('#'+dataRoot.date.MD[2].sId).val(dataRoot.date.MD[2].sVal)
+            .next('.box__date-info').find('.text__date').text(dataRoot.date.MD[2].sDay);
+        }
+        else{
+            $('#box__air-type-content--multi .list__air-sets .list-item').eq(2).find('.js-remove-list-item').click();
+        }
+        var dateSplit = function(d){ //년도삭제된 날짜구하기
+          return d.substr(5,9);
+        }
+        //날짜 
+        Object.keys(dataRoot.date).forEach(function (k) {
+            for(i=0;i<dataRoot.date[k].length;i++){
+                var sId = dataRoot.date[k][i].sId;
+                var sVal = dataRoot.date[k][i].sVal;
+                var sDay = dataRoot.date[k][i].sDay;
+                var saId =  dataRoot[k].start[i].id;
+                var saCode =  dataRoot[k].start[i].code;
+                var saVal =  dataRoot[k].start[i].val !== '' ? dataRoot[k].start[i].val : '출발지 선택';
+                var eaId =  dataRoot[k].end[i].id;
+                var eaCode =  dataRoot[k].end[i].code;
+                var eaVal =  dataRoot[k].end[i].val !== '' ? dataRoot[k].end[i].val : '도착지 선택';
+                var shortD = dateSplit(sVal);
+
+                //공항 
+                $('#'+saId).val(saCode).next('.box__airport').find('.text__airport-name').text(saVal);
+                $('#'+eaId).val(eaCode).next('.box__airport').find('.text__airport-name').text(eaVal);
+
+                if( k!=='OW') {// 날짜 - 왕복, 다구간
+                    $('#'+sId).val(sVal).next('.form__input-day').val(shortD);
+                    $('#'+sId).siblings('.box__date-info').find('.text__date').text(sDay+'요일');
+                    if( k == 'RT'){
+                        var eId = dataRoot.date[k][i].eId;
+                        var eVal = dataRoot.date[k][i].eVal;
+                        var eDay = dataRoot.date[k][i].eDay;
+                        $('#'+eId).val(eVal).siblings('.box__date-info').find('.text__date').text(eDay+'요일');
+                    }
+                }   
+                else{ //날짜 - 편도
+                    sDay = (sDay=='')?'':'('+sDay+')';
+                    var textVal = (sVal=='')?'가는날 선택':sVal;
+                    if (textVal == '가는날 선택'){
+                        $('#'+sId).next('span.form__input-day').addClass('form__input-day--default');
+                    }else{
+                        $('#'+sId).next('span.form__input-day').removeClass('form__input-day--default')
+                    }
+                    $('#'+sId).val(sVal).next('span.form__input-day').text(textVal).siblings('.text__date-sub').text(sDay);
+                }
+
+            }
+        });
+        AIRFINDER.search.finderInputIsEmptyDetect();
+    },
+    finderCategorySlider : function(){
+        $(document).on('click','.box__layer-air-finder .js-slider',function(e){
+          e.preventDefault();
+          var activeClass = 'list-item--active';
+          $(this).parent('.js-list-item').toggleClass(activeClass).siblings().removeClass(activeClass);
+        })
+    },
+    finderInputReset : function(){
+        $(document).on('click','.js-button__delete-keyword',function(){
+          $(this).prev('.form__input-finder').val('');
+          $('.form__input-finder').focus();
+        })
+    },
+    finderToggleControl : function(){
+        $(document).on('click','.js-button__toggle-control',function(){
+          var $target=$($(this).attr('data-target'));
+          $(this).toggleClass('button__toggle--active');
+          $target.toggle();
+        });
+    },
+    finderInputIsEmptyDetect : function(){
+        //for crossbrowsing placeholder-shown styling :: add/remove class
+        var $inputs = $('.form__input-code,input.form__input-day,.form__input-layer-date');
+        $inputs.each(function(){
+            var $this = $(this);
+            if($this.val()){
+                $this.removeClass('form__input--placeholder-shown');
+            }else(
+                $this.addClass('form__input--placeholder-shown'))
+        })
+    }
+};
+
+var airCalendar = {
+    init : function(){
+        this.container.datepicker("destroy");
+        this.getDate();
+        this.callDraw();
+        this.checkActiveButton();
+    },
+    container: $("#airdatepicker"),
+    numberOfMonths: 13,
+    dateFormat: 'yy.mm.dd',
+    dayNamesMin: ['일','월','화','수','목','금','토'],
+    showMonthAfterYear: true,
+    inputs: {
+        day1: '#form__input-layer-date1',
+        day2: '#form__input-layer-date2',
+        day3: '#form__input-layer-date3'
+    },
+    dates : ['', '', ''], //날짜 temporal store
+    days : ['', '', ''], //요일
+    setHDay : function(setData){
+        if(setData){
+            $.extend(airCalendar.hDay,setData)
+        }
+        this.callDraw();
+    },
+    hDay : {
+        fixed : {
+            '1' : [ [ 1, "신정" ] ],
+            '2' : [],
+            '3' : [ [ 1, "3.1절" ] ],
+            '4' : [],
+            '5' : [ [ 5, "어린이날" ] ],
+            '6' : [ [ 6, "현충일" ] ],
+            '7' : [],
+            '8' : [ [ 15, "광복절" ] ],
+            '9' : [],
+            '10' : [ [ 3, "개천절" ], [ 9, "한글날" ] ],
+            '11' : [],
+            '12' : [ [ 25, "성탄절" ] ]
+        },
+        lunar : {
+            2019 : {
+                '2' : [ [ 4, "설날" ],[ 5, "설날" ],[ 6, "설날" ] ],
+                '9' : [ [ 12, "추석" ],[ 13, "추석" ],[ 14, "추석" ] ],
+                '5' : [ [ 12, "석가탄신일" ] ]
+            },
+            2020 : {
+                '1' : [ [ 24, "설날" ],[ 25, "설날" ],[ 26, "설날" ],[ 27, "설날 대체휴일" ] ],
+                '9' : [ [ 30, "추석" ]],
+                '10' : [ [ 1, "추석"],[ 2, "추석"] ],
+                '4' : [ [ 30, "석가탄신일" ] ]
+            },
+            2021 : {
+                '2' : [ [ 11, "설날" ],[ 12, "설날" ],[ 13, "설날" ] ],
+                '9' : [ [ 20, "추석" ],[ 21, "추석" ],[ 22, "추석" ] ],
+                '5' : [ [ 19, "석가탄신일" ] ]
+            },
+            2022 : {
+                '1' : [ [ 31, "설날" ]],
+                '2' : [ [ 1, "설날" ],[ 2, "설날" ]],
+                '5' : [ [ 8, "석가탄신일" ] ],
+                '6' : [ [ 1, "지방선거" ] ],
+                '9' : [ [ 9, "추석" ],[ 10, "추석" ],[ 11, "추석" ],[ 12, "추석" ]],
+                '12' : [ [ 21, "20대 대통령선거" ] ]
+            }
+        }
+    },
+    getDate : function(){ // strored date get
+        var d1='', d2='', d3='', day1='', day2='', day3='';
+        var line = AIRFINDER.lineType;
+        var dateRoot = AIRFINDER.set.date[line];
+        d1 = AIRFINDER.set.date[AIRFINDER.lineType][0].sVal !== ''?dateRoot[0].sVal:'';
+        if (line !== 'OW') { d2 = line == 'RT'? dateRoot[0].eVal : dateRoot[1].sVal; }
+        if (line == 'MD' && AIRFINDER.set.multiCounter == 3) { d3 = dateRoot[2].sVal; }
+        day1 = AIRFINDER.set.date[AIRFINDER.lineType][0].sDay !== ''?dateRoot[0].sDay:'';
+        if (line !== 'OW') { day2 = line == 'RT'? dateRoot[0].eDay : dateRoot[1].sDay; }
+        if (line == 'MD' && AIRFINDER.set.multiCounter == 3) { day3 = dateRoot[2].sDay; }
+        this.updateDates(d1, d2, d3, day1, day2, day3)        
+    },
+    updateDates : function(d1, d2, d3, day1, day2, day3){ //날짜, 요일
+        for(i=0;i<3;i++){
+            //dates 배열, 날짜, 요일 저장
+            var n = i+1;
+            this.dates[i] = eval('d'+n);
+            this.days[i] = eval('day'+n);
+            $(this.inputs['day'+n]).val( this.dates[i] );//달력 레이어 인풋에 값 setting
+        }
+        AIRFINDER.search.finderInputIsEmptyDetect();
+    },
+    storeDates :function(){ //데이터 저장
+        var d1 = this.dates[0];
+        var d2 = this.dates[1];
+        var d3 = this.dates[2];
+        var day1 = this.days[0];
+        var day2 = this.days[1];
+        var day3 = this.days[2];
+        var dateSplit = function(d){ //년도삭제된 날짜구하기
+          return d.substr(5,9);
+        }
+
+        var line = AIRFINDER.lineType;
+        var dataRoot = AIRFINDER.set.date[line];
+
+        if((d1 !== '') && line =='RT') { // 왕복 출발일 
+            $('#'+dataRoot[0].sId).val(d1).next('.box__date-info').find('.text__date').text(day1+'요일');
+            dataRoot[0].sVal = d1;
+            dataRoot[0].sDay = day1;
+        }
+        if((d1 !== '') && line =='OW') { // 편도 출발일
+            $('#'+dataRoot[0].sId).val(d1).next('span.form__input-day').removeClass('form__input-day--default').text(d1).next('.text__date-sub').text('('+day1+')');
+            dataRoot[0].sVal = d1;
+            dataRoot[0].sDay = day1;
+        }
+        if((d1 !== '') && line =='MD') { // 다구간 여정1 출발일
+            var sd1 = dateSplit(d1);
+            $('#'+dataRoot[0].sId).val(d1).siblings('.form__input-day--ab').val(sd1).siblings('.box__date-info').find('.text__date').text(day1+'요일');
+            dataRoot[0].sVal = d1;
+            dataRoot[0].sDay = day1;
+        }
+        if((d2 !== '') && line=='RT'){ // 왕복 도착일
+            $('#'+dataRoot[0].eId).val(d2).next('.box__date-info').find('.text__date').text(day2+'요일');
+            dataRoot[0].eVal = d2;
+            dataRoot[0].eDay = day2;
+        }
+        if((d2 !== '') && line=='MD'){ // 다구간 여정2 출발일
+            var sd2 = dateSplit(d2);
+            $('#'+dataRoot[1].sId).val(d2).siblings('.form__input-day--ab').val(sd2).siblings('.box__date-info').find('.text__date').text(day2+'요일');
+            dataRoot[1].sVal = d2;
+            dataRoot[1].sDay = day2;
+        }
+        if((d3 !== '') && line=='MD' && AIRFINDER.set.multiCounter == 3){ // 다구간 여정3 출발일
+            var sd3 = dateSplit(d3);
+            $('#'+dataRoot[2].sId).val(d3).siblings('.form__input-day--ab').val(sd3).siblings('.box__date-info').find('.text__date').text(day3+'요일');
+            dataRoot[2].sVal = d3;
+            dataRoot[2].sDay = day3;
+        }
+        AIRFINDER.search.finderInputIsEmptyDetect();
+    },
+    callDraw : function(){
+        drawAirDatepicker();
+    },
+    buttonActivate : function(){
+        $('.box__layer-air-finder .js-button__date-select').addClass('link__selected--active').text('날짜 선택완료');
+    },
+    buttonDeactivate : function(){
+        $('.box__layer-air-finder .js-button__date-select').removeClass('link__selected--active').text('날짜 선택');
+    },
+    checkActiveButton : function(){
+        var line = AIRFINDER.lineType;
+        var inputVal01 = $(this.inputs.day1).val();
+        var inputVal02 = $(this.inputs.day2).val();
+        var inputVal03 = $(this.inputs.day3).val();
+        if(line == 'OW' && inputVal01 !== '') {
+          this.buttonActivate();
+        }
+        else if(line == 'RT' && inputVal01 !== '' && inputVal02 !== '') {
+          this.buttonActivate();
+        }
+        else if(line == 'MD' && inputVal01 !== '' &&  inputVal02 !== '' && inputVal03 !== ''){
+          this.buttonActivate();
+        }
+        else if(line == 'MD' && AIRFINDER.set.multiCounter == 2 && inputVal01 !== '' &&  inputVal02 !== ''){
+          this.buttonActivate();
+        }
+        else{ this.buttonDeactivate(); }
+    }
+};
+
+var drawAirDatepicker =  function(){
+    //layer input jquery객체
+    var $d1 = $(airCalendar.inputs.day1);
+    var $d2 = $(airCalendar.inputs.day2);
+    var $d3 = $(airCalendar.inputs.day3);
+    var line = AIRFINDER.lineType;
+    var dateRoot = AIRFINDER.set.date[AIRFINDER.lineType];
+
+    var parsedate = function(d){
+    return $.datepicker.parseDate(airCalendar.dateFormat,d);
+    }
+
+    airCalendar.container.datepicker({
+        numberOfMonths: 13,
+        dateFormat: airCalendar.dateFormat,
+        showMonthAfterYear: true,
+        status: null,
+        monthNames: ['01','02','03','04','05','06','07','08','09','10','11','12'],
+        monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+        dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'],
+        dayNamesMin: ['일','월','화','수','목','금','토'],
+        yearSuffix:'.',
+        minDate: 0,
+        maxDate: "366d",
+        setDate: 'today',
+        beforeShowDay: function(date) {
+           var date1 = parsedate($d1.val());
+           var date2 = parsedate($d2.val());
+           var date3 = parsedate($d3.val());
+           var $today = new Date().getFullYear() + '.' + ('0' + (new Date().getMonth() + 1)).slice(-2) + '.' + ('0' + new Date().getDate()).slice(-2);
+           var classes = 'ui-datepicker-highlight';
+           var checkText = '';
+           var rt_express = '';
+           for (var i = 0; i < airCalendar.dates.length; i++) {
+                if(i == 0){
+                    rt_express = $today === $d2.val() ? '당일' : '가는날';
+                    checkText = AIRFINDER.lineType !== 'MD' ? rt_express :'여정1';
+                }else if ( i == 1) {
+                    checkText = AIRFINDER.lineType !== 'MD' ? '오는날' :'여정2';
+                }else if ( i == 2){
+                    checkText = '여정3'
+                }
+                var stringifyD =(airCalendar.dates[i]).toString();
+                var paseD = new Date(stringifyD.replace(/\./g, '/'));
+                if ( paseD == date.toString()) {
+                   return [true, 'ui-point', ""+checkText+""];
+                } //point 표시 출력
+            }
+
+            var hDay = airCalendar.hDay;
+
+            var fixedMnt = hDay.fixed[ parseInt( date.getMonth(), 10) +1],
+                lunarMnt = hDay.lunar[ parseInt( date.getFullYear(), 10) ][ parseInt( date.getMonth(), 10) +1 ],
+                i=0,j=0,
+                rtnStr = '';
+
+            //하이라이트 조건
+            var highlightCondition = date1 && ((date == date1) || (date2 && date >= date1 && date <= date2) || (date3 && date >= date2 && date <= date3));
+
+            if(date.getDay() === 0){
+                rtnStr = highlightCondition? classes + ' ui-datepicker-holiday':'ui-datepicker-holiday';
+                
+            }else{
+                if( fixedMnt !== undefined ){
+                    for(i;i<fixedMnt.length;i++){
+                        if( fixedMnt[i][0] === parseInt( date.getDate(), 10) ){
+                            rtnStr = highlightCondition? classes + ' ui-datepicker-holiday':'ui-datepicker-holiday';
+                            return [true,rtnStr];
+                        }
+                    }
+                };
+                if( lunarMnt !== undefined ){
+                    for(j;j<lunarMnt.length;j++){
+                        if( lunarMnt[j][0] === parseInt( date.getDate(), 10) ){
+                            rtnStr = highlightCondition? classes + ' ui-datepicker-holiday':'ui-datepicker-holiday';
+                            return [true,rtnStr];
+                        }
+                    }
+                }
+            };
+
+            return [true, highlightCondition ? classes : ""]; // range 표시 클래스 출력
+        },
+        onSelect: function(dateText, inst) {
+            var d1,d2,d3;
+            d1 = $d1.val();
+            d2 = $d2.val();
+            d3 = $d3.val();
+            var selectedDate = dateText;
+            var day = new Date(dateText.replace(/\./g, '/'));
+            var d = airCalendar.dayNamesMin[day.getDay()]; //요일
+            if(( !d1 && (d2||d3)) && (selectedDate < d2 || selectedDate < d3) ){
+                $d1.val(dateText); // first input print
+                $d2.val("").parents('.list-item').addClass('list-item--active'); // remove active
+                $d3.val("");
+                airCalendar.dates[0] = dateText; 
+                airCalendar.dates[1] = '';
+                airCalendar.dates[2] = '';
+                airCalendar.days[0] = d; 
+                airCalendar.days[1] = '';
+                airCalendar.days[2] = '';
+                airCalendar.checkActiveButton();
+                $(this).datepicker();
+            }            
+            if (!d1 || line == 'OW' || (line == 'RT' && d2) )  {
+                $d1.val(dateText); // first input print
+                $d2.val("").parents('.list-item').addClass('list-item--active'); // remove active
+                $d3.val("");
+                airCalendar.dates[0] = dateText;
+                airCalendar.dates[1] = '';
+                airCalendar.dates[2] = '';
+                airCalendar.days[0] = d; 
+                airCalendar.days[1] = '';
+                airCalendar.days[2] = '';
+                airCalendar.checkActiveButton();
+                $(this).datepicker();
+            }
+            else if( selectedDate < d1 || selectedDate < d2 || selectedDate < d3 || d3 || (AIRFINDER.set.multiCounter==2 && d2) ) { // scond input print
+                $d1.val(dateText);
+                $d2.val('').parents('.list-item').addClass('list-item--active');
+                $d3.val('');;
+                airCalendar.dates[0] = dateText;               
+                airCalendar.dates[1] = '';
+                airCalendar.dates[2] = '';
+                airCalendar.days[0] = d; 
+                airCalendar.days[1] = '';
+                airCalendar.days[2] = '';
+                airCalendar.checkActiveButton();
+                $(this).datepicker();
+            } 
+            else if( !d2 && line !== 'OW') { // second input print
+                $d2.val(dateText);
+                $d3.val('').parents('.list-item').addClass('list-item--active');
+                airCalendar.dates[1] = dateText
+                airCalendar.dates[2] = '';
+                airCalendar.days[1] = d;
+                airCalendar.days[2] = '';
+                airCalendar.checkActiveButton();
+                $(this).datepicker();
+            } 
+            else if( !d3 && line !== 'RT' && line == 'MD' && AIRFINDER.set.multiCounter == 3 ){ // third input print
+                $d3.val(dateText);
+                airCalendar.dates[2] = dateText;
+                airCalendar.days[2] = d;
+                airCalendar.checkActiveButton();
+                $(this).datepicker();  
+            }
+            AIRFINDER.search.finderInputIsEmptyDetect();
+        }
+    });
+}//drawAirDatepicker 

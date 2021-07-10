@@ -1,0 +1,2299 @@
+/**
+ * 모바일 상단 탭 생성
+ */
+function fnInitTourSearchTab() {
+
+    var strPcid = ts_fnGetCookie( 'pcid' );
+    var strOsCode = strPcid.substr( 0, 1 );
+    var boolAndroidApp = false;
+    var boolIphoneApp = false;
+    
+    if( '3' == strOsCode ) {
+        boolAndroidApp = true;
+    } else if ( '4' == strOsCode ) {
+        boolIphoneApp = true;
+    }
+
+    return new TourSearchTab("air", boolAndroidApp, boolIphoneApp);
+}
+
+function ts_fnMobileAppCheck() {
+    
+    var check = false;
+    var userAgent = window.navigator.userAgent;
+    
+    if( ( -1 < userAgent.indexOf( 'com.ebay.kr.gmarket' ) || -1 < userAgent.indexOf( 'kr.co.gmarket.GMKTIP' ) || -1 < userAgent.indexOf( 'kr.co.gmarket.GMKTDEV' ) || -1 < userAgent.indexOf( "com.ebay.kr.gmarket.sfc" ) || -1 < userAgent.indexOf( "kr.co.gmarket.sfc" ) ) && 0 > userAgent.indexOf( "kr.co.gmarket.Gmarket-iPad" ) ) {
+        check = true;
+    }
+    
+    return check;
+}
+
+/**
+ * userAgent를 통해 Gmarket APP or SFC APP( android / ios )
+ * @returns A : Android / I : IOS / G : Gmarket
+ */
+function ts_fnSfcAppCheck() {
+    
+    var check = 'G';
+    var userAgent = window.navigator.userAgent;
+    
+    //SFC APP Android : com.ebay.kr.gmarket.sfc, IOS : kr.co.gmarket.sfc - 개발은 뒤에 dev가 붙으나 indexOf로 체크하여 sfc까지만 체크
+    if( -1 < userAgent.indexOf( "kr.co.gmarket.sfc" ) && 0 > userAgent.indexOf( "kr.co.gmarket.Gmarket-iPad" ) ) {
+        check = 'I';
+    } else if( -1 < userAgent.indexOf( "com.ebay.kr.gmarket.sfc" ) ) {
+        check = 'A';
+    }
+    
+    return check;
+}
+
+function ts_fnReplaceDmstCode( code ) {
+    var strReturn = code;
+    
+    if( 'GMP' == code || 'ICN' == code ) {
+        strReturn = 'SEL';
+    }
+    
+    return strReturn;
+}
+
+var TS_FINDER_CONFIG = { gateway:'', sectn:'', close:false, usableHis:undefined != window.history.replaceState, hisLen:0, init:true, page:'LP', scroll:true, pmt:'', sns:true };
+
+var mtrst = {
+        url : {
+            local : "/mgm/dmst/srp/srpResultView.do",
+            global : "/mgm/init/srp/srpResultView.do"
+        },
+        data : {},
+        setFinderData : function() {
+            AIRFINDER.lineType = this.data.SECTN;
+            AIRFINDER.set = {
+                    //왕복
+                    RT : {
+                        start : [{ //출발지
+                            id : 'rt_startPoint_1',
+                            val : this.data.DDESC,
+                            code : this.data.DSTAD,
+                            ncode : this.data.DEPNT //국가코드 'KR','JP'
+                        }],
+                        end : [{ // 도착지
+                            id : 'rt_endPoint_1',
+                            val : this.data.ADESC?this.data.ADESC:'',
+                            code : this.data.ASTAD?this.data.ASTAD:'',
+                            ncode : this.data.ARRNT?this.data.ARRNT:'' //국가코드
+                        }]
+                    },
+                    //편도
+                    OW : {
+                        start : [{ // 출발지
+                            id : 'ow_startPoint_1',
+                            val : this.data.DDESC,
+                            code : this.data.DSTAD,
+                            ncode : this.data.DEPNT //국가코드
+                        }],
+                        end : [{ // 도착지
+                            id : 'ow_endPoint_1',
+                            val : this.data.ADESC?this.data.ADESC:'',
+                            code : this.data.ASTAD?this.data.ASTAD:'',
+                            ncode : this.data.ARRNT?this.data.ARRNT:'' //국가코드
+                        }]
+                    },
+                    //다구간
+                    MD : {
+                        start : [{ // 출발지
+                            id : 'md_startPoint_1',  // 출발 1
+                            val : this.data.DDESC1,
+                            code : this.data.DSTAD1,
+                            ncode : this.data.DEPNT1 //국가코드
+                        },{
+                            id : 'md_startPoint_2',  // 출발 2
+                            val : this.data.DDESC2?this.data.DDESC2:'',
+                            code : this.data.DSTAD2?this.data.DSTAD2:'',
+                            ncode : this.data.DEPNT2?this.data.DEPNT2:'' //국가코드
+                        },{
+                            id : 'md_startPoint_3',  // 출발 3
+                            val : this.data.DDESC3?this.data.DDESC3:'',
+                            code : this.data.DSTAD3?this.data.DSTAD3:'',
+                            ncode : this.data.DEPNT3?this.data.DEPNT3:'' //국가코드
+                        }],
+                        end : [{ // 도착지
+                            id : 'md_endPoint_1',  // 도착 1
+                            val : this.data.ADESC1?this.data.ADESC1:'',
+                            code : this.data.ASTAD1?this.data.ASTAD1:'',
+                            ncode : this.data.ARRNT1?this.data.ARRNT1:'' //국가코드
+                        },{
+                            id : 'md_endPoint_2',  // 도착 2
+                            val : this.data.ADESC2?this.data.ADESC2:'',
+                            code : this.data.ASTAD2?this.data.ASTAD2:'',
+                            ncode : this.data.ARRNT2?this.data.ARRNT2:'' //국가코드
+                        },{
+                            id : 'md_endPoint_3',  // 도착 3
+                            val : this.data.ADESC3?this.data.ADESC3:'',
+                            code : this.data.ASTAD3?this.data.ASTAD3:'',
+                            ncode : this.data.ARRNT3?this.data.ARRNT3:'' //국가코드
+                        }]
+                    },
+                    date :{
+                        RT : [{
+                            sId : 'rt_departure_1',
+                            eId : 'rt_arrival_1',
+                            sVal : this.data.DDATE?ts_fnConvertDateFormat( this.data.DDATE, '.' ):'', // 출발일 (여정1 출발일)
+                            eVal : this.data.ADATE?ts_fnConvertDateFormat( this.data.ADATE, '.' ):'', // 왕복 도착일
+                            sDay : this.data.DDATE?ts_fnGetWeekDay( this.data.DDATE ):'', // 출발 요일
+                            eDay : this.data.ADATE?ts_fnGetWeekDay( this.data.ADATE ):'' //왕복도착 요일
+                        }],
+                        OW : [{
+                            sId : 'ow_departure_1',
+                            sVal : this.data.DDATE?ts_fnConvertDateFormat( this.data.DDATE, '.' ):'', // 출발일 (여정1 출발일)
+                            sDay : this.data.DDATE?ts_fnGetWeekDay( this.data.DDATE ):''
+                        }],
+                        MD : [{ 
+                            sId : 'md_departure_1',
+                            eId : 'md_arrival_1',
+                            sVal : this.data.DDATE1?ts_fnConvertDateFormat( this.data.DDATE1, '.' ):'', // 출발일 (여정1 출발일)
+                            sDay : this.data.DDATE1?ts_fnGetWeekDay( this.data.DDATE1 ):''
+                            },{
+                            sId : 'md_departure_2',
+                            eId : 'md_arrival_2', 
+                            sVal : this.data.DDATE2?ts_fnConvertDateFormat( this.data.DDATE2, '.' ):'', // 출발일 (여정2 출발일)
+                            sDay : this.data.DDATE2?ts_fnGetWeekDay( this.data.DDATE2 ):''
+                            },{
+                            sId : 'md_departure_3',
+                            eId : 'md_arrival_3', 
+                            sVal : this.data.DDATE3?ts_fnConvertDateFormat( this.data.DDATE3, '.' ):'', // 출발일 (여정3 출발일)
+                            sDay : this.data.DDATE3?ts_fnGetWeekDay( this.data.DDATE3 ):''
+                        }]
+                    },
+                    multiCounter : Number( this.data.DSIZE ),
+                    seat: {
+                        id : 'form__seattype',
+                        val : this.data.DCLS?this.data.DCLS:'',
+                        code : this.data.CLS, //좌석등급 
+                        chkID : 'form__checkbox--straight',
+                        chkVal : this.data.VIAYN?'checked':'', //'checked' or ''
+                    },
+                    passenger : {
+                        id : 'form__passenger',
+                        vals : [Number(this.data.NADT),Number(this.data.NCHD),Number(this.data.NINF)],  //성인, 소아, 유아 인원수
+                        totalVal :Number(this.data.NADT)+Number(this.data.NCHD)+Number(this.data.NINF)
+                    }
+            };
+            AIRFINDER.search.set();
+            
+            var elGrade = $( '.list__seat-grade' );
+            
+            if( 'local' == setSeatType.getInitType() ){
+                elGrade = elGrade.eq(1);
+            } else {
+                elGrade = elGrade.eq(0);
+            }
+            
+            elGrade.find( '.js-button__select[data-code="' + this.data.CLS + '"]' ).trigger( 'click' );
+            var text =  '승객 '+AIRFINDER.set.passenger.totalVal+'명, '+elGrade.find( '.button__seat--active' ).text();
+            $('.link__seat-set').text(text);
+            $('#box__layer-air-finder--select-seat .button__confirm').html('<span class="text__seat">'+elGrade.find( '.button__seat--active' ).text()+', 승객 '+AIRFINDER.set.passenger.totalVal+'명</span><span class="text__state">선택완료</span>');
+            AIRFINDER.set.seat.code = elGrade.find( '.button__seat--active' ).attr( 'data-code' );
+            AIRFINDER.set.seat.val = elGrade.find( '.button__seat--active' ).text();
+        },
+        setSubmitData : function() {
+            this.data = {};
+            this.data.TTYPE = $( '#box__layer-air-finder--select-seat' ).attr( 'data-code' );
+            this.data.RTYPE = 'fromkr';
+            this.data.SECTN = AIRFINDER.lineType;
+            
+            this.data.NADT = AIRFINDER.set.passenger.vals[0]? AIRFINDER.set.passenger.vals[0] : AIRFINDER.set.passenger.vals;
+            this.data.NCHD = AIRFINDER.set.passenger.vals[1]? AIRFINDER.set.passenger.vals[1] : 0;
+            this.data.NINF = AIRFINDER.set.passenger.vals[2]? AIRFINDER.set.passenger.vals[2] : 0;
+            
+            this.data.CLS = AIRFINDER.set.seat.code? AIRFINDER.set.seat.code : 'Y';
+            this.data.DCLS = AIRFINDER.set.seat.val;
+            this.data.VIAYN = ts_fnIsNotEmpty( AIRFINDER.set.seat.chkVal );
+            this.data.MSITE = "M";
+            
+            if( 'MD' == this.data.SECTN ) {
+                this.data.DSIZE = AIRFINDER.set.multiCounter;
+                this.data.DSTAD1 = AIRFINDER.set[this.data.SECTN].start[0].code;
+                this.data.DDESC1 = AIRFINDER.set[this.data.SECTN].start[0].val;
+                this.data.ASTAD1 = AIRFINDER.set[this.data.SECTN].end[0].code;
+                this.data.ADESC1 = AIRFINDER.set[this.data.SECTN].end[0].val;
+                this.data.DDATE1 = ts_fnConvertDateFormat( AIRFINDER.set.date[this.data.SECTN][0].sVal, '' );
+                
+                this.data.DSTAD2 = AIRFINDER.set[this.data.SECTN].start[1].code;
+                this.data.DDESC2 = AIRFINDER.set[this.data.SECTN].start[1].val;
+                this.data.ASTAD2 = AIRFINDER.set[this.data.SECTN].end[1].code;
+                this.data.ADESC2 = AIRFINDER.set[this.data.SECTN].end[1].val;
+                this.data.DDATE2 = ts_fnConvertDateFormat( AIRFINDER.set.date[this.data.SECTN][1].sVal, '' );       
+                
+                this.data.DSTAD3 = AIRFINDER.set[this.data.SECTN].start[2].code;
+                this.data.DDESC3 = AIRFINDER.set[this.data.SECTN].start[2].val;
+                this.data.ASTAD3 = AIRFINDER.set[this.data.SECTN].end[2].code;
+                this.data.ADESC3 = AIRFINDER.set[this.data.SECTN].end[2].val;
+                this.data.DDATE3 = ts_fnConvertDateFormat( AIRFINDER.set.date[this.data.SECTN][2].sVal, '' );
+            } else {
+                this.data.DSTAD = AIRFINDER.set[this.data.SECTN].start[0].code;
+                this.data.DDESC = AIRFINDER.set[this.data.SECTN].start[0].val;
+                this.data.ASTAD = AIRFINDER.set[this.data.SECTN].end[0].code; 
+                this.data.ADESC = AIRFINDER.set[this.data.SECTN].end[0].val;
+                this.data.DDATE = ts_fnConvertDateFormat( AIRFINDER.set.date[this.data.SECTN][0].sVal, '' );
+                
+                if( 'RT' == this.data.SECTN ) {
+                    this.data.ADATE = ts_fnConvertDateFormat( AIRFINDER.set.date[this.data.SECTN][0].eVal, '' );
+                }
+                
+                if( 'KR' != AIRFINDER.set[this.data.SECTN].start[0].ncode ) {
+                    this.data.RTYPE = 'tokr';
+                }
+            }
+        },
+        validate : function(){
+            
+            if('OW' == this.data.SECTN ) {
+                
+                if(  ts_fnIsEmpty( this.data.DSTAD ) || ts_fnIsEmpty( this.data.DDESC ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--oneway .link__set-airport:eq(0)' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.ASTAD ) || ts_fnIsEmpty( this.data.ADESC ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--oneway .link__set-airport:eq(1)' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.DDATE ) ) {
+                    controlLayer( '#box__layer-calendar', 'O', $( '#box__air-type-content--oneway .box__start .link__set-date' ) );
+                    return false;
+                }
+            } else if ( 'MD' == this.data.SECTN ) {
+                
+                if( ts_fnIsEmpty( this.data.DSTAD1 ) || ts_fnIsEmpty( this.data.DDESC1 ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--multi .box__area-division--depart .link__set-airport:eq(0)' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.ASTAD1 ) || ts_fnIsEmpty( this.data.ADESC1 ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--multi .box__area-division--land .link__set-airport:eq(0)' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.DSTAD2 ) || ts_fnIsEmpty( this.data.DDESC2 ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--multi .box__area-division--depart .link__set-airport:eq(1)' ) );
+                    return false;
+                }
+
+                if( ts_fnIsEmpty( this.data.ASTAD2 ) || ts_fnIsEmpty( this.data.ADESC2 ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--multi .box__area-division--land .link__set-airport:eq(1)' ) );
+                    return false;
+                }
+                
+                if( 3 == this.data.DSIZE ) {
+                    
+                    if( ts_fnIsEmpty( this.data.DSTAD3 ) || ts_fnIsEmpty( this.data.DDESC3 ) ) {
+                        controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--multi .box__area-division--depart .link__set-airport:eq(2)' ) );
+                        return false;
+                    }
+                    
+                    if( ts_fnIsEmpty( this.data.ASTAD3 ) || ts_fnIsEmpty( this.data.ADESC3 ) ) {
+                        controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--multi .box__area-division--land .link__set-airport:eq(2)' ) );
+                        return false;
+                    }
+                }
+                
+                if( ts_fnIsEmpty( this.data.DDATE1 ) ) {
+                    controlLayer( '#box__layer-calendar', 'O', $( '#box__air-type-content--multi .box__start .link__set-date:eq(0)' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.DDATE2 ) ) {
+                    controlLayer( '#box__layer-calendar', 'O', $( '#box__air-type-content--multi .box__start .link__set-date:eq(1)' ) );
+                    return false;
+                }
+                
+                if( 3 == this.data.DSIZE ) {
+                    
+                    if( ts_fnIsEmpty( this.data.DDATE3 ) ) {
+                        controlLayer( '#box__layer-calendar', 'O', $( '#box__air-type-content--multi .box__start .link__set-date:eq(2)' ) );
+                        return false;
+                    }
+                }
+                
+            } else {
+                
+                if(  ts_fnIsEmpty( this.data.DSTAD ) || ts_fnIsEmpty( this.data.DDESC ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--roundtrip .link__set-airport:eq(0)' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.ASTAD ) || ts_fnIsEmpty( this.data.ADESC ) ) {
+                    controlLayer( '#box__layer-air-finder--select-airport', 'O', $( '#box__air-type-content--roundtrip .link__set-airport:eq(1)' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.DDATE ) ) {
+                    controlLayer( '#box__layer-calendar', 'O', $( '#box__air-type-content--roundtrip .box__start .link__set-date' ) );
+                    return false;
+                }
+                
+                if( ts_fnIsEmpty( this.data.ADATE ) ) {
+                    controlLayer( '#box__layer-calendar', 'O', $( '#box__air-type-content--roundtrip .box__end .link__set-date' ) );
+                    return false;
+                }
+            }
+            
+            var strAlertTxt = '출발지와 도착지를 다르게 선택해 주세요';
+            var strCity = '';
+            var strCompCity = '';
+            
+            if( 'MD' == this.data.SECTN ) {
+                
+                strCity = ts_fnReplaceDmstCode( this.data.DSTAD1 );
+                strCompCity = ts_fnReplaceDmstCode( this.data.ASTAD1 );
+                if( strCity == strCompCity ) {
+                    alert( '여정1 ' + strAlertTxt );
+                    return false;
+                }
+                
+                strCity = ts_fnReplaceDmstCode( this.data.DSTAD2 );
+                strCompCity = ts_fnReplaceDmstCode( this.data.ASTAD2 );
+                if( strCity == strCompCity ) {
+                    alert( '여정2 ' + strAlertTxt );
+                    return false;
+                }
+                
+                if( 3 == this.data.DSIZE ) {
+                    
+                    strCity = ts_fnReplaceDmstCode( this.data.DSTAD3 );
+                    strCompCity = ts_fnReplaceDmstCode( this.data.ASTAD3 );
+                    if( strCity == strCompCity ) {
+                        alert( '여정3 ' + strAlertTxt );
+                        return false;
+                    }
+                }
+            } else {
+                
+                strCity = ts_fnReplaceDmstCode( this.data.DSTAD );
+                strCompCity = ts_fnReplaceDmstCode( this.data.ASTAD );
+                if( strCity == strCompCity ) {
+                    alert( strAlertTxt );
+                    return false;
+                }
+            }
+            
+            return true;
+        },
+        submit : function(){
+            
+            if( !this.validate() ){
+                return false;
+            }
+            var arrHtml = [];
+            
+            arrHtml.push( '<form id="send_search_data" method="get" action="' );
+            arrHtml.push( this.url[this.data.TTYPE] );
+            arrHtml.push( '" class="hide">' );
+            arrHtml.push( '<input type="hidden" name="TTYPE" value="' + this.data.TTYPE + '" />' );
+            arrHtml.push( '<input type="hidden" name="RTYPE" value="' + this.data.RTYPE + '" />' );
+            arrHtml.push( '<input type="hidden" name="SECTN" value="' + this.data.SECTN + '" />' );
+            
+            if( 'MD' == this.data.SECTN ) { // Out도시변경, 다구간
+                
+                arrHtml.push( '<input type="hidden" name="DSTAD1" value="' + this.data.DSTAD1 + '" />' );
+                arrHtml.push( '<input type="hidden" name="ASTAD1" value="' + this.data.ASTAD1 + '" />' );
+                arrHtml.push( '<input type="hidden" name="DDATE1" value="' + this.data.DDATE1 + '" />' );
+                arrHtml.push( '<input type="hidden" name="DSTAD2" value="' + this.data.DSTAD2 + '" />' );
+                arrHtml.push( '<input type="hidden" name="ASTAD2" value="' + this.data.ASTAD2 + '" />' );
+                arrHtml.push( '<input type="hidden" name="DDATE2" value="' + this.data.DDATE2 + '" />' );
+                
+                if( 3 == this.data.DSIZE ) {
+                
+                    arrHtml.push( '<input type="hidden" name="DSTAD3" value="' + this.data.DSTAD3 + '" />' );
+                    arrHtml.push( '<input type="hidden" name="ASTAD3" value="' + this.data.ASTAD3 + '" />' );
+                    arrHtml.push( '<input type="hidden" name="DDATE3" value="' + this.data.DDATE3 + '" />' );
+                }
+                
+                arrHtml.push( '<input type="hidden" name="DSIZE" value="' + this.data.DSIZE + '" />' );
+            } else {
+                arrHtml.push( '<input type="hidden" name="DSTAD" value="' + this.data.DSTAD + '" />' );
+                arrHtml.push( '<input type="hidden" name="ASTAD" value="' + this.data.ASTAD + '" />' );
+                arrHtml.push( '<input type="hidden" name="DDATE" value="' + this.data.DDATE + '" />' );
+                if( 'RT' == this.data.SECTN ) {
+                    arrHtml.push( '<input type="hidden" name="ADATE" value="' + this.data.ADATE + '" />' );
+                }
+                
+            }
+            
+            arrHtml.push( '<input type="hidden" name="NADT" value="' + this.data.NADT + '" />' );
+            arrHtml.push( '<input type="hidden" name="NCHD" value="' + this.data.NCHD + '" />' );
+            arrHtml.push( '<input type="hidden" name="NINF" value="' + this.data.NINF + '" />' );
+            arrHtml.push( '<input type="hidden" name="CLS" value="' + this.data.CLS + '" />' );
+            arrHtml.push( '<input type="hidden" name="VIAYN" value="' + this.data.VIAYN + '" />' );
+            arrHtml.push( '<input type="hidden" name="MSITE" value="' + this.data.MSITE + '" />' );
+            arrHtml.push( '</form>' );
+            
+            ts_fnSetRecentSearchData( 'TSRS', JSON.stringify( this.data ), 3 );
+            
+            $("#send_search_data").remove();
+            $('body').append( arrHtml.join( '' ) );
+            $("#send_search_data").submit();
+            return false;
+        }
+}
+
+/**
+ * search city
+ */
+function ts_fnGetSearchCity() {
+    
+    var _ajaxTimeout = null;
+    
+    return function( obj ) {
+        
+        if( !$( '#box__layer-air-finder--select-airport' ) ) {
+            return false;
+        }
+        
+        var strKeyword = obj.val();
+        var regx = /.*?[가-힣]+.*?/;
+        var intSize = 2;
+        
+        if( ts_fnIsNotEmpty( strKeyword ) ) {
+            strKeyword = strKeyword.replace(/^\s+|\s+$/g,'');
+        }
+        
+        if( regx.test( strKeyword ) ) {
+            intSize = 1;
+        } else {
+            intSize = 2;
+        }
+        
+        if( intSize > strKeyword.length ) {
+            
+            $( '.box__airkeyword' ).hide();
+            $( '.list__air-category' ).show();
+            
+            if( 0 < $('.button__remove-item' ).index() ) {
+                $( '.list__air-category--recently' ).show();
+            } else {
+                $( '.list__air-category--recently' ).hide();
+            }
+            
+            clearTimeout( _ajaxTimeout );
+            _ajaxTimeout = null;
+            return false;
+        }
+        
+        var cb_success = function( result ) {
+            
+            var objHtml = '';
+            var list = result.list;
+            var strCtKor = '';
+            var strCtEng = '';
+            var strApKor = '';
+            var strApCode = '';
+            var strNtKor = '';
+            
+            if( list.length > 0 ){
+                
+                var strType = 'a';
+                objHtml += ' <ul class="list__air-keyword">';
+                
+                if( VERTICALCOMMONUI.savedHashLayerOpener.parent().hasClass( 'box__area-division--depart' ) ) {
+                    strType = 'd';
+                }
+                
+                for(var i=0; i<list.length; i++){
+                    
+                    strCtKor = ts_fnChangeFontMobile( strKeyword, list[i].CTY_LCL_DESC );
+                    strApKor = ts_fnChangeFontMobile( strKeyword, list[i].AP_KOR_VIEW );
+                    strApCode = ts_fnChangeFontMobile( strKeyword, list[i].CTY_AP_CODE );
+                    strNtKor = ts_fnChangeFontMobile( strKeyword, list[i].NAT_LCL_DESC );
+                    
+                    objHtml += ' <li class="list-item__info">';
+                    objHtml +=  ' <a href="#" class="link js-select-airport" data-value="' + list[i].CTY_LCL_DESC + '" data-code="' + list[i].CTY_AP_CODE + '" data-ncode="' + list[i].CTY_NT_CODE + '"';
+                    objHtml +=      ' data-montelena-acode="200003247" data-montelena-keyword="' + strKeyword + '" data-montelena-dstad="' + list[i].CTY_AP_CODE.toLowerCase() + '" data-montelena-type="' + strType + '"';
+                    objHtml +=  '>';
+                    objHtml +=      ' <span class="box__location"><span class="text__city">';
+                    objHtml +=          strCtKor;
+                    objHtml +=      '</span>,';
+                    objHtml +=      ' <span class="text__country">';
+                    objHtml +=          strNtKor;
+                    objHtml +=      '</span></span>';
+                    objHtml +=      ' <span class="box__airport"><span class="text__code">';
+                    objHtml +=          strApCode;
+                    objHtml +=      '</span>';
+                    objHtml +=      '<span class="text__name">';
+                    objHtml +=          strApKor;
+                    objHtml +=      '</span></span>';
+                    objHtml +=  ' </a>';
+                    objHtml += ' </li>';
+                }
+                
+                objHtml += ' </ul>';
+            }else{
+                objHtml += ' <div class="box__empty sprite__air-common--before">';
+                objHtml +=  ' 검색된 지역이 없습니다.<br />입력한 지역을 다시 한 번 확인해 주세요.';
+                objHtml += ' </div>';
+            }
+            
+            if( _ajaxTimeout == null ) {
+                return false;
+            }
+            
+            $( '.list__air-category' ).hide();
+            $( '.box__airkeyword' ).html( objHtml ).show();
+       };  
+   
+       var paramData = {
+               korCITY : strKeyword
+       };
+       
+       clearTimeout( _ajaxTimeout );
+       _ajaxTimeout = null;
+       
+       _ajaxTimeout = setTimeout( function() {        
+           fn_req_ajax( "/commonSrp/getCityInfo.do", paramData, cb_success, null, null, null, null, null, null );
+       }, 300 );
+    };
+}
+
+/**
+ * Highlight Search Keyword
+ */
+function ts_fnChangeFontMobile( strKeyword, strText ) {
+    
+    var arrMatch = strText.match( new RegExp( strKeyword, 'gi' ) );
+    var strTemp = '';
+    
+    if( null != arrMatch ) {
+        
+        arrMatch = $.grep( arrMatch, function( el, index ) {
+            return index == $.inArray( el, arrMatch );
+        });
+        
+        var intLen = arrMatch.length;
+        for( var i=0; i<intLen; i++ ) {
+            strTemp = arrMatch[i];
+            strText = strText.replace( new RegExp( strTemp, 'g' ), '$#' + strTemp + '#$' );
+        }
+    }
+    
+    return strText.replace( /\$\#/g, '<span class="text__heightlight">' ).replace( /\#\$/g, '</span>' );
+}
+
+/**
+ * Set Recent Search Data
+ */
+function ts_fnSetRecentSearchData( key, data, size ) {
+    
+    var cookie = '';
+    var objCookie = [];
+    var date = new Date();    
+    var isLocalStorage = ts_fnIsNull( localStorage );
+    var expire = 24;
+    
+    if( isLocalStorage ) { //cookie
+        cookie = ts_fnGetCookie( key );
+    } else { //localStorage
+        cookie = localStorage.getItem( key );
+    }
+    
+    if( ts_fnIsNotEmpty( cookie ) ) {
+        objCookie = JSON.parse( cookie );
+    }
+    
+    if( 0 < objCookie.length ) {
+        
+        var idx = $.inArray( data, objCookie );
+        
+        if( -1 < idx ) {
+            objCookie.splice( idx, 1 );
+        } else {
+            if( objCookie.length > (size-1) ) {
+                objCookie.pop();
+            }
+        }
+    }
+    
+    objCookie.unshift( data );
+    
+    if( isLocalStorage ) {
+        cookie = ts_fnSetCookie( key, JSON.stringify( objCookie ), expire )
+    } else {
+        localStorage.setItem( key, JSON.stringify( objCookie ) );
+        localStorage.setItem( key + '_EXPIRE', Math.round( date.setSeconds( date.getSeconds() + ( expire * 60 * 60 ) ) / 1000 ) );
+    }
+}
+
+/**
+ * Get Recent Search Data
+ */
+function ts_fnGetRecentSearchData( key ) {
+    
+    var cookie = '';
+    var objCookie = [];
+    var isLocalStorage = ts_fnIsNull( localStorage );
+    
+    if( isLocalStorage ) { //cookie
+        cookie = ts_fnGetCookie( key );
+    } else { //localStorage
+        
+        cookie = localStorage.getItem( key );
+        
+        if( ts_fnIsNotEmpty( cookie ) ) {
+            
+            var date = Math.round( new Date() / 1000 );
+            
+            if( date > Number( localStorage.getItem( key + '_EXPIRE' ) ) ) {
+                localStorage.removeItem( key );
+                localStorage.removeItem( key + '_EXPIRE' );
+                cookie = '';
+            }
+        }
+    }
+    
+    return cookie;
+}
+
+/**
+ * Create Dom Recently Search 
+ */
+function ts_fnCreateRecentlySearch( cookie ) {
+    
+    var objCookie = JSON.parse( cookie );
+    var len = objCookie.length;
+    var data = null;
+    var html = '';
+    var strType = 'a';
+    
+    if( VERTICALCOMMONUI.savedHashLayerOpener.parent().hasClass( 'box__area-division--depart' ) ) {
+        strType = 'd';
+    }
+    
+    for( var i=0; i<len; i++ ) {
+        data = JSON.parse( objCookie[i] );
+        
+        html += ' <li class="list-item__info">';
+        html +=     ' <a href="#" class="link-info js-select-airport" data-value="' + data.CN + '" data-code="' + data.AC + '" data-ncode="' + data.NC + '"';
+        html +=     ' data-montelena-acode="200003248" data-montelena-dstad="' + data.AC.toLowerCase() + '" data-montelena-type="' + strType + '"';
+        html +=     '>';
+        html +=         ' <span class="box__location"><span class="text__city">' + data.CN + '</span>, <span class="text__country">' + data.NN + '</span></span>';
+        html +=         ' <span class="box__airport"><span class="text__code">' + data.AC + '</span><span class="text__name">' + data.AN + '</span></span>';
+        html +=     ' </a>';
+        html +=     ' <button class="button__remove-item sprite__air-common--before"><span class="for-a11y">삭제</span></button>';
+        html += ' </li>';
+    }
+    
+    $( '.list__air-category--recently .list__air-category-info' ).html( html );
+}
+
+/**
+ * Set Gatway Data 
+ */
+function ts_fnSetGatewayData( json ) {
+    
+    var objReturn = {};
+    
+    if( ts_fnIsNotEmpty( json ) && -1 < json.indexOf( '{' ) ) {
+        json = JSON.parse( json );
+    }
+    
+    objReturn.DSTAD = json.DSTAD;
+    objReturn.DDESC = json.DDESC;    
+    objReturn.DEPNT = json.DEPNT;    
+    objReturn.DSTAD1 = json.DSTAD1;
+    objReturn.DDESC1 = json.DDESC1;
+    objReturn.DEPNT1 = json.DEPNT1;
+    objReturn.VIAYN = json.VIAYN;
+    objReturn.TTAP = '.list__air-type li:eq(0)';
+    objReturn.TAREA = '#box__air-type-content--roundtrip';
+    objReturn.TTYPE = json.TTYPE?json.TTYPE:'global';
+    objReturn.SECTN = json.SECTN;
+    objReturn.ASTAD =  json.ASTAD;
+    objReturn.ADESC =  json.ADESC;
+    objReturn.ARRNT =  json.ARRNT;
+    
+    var ddate = json.DDATE;
+    var adate = json.ADATE;
+    
+    if( ts_fnIsNotEmpty( ddate ) ) {
+        objReturn.DDATE = ts_fnConvertDateFormat( ddate, '.' );
+        objReturn.DDAY = ts_fnGetWeekDay( ddate );
+    }
+    
+    if( ts_fnIsNotEmpty( adate ) ) {
+        objReturn.ADATE = ts_fnConvertDateFormat( adate, '.' );
+        objReturn.ADAY = ts_fnGetWeekDay( adate );
+    }
+    
+    TS_FINDER_CONFIG.sectn = objReturn.SECTN;
+    if ( 'MD' == objReturn.SECTN ) {
+        objReturn.TTAP = '.list__air-type li:eq(2)';
+        objReturn.TAREA = '#box__air-type-content--multi';
+    } else {
+    	
+    	if ( 'OW' == objReturn.SECTN ) {
+            objReturn.TTAP = '.list__air-type li:eq(1)';
+            objReturn.TAREA = '#box__air-type-content--oneway';
+        }
+    	
+        var gateway = json.Gateway;    
+        if( ts_fnIsNotEmpty( gateway ) ) {
+            TS_FINDER_CONFIG.gateway = gateway;
+            
+            if( 'T' == gateway.substr( 0, 1 ) ) {
+                
+                if( 'L' == gateway.substr( 1, 1 ) ) {
+                    objReturn.DSTAD = 'GMP';
+                    objReturn.DDESC = '김포';
+                    objReturn.DEPNT = 'KR';
+                    objReturn.TTYPE = 'local';
+                } else {
+                    objReturn.DSTAD = 'ICN';
+                    objReturn.DDESC = '인천';
+                    objReturn.TTYPE = 'global';
+                }
+                
+                if( 'D' == gateway.substr( 2, 1 ) ) {
+                    objReturn.CLICK = '#box__air-type-content--roundtrip .link__set-airport:eq(0)'; 
+                } else {
+                    objReturn.CLICK = '#box__air-type-content--roundtrip .link__set-airport:eq(1)';
+                }
+                
+                objReturn.HASH = '#box__layer-air-finder--select-airport';
+                
+            } else if( 'V' == gateway.substr( 0, 1 ) ) {
+            	
+                if( 'RT' == json.SECTN ) {
+                	
+                    switch( gateway.substr( 1, 2 ) ) {
+                        case 'DS':
+                            objReturn.CLICK = '#box__air-type-content--roundtrip .box__area-division--depart .link__set-airport';
+                            objReturn.HASH = '#box__layer-air-finder--select-airport';
+                            break;
+                        case 'AS':
+                            objReturn.CLICK = '#box__air-type-content--roundtrip .box__area-division--land .link__set-airport';
+                            objReturn.HASH = '#box__layer-air-finder--select-airport';
+                            break;
+                        case 'DT':
+                            objReturn.CLICK = '#box__air-type-content--roundtrip .box__start .link__set-date';
+                            objReturn.HASH = '#box__layer-calendar';
+                            break;
+                        case 'AT':
+                            objReturn.CLICK = '#box__air-type-content--roundtrip .box__end .link__set-date';
+                            objReturn.HASH = '#box__layer-calendar';
+                            break;
+                        case 'CL':
+                            objReturn.CLICK = '.link__seat-set';
+                            objReturn.HASH = '#box__layer-air-finder--select-seat';
+                            break;
+                    }
+                }
+            }
+            
+            if( ts_fnIsNotEmpty( objReturn.HASH ) ) {
+                
+                VERTICALCOMMONUI.savedHashLayerOpener = $( objReturn.CLICK );
+                
+                if( TS_FINDER_CONFIG.usableHis ) {
+                    history.replaceState( null, '', 'lpMain.do'  );
+                    history.pushState( null, '', objReturn.HASH  );
+                    TS_FINDER_CONFIG.hisLen = -1;
+                } else {
+                    var slen = history.length;
+                    location.href =  objReturn.HASH;
+                    var elen = history.length;
+                    TS_FINDER_CONFIG.hisLen = ( slen - elen );
+                }
+            }
+        }
+    }
+    
+    var data = {
+            //왕복
+            RT : {
+                start : [{ // 출발지
+                    id : 'rt_startPoint_1',
+                    val : objReturn.DDESC,
+                    code : objReturn.DSTAD,
+                    ncode : objReturn.DEPNT
+                }],
+                end : [{ // 도착지
+                    id : 'rt_endPoint_1',
+                    val : objReturn.ADESC?objReturn.ADESC:'',
+                    code : objReturn.ASTAD?objReturn.ASTAD:'',
+                    ncode : objReturn.ARRNT?objReturn.ARRNT:''
+                }]
+            },
+            //편도
+            OW : {
+                start : [{ // 출발지
+                    id : 'ow_startPoint_1',
+                    val : objReturn.DDESC,
+                    code : objReturn.DSTAD,
+                    ncode : objReturn.DEPNT
+                }],
+                end : [{ // 도착지
+                    id : 'ow_endPoint_1',
+                    val : objReturn.ADESC?objReturn.ADESC:'',
+                    code : objReturn.ASTAD?objReturn.ASTAD:'',
+                    ncode : objReturn.ARRNT?objReturn.ARRNT:''
+                }]
+            },
+            //다구간
+            MD : {
+                start : [{ // 출발지
+                    id : 'md_startPoint_1',  // 출발 1
+                    val : objReturn.DDESC1,
+                    code : objReturn.DSTAD1,
+                    ncode : objReturn.DEPNT1
+                },{
+                    id : 'md_startPoint_2',  // 출발 2
+                    val : '',
+                    code : '',
+                    ncode : ''
+                },{
+                    id : 'md_startPoint_3',  // 출발 3
+                    val : '',
+                    code : '',
+                    ncode : ''
+                }],
+                end : [{ // 도착지
+                    id : 'md_endPoint_1',  // 도착 1
+                    val : '',
+                    code : '',
+                    ncode : ''
+                },{
+                    id : 'md_endPoint_2',  // 도착 2
+                    val : '',
+                    code : '',
+                    ncode : ''
+                },{
+                    id : 'md_endPoint_3',  // 도착 3
+                    val : '',
+                    code : '',
+                    ncode : ''
+                }]
+            },
+            date :{
+                RT : [{
+                    sId : 'rt_departure_1',
+                    eId : 'rt_arrival_1',
+                    sVal : objReturn.DDATE?objReturn.DDATE:'', // 출발일 (여정1 출발일)
+                    eVal : objReturn.ADATE?objReturn.ADATE:'', // 왕복 출발일
+                    sDay : objReturn.DDAY?objReturn.DDAY:'', // 출발 요일
+                    eDay : objReturn.ADAY?objReturn.ADAY:'' //왕복출발 요일
+                    }
+                ],
+                OW : [{
+                    sId : 'ow_departure_1',
+                    sVal : objReturn.DDATE?objReturn.DDATE:'', // 출발일 (여정1 출발일)
+                    sDay : objReturn.DDAY?objReturn.DDAY:''
+                }],
+                MD : [{ 
+                    sId : 'md_departure_1',
+                    eId : 'md_arrival_1',
+                    sVal : '', // 출발일 (여정1 출발일)
+                    sDay : ''
+                    },{
+                    sId : 'md_departure_2',
+                    eId : 'md_arrival_2', 
+                    sVal : '', // 출발일 (여정2 출발일)
+                    sDay : ''
+                    },{
+                    sId : 'md_departure_3',
+                    eId : 'md_arrival_3', 
+                    sVal : '', // 출발일 (여정3 출발일)
+                    sDay : ''
+                }]
+            },
+            multiCounter : 2,
+            seat: {
+                id : 'form__seattype',
+                val : '일반석',
+                code : 'Y',
+                chkID : 'form__checkbox--straight',
+                chkVal : objReturn.VIAYN, //'checked' or ''
+            },
+            passenger : {
+                id : 'form__passenger',
+                vals : [1,0,0],
+                totalVal : 1
+            }
+    }
+    
+    objReturn.DATA = data;
+    
+    return objReturn;
+}
+
+/**
+ * Get Recently Finder Date Format  
+ */
+function ts_fnRecentDateFormat( date ) {
+    
+    var day = ts_fnGetWeekDay( date );
+    var date = ts_fnConvertDateObject( date );
+    
+    return (date.getMonth()+1) + '월 ' + date.getDate() + '일(' + day + ')'  ;
+}
+
+/**
+ * Set Seat Type 
+ */
+function ts_fnSetSeatType( ttype ) {
+    
+    var _inittype = ttype;
+    var _ttype = '';
+    
+    return {
+        init : function( ttype, rtype ) {
+            
+            if( _ttype != ttype ) {
+                
+                var elLayer = $( '#box__layer-air-finder--select-seat' );
+                _ttype = ttype;
+                elLayer.attr( 'data-code', _ttype );
+                
+                //seat
+                var elGrade = elLayer.find( '.list__seat-grade' );
+                var elButton = null;
+                
+                elGrade.hide();
+                if( 'local' == _ttype ) {
+                    elButton = elGrade.eq(1);
+                } else {
+                    elButton = elGrade.eq(0);
+                }
+                
+                elButton.show().find( 'li > .button__seat' ).eq(0).trigger( 'click' );
+                var code = elButton.find( 'li > .button__seat' ).eq(0).attr( 'data-code' );
+                var val = elButton.find( 'li > .button__seat' ).eq(0).text();
+                AIRFINDER.set.seat.code = code;
+                AIRFINDER.set.seat.val = val;
+                
+                //passenger
+                var age = '12';
+                if( 'local' == _ttype ) {
+                    age = '13';
+                }
+                
+                var pvals = AIRFINDER.set.passenger.vals;
+                var pnum = Number(pvals[0]) + Number(pvals[1]) + Number(pvals[2]);
+                elLayer.find( '.ts_age_intdom_ind' ).text( age );
+                elLayer.find( '.form__input-number' ).eq(0).val( pvals[0] );
+                elLayer.find( '.form__input-number' ).eq(1).val( pvals[1] );
+                elLayer.find( '.form__input-number' ).eq(2).val( pvals[2] );
+                elLayer.find( '.button__confirm span' ).eq(0).text( val +', 승객 ' + pnum + '명' );
+                $( '.link__seat-set' ).text( '승객 ' + pnum + '명, ' + val );
+                $( '#form__seattype' ).val( val );
+                $( '#form__passenger' ).val( pnum );
+                
+                if( 9 <= pnum ) {
+                    $('.button__number-control--plus').prop('disabled',true);
+                }
+                
+                if( pvals[0] <= pvals[2] ) {
+                    $('.button__number-control--plus').eq(2).prop('disabled',true);
+                }
+                
+                if( 0 < pvals[1] ) {
+                    $('.button__number-control--minus').eq(1).removeAttr('disabled');
+                }
+                
+                if( 0 < pvals[2] ) {
+                    $('.button__number-control--minus').eq(2).removeAttr('disabled');
+                }
+            }
+        },
+        getInitType : function() {
+            return _inittype;
+        }
+    };
+}
+
+/**
+ * control Layer Event
+ */
+function ts_fncontrolLayer( layerOpenControl, layerCloseControl ) {
+    var _layerOpenControl = layerOpenControl;
+    var _layerCloseControl = layerCloseControl;
+    return function( hash, type, target ) {
+        
+        if( 'E' == type ) {
+            var len = TS_FINDER_CONFIG.hisLen;
+            if( 0 > len ) {
+                TS_FINDER_CONFIG.close = true;
+                history.go( -1 );
+                if( '#box__layer-detail-fare' == hash ) {
+                    TS_FINDER_CONFIG.hisLen = -1;
+                } else {
+                    TS_FINDER_CONFIG.hisLen = 0;
+                }
+                
+            } else {
+                if( '#box__layer-detail-fare' != hash && 0 < location.hash.length ) {
+                    history.go( -1 );
+                }
+                _layerCloseControl( hash );
+            }
+        } else if( 'O' == type ) {
+            
+            if( hash == location.hash ) {
+                _layerOpenControl( hash, target );
+            } else {
+                VERTICALCOMMONUI.savedHashLayerOpener = target;
+                location.href = hash;
+                if( hash == '#box__layer-detail-fare' ) {
+                    TS_FINDER_CONFIG.hisLen = -2;
+                } else {
+                    TS_FINDER_CONFIG.hisLen = -1;
+                }
+                
+            }
+            
+        } else {
+            var _hash = '';
+            var _target = '';
+            var lineType = AIRFINDER.lineType;
+            var setData = AIRFINDER.set[ lineType ];
+            var setDate = AIRFINDER.set.date[ lineType ];
+            
+            if( 'RT' == lineType ) {
+                
+                if( ( ts_fnIsEmpty( setData.end[0].code ) || ts_fnIsEmpty( setData.end[0].val ) ) ) {
+                    _hash = '#box__layer-air-finder--select-airport';
+                    _target = $( '#box__air-type-content--roundtrip .box__area-division--land .link__set-airport' );
+                } else if( ts_fnIsEmpty( setDate[0].sVal ) || ts_fnIsEmpty( setDate[0].eVal ) ) {
+                    _hash = '#box__layer-calendar';
+                    _target = $( '#box__air-type-content--roundtrip .box__end .link__set-date' );
+                }
+            } else if( 'OW' == lineType ) {
+                
+                if( ( ts_fnIsEmpty( setData.end[0].code ) || ts_fnIsEmpty( setData.end[0].val ) ) ) {
+                    _hash = '#box__layer-air-finder--select-airport';
+                    _target = $( '#box__air-type-content--oneway .box__area-division--land .link__set-airport' );
+                } else if( ts_fnIsEmpty( setDate[0].sVal ) ) {
+                    _hash = '#box__layer-calendar';
+                    _target = $( '#box__air-type-content--roundtrip .box__end .link__set-date' );
+                }
+            } else if( 'MD' == lineType ) {
+                
+                var selector = $( '#box__air-type-content--multi .list-item' );
+                
+                for( var i=0; i<AIRFINDER.set.multiCounter; i++ ) {
+                    
+                    if( ts_fnIsEmpty( setData.start[i].code ) || ts_fnIsEmpty( setData.start[i].val ) ) {
+                        _hash = '#box__layer-air-finder--select-airport';
+                        _target = selector.eq(i).find( '.box__area-division--depart .link__set-airport' );
+                    } else if( ts_fnIsEmpty( setData.end[i].code ) || ts_fnIsEmpty( setData.end[i].val ) ) {
+                        _hash = '#box__layer-air-finder--select-airport';
+                        _target = selector.eq(i).find( '.box__area-division--land .link__set-airport' );
+                    }
+                    
+                    if( ts_fnIsNotEmpty( _hash ) ) {
+                        break;
+                    }
+                }
+                
+                if( ts_fnIsEmpty( _hash ) ) {
+                    
+                    for( var i=0; i<AIRFINDER.set.multiCounter; i++ ) {
+                        
+                        if( ts_fnIsEmpty( setDate[i].sVal ) ) {
+                            _hash = '#box__layer-calendar';
+                            _target = selector.eq(i).find( '.box__start .link__set-date' );
+                        }
+                        
+                        if( ts_fnIsNotEmpty( _hash ) ) {
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if( ts_fnIsEmpty( _hash ) ) {
+                var initSeat = $( '#box__layer-air-finder--select-seat' ).attr( 'data-init' );
+                if( 'Y' == initSeat ) {
+                    _hash = '#box__layer-air-finder--select-seat';
+                    _target = $( '.box__seat-link .link__seat-set' );
+                }
+            }
+            
+            if( ts_fnIsNotEmpty( _hash ) ) {
+                _layerCloseControl( hash );
+                
+                if( hash == _hash ) {
+                    _layerOpenControl( _hash, _target );
+                } else {
+                    VERTICALCOMMONUI.savedHashLayerOpener = _target;
+                    if( TS_FINDER_CONFIG.usableHis ) {
+                        location.replace( _hash );
+                    } else {
+                        if( 0 > TS_FINDER_CONFIG.hisLen ) {
+                            location.replace( _hash );
+                        } else {
+                            if( TS_FINDER_CONFIG.init && ts_fnIsNotEmpty( TS_FINDER_CONFIG.gateway ) ) {
+                                location.replace( '#' );
+                                TS_FINDER_CONFIG.init = false;
+                            }
+                            location.href = _hash;
+                            TS_FINDER_CONFIG.hisLen = -1;
+                        }
+                    }
+                }
+            } else {
+                var len = TS_FINDER_CONFIG.hisLen;
+                if( 0 >len ) {
+                    TS_FINDER_CONFIG.close = true;
+                    history.go( -1 );
+                    TS_FINDER_CONFIG.hisLen = 0;
+                } else {
+                    _layerCloseControl( hash );
+                }
+            }
+        }
+    };
+}
+
+/**
+ * Set Init SNS Data
+ */
+function ts_fnSetSnsData( data ) {
+    var shortUrl = TsMobileSnsUtil.getShortUrl( data );
+    var tripText = '왕복';
+    var ddescText = data.DDESC;
+    var adescText = data.ADESC;
+    var astadCode = data.ASTAD;
+    
+    if( 'local' == data.TTYPE && 'SEL' == data.DSTAD ) {
+        ddescText = ddescText + '(김포)';
+    }
+    
+    if( 'MD' == data.SECTN ) {
+        tripText = '다구간';
+        ddescText = data.DDESC1;
+        adescText = data.ADESC1;
+        astadCode = data.ASTAD1;
+    } else if( 'OW' == data.SECTN ) {
+        tripText = '편도';
+    }
+    
+    var snsData = {
+            ddesc: ddescText,
+            adesc: adescText,
+            astad: astadCode,
+            trip: tripText,
+            price: controlSrpData.getPrice(),
+            url: shortUrl
+    };
+    controlSrpData.setSnsData( snsData );
+    TS_FINDER_CONFIG.sns = false;
+}
+
+/**
+ * 검색버튼 Area Code Parameter 구성
+ * @param objData : 검색조건 정보
+ * @returns json
+ */
+function ts_fnSetSearchBtnAcodeParam( objData ) {
+    
+    var objReturn = {};
+    
+    objReturn.triptype = objData.SECTN.toLowerCase();
+    
+    if( 'MD' == objData.SECTN ) {
+        
+        objReturn.dstad = objData.DSTAD1.toLowerCase();
+        objReturn.astad = objData.ASTAD1.toLowerCase();
+        objReturn.dstad1 = objData.DSTAD2.toLowerCase();
+        objReturn.astad1 = objData.ASTAD2.toLowerCase();
+        objReturn.dstad2 = objData.DSTAD3.toLowerCase();
+        objReturn.astad2 = objData.ASTAD3.toLowerCase();
+        
+        objReturn.ddate = objData.DDATE1;
+        objReturn.adate = '';
+        objReturn.ddate1 = objData.DDATE2;
+        objReturn.ddate2 = objData.DDATE3;
+        
+    } else {
+        
+        objReturn.dstad = objData.DSTAD.toLowerCase();
+        objReturn.astad = objData.ASTAD.toLowerCase();
+        objReturn.dstad1 = '';
+        objReturn.astad1 = '';
+        objReturn.dstad2 = '';
+        objReturn.astad2 = '';
+        
+        objReturn.ddate = objData.DDATE;
+        objReturn.adate = '';
+        objReturn.ddate1 = '';
+        objReturn.ddate2 = '';
+        if( 'RT' == objData.SECTN ) {
+            objReturn.adate = objData.ADATE;
+        }
+    }
+    objReturn.nadt = Number( objData.NADT, 10 ) + Number( objData.NCHD, 10 ) + Number( objData.NINF, 10 );
+    objReturn['class'] = objData.CLS.toLowerCase();
+    objReturn.direct = ( objData.VIAYN )? 'y' : 'n';
+    objReturn.ttype = objData.TTYPE.substr( 0 , 1 );
+    
+    return objReturn;
+    
+}
+
+/**
+ * 검색기 areacode 설정
+ */
+function ts_fnSetSearchAreaCode( $el ) {
+    
+    var target = $el[0];
+    
+    if( ts_fnIsNotEmpty( target ) ) {
+        
+        //초기화
+        var attrs = target.attributes;
+        var len = attrs.length;
+        var attrName = '';
+        
+        for( var i=0; i<len; i++ ) {
+            attrName = attrs[i].name;
+            if( -1 < attrName && 'data-montelena-acode' != attrName ) {
+                $el.attr( attrName, '' );
+            }
+        }
+        
+        //검색조건 설정
+        var attrTxt = 'data-montelena-';
+        var sectn = AIRFINDER.lineType;
+        
+        if( 'MD' == sectn ) {
+            var dsize = Number( AIRFINDER.set.multiCounter );
+            
+            for( var i=0; i<dsize; i++ ) {
+                
+                if( 0 < i ) {
+                    $el.attr( attrTxt+'dstad'+i, AIRFINDER.set[sectn].start[i].code.toLowerCase() );
+                    $el.attr( attrTxt+'astad'+i, AIRFINDER.set[sectn].end[i].code.toLowerCase() );
+                    $el.attr( attrTxt+'ddate'+i, ts_fnConvertDateFormat( AIRFINDER.set.date[sectn][i].sVal, '' ) );
+                } else {
+                    $el.attr( attrTxt+'dstad', AIRFINDER.set[sectn].start[i].code.toLowerCase() );
+                    $el.attr( attrTxt+'astad', AIRFINDER.set[sectn].end[i].code.toLowerCase() );
+                    $el.attr( attrTxt+'ddate', ts_fnConvertDateFormat( AIRFINDER.set.date[sectn][i].sVal, '' ) );
+                }
+            }
+        } else {
+            $el.attr( attrTxt+'dstad', AIRFINDER.set[sectn].start[0].code.toLowerCase() );
+            $el.attr( attrTxt+'astad', AIRFINDER.set[sectn].end[0].code.toLowerCase() );
+            $el.attr( attrTxt+'ddate', ts_fnConvertDateFormat( AIRFINDER.set.date[sectn][0].sVal, '' ) );
+            
+            if( 'RT' == sectn ) {
+                $el.attr( attrTxt+'adate', ts_fnConvertDateFormat( AIRFINDER.set.date[sectn][0].eVal, '' ) );
+            }
+        }
+        
+        $el.attr( attrTxt+'triptype', sectn.toLowerCase() );
+        $el.attr( attrTxt+'nadt', AIRFINDER.set.passenger.totalVal );
+        $el.attr( attrTxt+'class', ( AIRFINDER.set.seat.code? AIRFINDER.set.seat.code : 'Y' ).toLowerCase() );
+        $el.attr( attrTxt+'direct', ts_fnIsNotEmpty( AIRFINDER.set.seat.chkVal )? 'y':'n' );
+        $el.attr( attrTxt+'ttype', $( '#box__layer-air-finder--select-seat' ).attr( 'data-code' ).substr( 0, 1 ) );
+        
+    }
+}
+
+/**
+ * 예약하기 areacode 설정
+ */
+function ts_fnSetreservationAreaCode() {
+	
+    //검색조건 설정
+	var $el = $( '#box__layer__srp-detail .link__reservation' );
+    var attrTxt = 'data-montelena-';
+    var sectn = AIRFINDER.lineType;
+    
+    $el.attr( attrTxt+'dstad', AIRFINDER.set[sectn].start[0].code.toLowerCase() );
+    $el.attr( attrTxt+'astad', AIRFINDER.set[sectn].end[0].code.toLowerCase() );
+    $el.attr( attrTxt+'ddate', ts_fnConvertDateFormat( AIRFINDER.set.date[sectn][0].sVal, '' ) );
+    
+    if( 'RT' == sectn ) {
+        $el.attr( attrTxt+'adate', ts_fnConvertDateFormat( AIRFINDER.set.date[sectn][0].eVal, '' ) );
+    }
+    
+    $el.attr( attrTxt+'triptype', sectn.toLowerCase() );
+    $el.attr( attrTxt+'nadt', AIRFINDER.set.passenger.totalVal );
+    $el.attr( attrTxt+'class', ( AIRFINDER.set.seat.code? AIRFINDER.set.seat.code : 'Y' ).toLowerCase() );
+    $el.attr( attrTxt+'smileclubyn', ( mtrst.SCIND.toLowerCase() ) );
+}
+
+/**
+ * Create Dom RVH
+ */
+function ts_fnCreateRVH( rvh ) {
+	
+	if( ts_fnIsNotEmpty( rvh ) ) {
+		var len = rvh.length;
+	    var data = null;
+	    var html = '';
+	    
+	    for( var i=0; i<len; i++ ) {
+	        
+	        data = rvh[i];
+	        html += ' <li class="list-item list-item--' + data.imgcd + '">';
+	        html +=     ' <a href="' + mtrst.url[data.type] + '?' + data.param + '" class="link__recently js-link__recently" data-montelena-acode="200003242">';
+	        html +=         ' <span class="box__area">';
+	        html +=             ' <span class="text__code">' + data.depcd + '</span> ' + data.depkr + ',';
+	        html +=             ' <span class="text__code">' + data.arrcd + '</span> ' + data.arrkr + '';
+	        html +=         ' </span>';
+	        html +=     	' <span class="text__date">';
+	        html +=     		data.depdtkr + '(' + data.depdy + ')';
+	        if( ts_fnIsNotEmpty( data.retdt ) ) {
+	        	html +=			' ~ ' + data.retdtkr + '(' + data.retdy + ')'
+	        }
+	        html +=			'</span>'
+	        html +=         ' <span class="text__seat">' + data.sect + ', ' + data.seat + ', 승객 ' + data.pass + '명</span>';
+	        html +=     ' </a>';
+	        html +=     ' <button type="button" class="button__remove sprite__air-lp--before js-button__remove">';
+	        html += ' </li>';
+	    }
+	    
+	    $( '.list__finder-recently' ).html( html );
+	    $( '.box__finder-recently' ).show();
+	} else {
+		$( '.box__finder-recently' ).hide();
+	}
+}
+
+/**
+ * 신규 GNB 제어
+ */
+var ts_fnGnb = {
+        
+        headerShow : function(){
+            
+            // 신버전
+            var titleText = '여행';
+            var titleLandingUrl = 'https://m.gmarket.co.kr/?sectionSeq=11&pageTypeSeq=10';
+            var titleText2 = '항공';
+            var titleLandingUrl2 = location.protocol.toLowerCase() + '//' + location.host + '/mgm/init/lp/lpMain.do';
+            
+            var appScheme = 'gmarket://newWebGnb?type=1&hideCart=false&forceshowbottombar=true';
+            appScheme += '&titleText=' + encodeURIComponent( titleText );
+            appScheme += '&titleLandingUrl=' + encodeURIComponent( titleLandingUrl );
+            appScheme += '&titleText2=' + encodeURIComponent( titleText2 );
+            appScheme += '&titleLandingUrl2=' + encodeURIComponent( titleLandingUrl2 );
+            
+            location.href = appScheme;
+        },
+        
+        headerHide : function(){
+            
+            // 신버전
+            location.href = 'gmarket://newWebGnb?type=10';
+
+        }
+        
+};
+
+//좌석/인원 레이어 국내/국제용 변경처리
+var setSeatType = null;
+
+//layer 자동열기 제어처리
+var controlLayer = null;
+
+//이벤트 등록 및 제어
+$(function() {
+    
+    //도시검색
+    var citySearch = ts_fnGetSearchCity();
+    
+    //레이어 열기
+    var layerOpenControl = function(hash,$this){
+        
+        // 신규 gnb제어
+        if( ts_fnMobileAppCheck() ){
+            
+            // Gmarket App 에서만 동작
+            if( 'G' == ts_fnSfcAppCheck() ){
+                if( '#box__layer__srp-detail' != hash ){ // #설정중 예외처리
+                    setTimeout( function() {
+                        ts_fnGnb.headerHide();
+                    }, 100 );
+                }
+            }
+        }
+        
+        if( '#box__layer-air-finder--select-airport' == hash || '#box__layer-air-finder--select-seat' == hash || '#box__layer-calendar' == hash ) {
+            if( !$( '#box__air-finder' ).is( ':visible' ) ) {
+                if( TS_FINDER_CONFIG.usableHis ) {
+                    history.replaceState( null, '', location.href.replace( location.hash, '' ) );    
+                } else {
+                    location.href = '#';
+                }
+                return false;
+            }
+        } else if( '#box__layer-air-common--detail-lines' == hash ) {
+            if( 1 > $( '#box__layer-air-common--detail-lines .box__detail-journey' ).length ) {
+                if( TS_FINDER_CONFIG.usableHis ) {
+                    history.replaceState( null, '', location.href.replace( location.hash, '' ) );    
+                } else {
+                    location.href = '#';
+                }
+                return false;
+            }
+        } else if( '#box__layer__srp-detail' == hash ) {
+            if( 1 > $( '#box__layer__srp-detail .box__detail-fare' ).length ) {
+                if( TS_FINDER_CONFIG.usableHis ) {
+                    history.replaceState( null, '', location.href.replace( location.hash, '' ) );    
+                } else {
+                    location.href = '#';
+                }
+                return false;
+            }
+        } else if( '#box__layer-detail-fare' == hash ) {
+            if( 1 > $( '#box__layer-detail-fare .box__fare-total' ).length ) {
+                if( TS_FINDER_CONFIG.usableHis ) {
+                    history.replaceState( null, '', location.href.replace( location.hash, '' ) );    
+                } else {
+                    location.href = '#';
+                }
+                return false;
+            }
+        } else if( '#box__layer-sns-share' == hash ) {
+            if( ts_fnIsEmpty( controlSrpData.getSnsData() ) ) {
+                if( TS_FINDER_CONFIG.usableHis ) {
+                    history.replaceState( null, '', location.href.replace( location.hash, '' ) );    
+                } else {
+                    location.href = '#';
+                }
+                return false;
+            }
+        }
+        
+        //재검색 영영이 열린 상태에서 스케쥴 내부 상세 레이어 호출 시 재검색 영역 닫힘 처리
+        if( '#box__layer-air-common--detail-lines' == hash || '#box__layer__srp-detail' == hash || '#box__layer-detail-fare' == hash || '#box__layer-sns-share' == hash ) {
+            
+            if( $( '#box__air-finder .link__finder-close' ).is( ':visible' ) ) {
+                $( '#box__air-finder .link__finder-close' ).trigger( 'click' );
+            }
+        }
+        
+        if( hash == '#box__layer-air-finder--select-airport' ) { //출발지 레이어 최근검색도시 저장 및 타이틀변경
+            
+            var bool = $this.parent().hasClass( 'box__area-division--land' );
+            var cookieName = 'TSRSCD';
+            if( bool ) {
+                cookieName = 'TSRSCA';
+            }
+            var cookie = ts_fnGetRecentSearchData( cookieName );
+            
+            $( '.box__airkeyword' ).hide();
+            $( '.list__air-category > li' ).removeClass( 'list-item--active' );
+            $( '.list__air-category' ).show();
+            
+            if( ts_fnIsEmpty( cookie ) ) {
+                $( '.list__air-category--recently' ).hide();
+            } else {
+                ts_fnCreateRecentlySearch( cookie );
+                if( 0 < $('.button__remove-item' ).index() ) {
+                    $( '.list__air-category--recently > li' ).eq(0).addClass( 'list-item--active' );
+                    $( '.list__air-category--recently' ).show();
+                }
+            }
+            
+            var text = '';
+            var placeholder = '';
+            var search = '';
+            var type = 'a';
+            if( bool ) {
+                text = '도착지 선택';
+                placeholder = '도착지';
+                search = 'md_endPoint_';
+                type = 'a';
+            } else {
+                text = '출발지 선택';
+                placeholder = '출발지';
+                search = 'md_startPoint_';
+                type = 'd';
+            }
+            
+            placeholder += ' 국가, 도시, 공항명 검색';
+            
+            if( 0 < $this.parents( '#box__air-type-content--multi' ).length ) {
+                var addText = ts_fnReplaceAll( $this.find( '.form__input-code' ).attr( 'id' ), search, '여정');
+                text = addText + ' ' + text;
+                placeholder = addText + ' ' + placeholder;
+            }
+            
+            $( '#box__layer-air-finder--select-airport .text__layer-header' ).text( text ).end().find( '.form__input-finder' ).attr( 'placeholder', placeholder );
+            $( '.box__layer-air-finder-content ul.list__air-category' ).eq(1).find( '.list-item__info a' ).attr( 'data-montelena-type', type )
+        } else if( hash == '#box__layer-air-finder--select-seat' ) { //나이계산기 초기화
+            $( hash ).attr( 'data-init', 'N' );
+        } else if( hash == '#box__layer-calendar' ) { //달력레이어 구간별 설정
+            
+            var $calendar = $('#box__layer-calendar');
+            var $input1 =$calendar.find('.form__input-layer-date').eq(0);
+            var $input2 =$calendar.find('.form__input-layer-date').eq(1);
+            var $input3 =$calendar.find('.form__input-layer-date').eq(2);
+            var $text1 = $calendar.find('.text__day-title').eq(0);
+            var $text2 = $calendar.find('.text__day-title').eq(1);
+            var $text3 = $calendar.find('.text__day-title').eq(2);
+            //구간별 레이어 class 설정
+            if (AIRFINDER.lineType ==='RT'){
+                $calendar.attr('class','box__layer-air-finder box__layer-air-finder-calendar box__layer-air-finder-calendar--roundtrip');
+                $input1.attr('placeholder','가는날 선택');
+                $input2.attr('placeholder','오는날 선택');
+                $text1.text('가는날');
+                $text2.text('오는날');
+            } else if (AIRFINDER.lineType ==='OW'){
+                $calendar.attr('class','box__layer-air-finder box__layer-air-finder-calendar box__layer-air-finder-calendar--oneway');
+                $input1.attr('placeholder','가는날 선택');
+                $text1.text('가는날');
+            } else if (AIRFINDER.lineType ==='MD'){
+                $input1.attr('placeholder','여정1 선택');
+                $input2.attr('placeholder','여정2 선택');
+                $input3.attr('placeholder','여정3 선택');
+                $text1.text('여정1');
+                $text2.text('여정2');
+                $text3.text('여정3');
+                if(AIRFINDER.set.multiCounter == '2' && AIRFINDER.lineType == 'MD'){ //2여정일 경우
+                    $calendar.attr('class','box__layer-air-finder box__layer-air-finder-calendar box__layer-air-finder-calendar--roundtrip');
+                }else{
+                    $calendar.attr('class','box__layer-air-finder box__layer-air-finder-calendar box__layer-air-finder-calendar--multi');
+                }
+            }
+            airCalendar.init();
+        }
+        
+        var $target = $(hash);
+        
+        if( '#box__layer-detail-fare' != hash ) {
+            if( 'SRP' == TS_FINDER_CONFIG.page && TS_FINDER_CONFIG.scroll ) {
+                controlSrpData.endEvent();
+            }
+            fixedViewPort(true); //바닥 스크롤 막기
+        }
+        
+        if( hash == '#box__layer-air-finder--select-airport' || hash == '#box__layer-air-finder--select-seat' || hash == '#box__layer-calendar' ) {
+            $target.fadeIn(300,'linear').attr('tabindex',0).css('outline','none').focus();
+        } else {
+            $target.show().attr('tabindex',0).css('outline','none').focus();
+        }
+        if( hash == '#box__layer-calendar' ) { //달력레이어 구간별 설정
+            if ($('.ui-point[title="가는날"], .ui-point[title="여정1"]').length > 0) {
+                $('.box__calendar-container').animate({'scrollTop': $('.box__calendar-container').scrollTop() + $('.ui-point[title="가는날"], .ui-point[title="여정1"]').position().top - 40});
+            }
+        }
+        
+        VERTICALCOMMONUI.savedHashLayerOpener = $this;
+        
+        if( '#box__layer-air-common--detail-lines' == hash || '#box__layer__srp-detail' == hash || '#box__layer-detail-fare' == hash ) {
+            $( hash + ' .box__layer-content').scrollTop(0);
+        }
+    }
+    
+    //레이어 닫기
+    var layerCloseControl = function(obj){
+        
+        // 신규 gnb제어
+        if( ts_fnMobileAppCheck() ){
+            
+            // Gmarket App 에서만 동작
+            if( 'G' == ts_fnSfcAppCheck() ){
+                if( '#box__layer__srp-detail' != obj ){ // #설정중 예외처리
+                    ts_fnGnb.headerShow();
+                }
+            }
+        }
+        
+        if( obj == '#box__layer-air-finder--select-airport' ) {
+            $( '.form__input-finder' ).val('');
+        }
+        
+        var $target = $(obj);
+        var $focusTarget = VERTICALCOMMONUI.savedHashLayerOpener?this.savedHashLayerOpener:undefined;
+        
+        if( '#box__layer-detail-fare' != obj ) {
+            if( 'SRP' == TS_FINDER_CONFIG.page && TS_FINDER_CONFIG.scroll ) {
+                controlSrpData.startEvent();
+            }
+            fixedViewPort(false) //바닥 스크롤 막기 해제
+        }
+        
+        if( obj == '#box__layer-air-finder--select-airport' || obj == '#box__layer-air-finder--select-seat' || obj == '#box__layer-calendar' ) {
+            $target.fadeOut(300,'linear');
+        } else {
+            $target.hide();
+        }
+        
+        /* S 국내선 레이어 스크롤 관련 이벤트 S */
+        if( 'SRP' == TS_FINDER_CONFIG.page && 'local' == mtrst.data.TTYPE ) {
+            fnDmstScroll.eventFixedTop();
+        }
+        /* E 국내선 레이어 스크롤 관련 이벤트 E */
+        
+        if($focusTarget == undefined) return;
+        $focusTarget.focus();
+    }
+    
+    controlLayer = ts_fncontrolLayer( layerOpenControl, layerCloseControl );
+    
+    //공항선택, 좌석선택 레이어 열기
+    $(document).on('click','.link__set-airport, .link__seat-set, .link__sns-share, .box__search-element .link__condition--align, .box__search-element .link__condition--detail',function(e){
+        
+        var hash = $(this).attr( 'href' );
+        
+        switch( hash ) {
+            case '#box__layer-sns-share':
+                
+                if( TS_FINDER_CONFIG.sns && 'SRP' == TS_FINDER_CONFIG.page ) {
+                    ts_fnSetSnsData( mtrst.data );
+                }
+                break;
+            case '#box__layer-align--outsea':
+            case '#box__layer-detail-condition--outsea':
+                if( 1 > $( '#box__tab-content01' ).length ) {
+                    e.preventDefault();
+                    return false;
+                }
+                break;
+            case '#box__layer-align':
+            case '#box__layer-detail-condition':
+                
+                var dmstCheck = 0;
+                if( '0' == gvDmstHistory ) {
+                    dmstCheck = gvDmstLeaveList.length;
+                } else if ( '2' == gvDmstHistory ) {
+                    dmstCheck = gvDmstEnterList.length;
+                }
+                
+                if( 1 > dmstCheck ) {
+                    e.preventDefault();
+                    return false;
+                }
+                break;
+            case '#box__layer-air-finder--select-seat':
+                var $btnAge = $( '#box__layer-air-finder--select-seat .box__calculate-age .js-button__toggle-control' );
+                $btnAge.removeClass( 'button__toggle--active' );
+                $( $btnAge.attr('data-target') ).hide();
+                $( '.text__age-result' ).text( '' ).hide();
+                $( '.form__input-birth' ).val( '' ).attr( 'data-value', '' );
+                break;
+        }
+        
+        controlLayer( hash, 'O', $(this) );
+    });
+    
+    //공항선택 닫기 
+    $(document).on('click','#box__layer-air-finder--select-airport .js-button__close',function(e){
+        e.preventDefault();
+        controlLayer( '#box__layer-air-finder--select-airport', 'E' );
+    });
+
+    //좌선선택 닫기 :: 목업확인용 
+    $(document).on('click','#box__layer-air-finder--select-seat .js-button__close',function(e){
+        e.preventDefault();
+        controlLayer( '#box__layer-air-finder--select-seat', 'E' );
+    });
+    
+    //레이어 달력선택 시, :: 목업확인용
+    $(document).on('click','.link__set-date',function(){
+       var hash = $(this).attr('href');
+       controlLayer( hash, 'O', $(this) );
+    });
+    
+    //달력 닫기
+    $(document).on('click','#box__layer-calendar .js-button__close',function(e){
+        e.preventDefault();
+        controlLayer( '#box__layer-calendar', 'E' );
+    });
+    
+    //달력 날짜 선택완료 닫기
+    $(document).on('click','.js-button__date-select',function(e){
+       e.preventDefault();
+       
+       if( $(this).hasClass( 'link__selected--active') ) {
+           airCalendar.storeDates();
+           
+           if( 'MD' != AIRFINDER.lineType ) {
+               
+               if( 'OW' == AIRFINDER.lineType ) {
+                   var d1 = AIRFINDER.set.date[AIRFINDER.lineType][0].sVal;
+                   var day1 = AIRFINDER.set.date[AIRFINDER.lineType][0].sDay;
+                   var line = 'RT';
+                   var dataRoot = AIRFINDER.set.date[line];
+                   $('#'+dataRoot[0].sId).val(d1).next('.box__date-info').find('.text__date').text(day1 + '요일');
+                   dataRoot[0].sVal = d1;
+                   dataRoot[0].sDay = day1;
+                   
+                   if( ts_fnIsNotEmpty( dataRoot[0].eVal ) && dataRoot[0].sVal > dataRoot[0].eVal ) {
+                       var d2 = ts_fnAddDate( d1, 3, 'D', '.' );
+                       var day2 = ts_fnGetWeekDay( d2 );
+                       $('#'+dataRoot[0].eId).val(d2).next('.box__date-info').find('.text__date').text(day2+'요일');
+                       dataRoot[0].eVal = d2;
+                       dataRoot[0].eDay = day2;
+                   }
+               } else {
+                   var d1 = AIRFINDER.set.date[AIRFINDER.lineType][0].sVal;
+                   var day1 = AIRFINDER.set.date[AIRFINDER.lineType][0].sDay;
+                   var line = 'OW';
+                   var dataRoot = AIRFINDER.set.date[line];
+                   $('#'+dataRoot[0].sId).val(d1).next('span.form__input-day').removeClass('form__input-day--default').text(d1).next('.text__date-sub').text('('+day1+')');
+                   dataRoot[0].sVal = d1;
+                   dataRoot[0].sDay = day1;
+               }
+               airCalendar.storeDates();
+           }
+           
+           controlLayer( '#box__layer-calendar', 'C' );
+           ts_fnSetSearchAreaCode( $('.button__finder-sbmit') );
+       }
+    });
+    
+    //레이어 공항선택 시,
+    var airtportSelect = function(){
+        var button = '#box__layer-air-finder--select-airport .js-select-airport';
+        $(document).on('click',button,function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var code = $(this).attr('data-code');
+            var val = $(this).attr('data-value');
+            var ncode = $(this).attr( 'data-ncode' );
+            var $opener = VERTICALCOMMONUI.savedHashLayerOpener;
+            var cookieName = 'TSRSCA';
+            
+            if( $opener.parent().hasClass( 'box__area-division--depart' ) ) {
+                cookieName = 'TSRSCD';
+            }
+
+            var $input = $opener.find('input[type="text"]');
+            var key = $input.attr('data-key');
+            var index = $input.attr('data-index');
+            
+            var strAlertTxt = '출발지와 도착지를 다르게 선택해 주세요';
+            var boolAlert = false;
+            var compKey = 'end';
+            var strCity = '';
+            var strCompCity = '';
+            
+            if( 'end' == key ) {
+                compKey = 'start';
+            }
+            
+            strCity = ts_fnReplaceDmstCode( code );
+            strCompCity = ts_fnReplaceDmstCode( AIRFINDER.set[AIRFINDER.lineType][compKey][index].code );
+            
+            if( 'MD' == AIRFINDER.lineType ) {
+                switch( index ) {
+                    case '0':
+                        strAlertTxt = '여정1 ' + strAlertTxt;
+                        break;
+                    case '1':
+                        strAlertTxt = '여정2 ' + strAlertTxt;
+                        break;
+                    case '2':
+                        strAlertTxt = '여정3 ' + strAlertTxt;
+                        break;                    
+                }
+                
+                if( strCity == strCompCity ) {
+                    alert( strAlertTxt );
+                    return false;
+                }
+                
+                AIRFINDER.set[AIRFINDER.lineType][key][index].val = val;
+                AIRFINDER.set[AIRFINDER.lineType][key][index].code = code;
+                AIRFINDER.set[AIRFINDER.lineType][key][index].ncode = ncode;
+            } else {
+                
+                if( strCity == strCompCity ) {
+                    alert( strAlertTxt );
+                    return false;
+                }
+                
+                AIRFINDER.set['OW'][key][index].val = val;
+                AIRFINDER.set['OW'][key][index].code = code;
+                AIRFINDER.set['OW'][key][index].ncode = ncode;
+                
+                AIRFINDER.set['RT'][key][index].val = val;
+                AIRFINDER.set['RT'][key][index].code = code;
+                AIRFINDER.set['RT'][key][index].ncode = ncode;
+                
+                var inputId = 'rt_';
+                var changeId = 'ow_';
+                if( 'OW' == AIRFINDER.lineType ) {
+                    inputId = 'ow_';
+                    changeId = 'rt_';
+                }
+                
+                var $otherInput = $( '#' + $input.attr( 'id' ).replace( inputId, changeId ) );
+                $otherInput.val(code).attr('data-code',val).attr('data-ncode', ncode);
+                $otherInput.parent().find('.text__airport-name').text(val);
+            }
+            
+            $input.val(code).attr('data-code',val).attr('data-ncode', ncode);
+            $opener.find('.text__airport-name').text(val);
+            
+            var recentSearchData = { CN:val, NN:$(this).find('.text__country').text(), AC:code, AN:$(this).find('.text__name').text(), NC:ncode };
+            ts_fnSetRecentSearchData( cookieName, JSON.stringify( recentSearchData ), 3 );
+            
+            var dncode = AIRFINDER.set[AIRFINDER.lineType]['start'][0].ncode;
+            var ancode = AIRFINDER.set[AIRFINDER.lineType]['end'][0].ncode;                    
+            
+            if( 'MD' != AIRFINDER.lineType ) {
+                if( 'KR' == dncode ) {
+                    
+                    if( ts_fnIsEmpty( ancode ) ) {
+                        setSeatType.init( setSeatType.getInitType() );
+                    } else {
+                        if( 'KR' == ancode ) {
+                            setSeatType.init( 'local' );
+                        } else {
+                            setSeatType.init( 'global' );
+                        }
+                    }
+                } else {
+                    setSeatType.init( 'global' );
+                }
+            }
+            
+            /* AreaCode 적재 ( 키워드검색결과 / 최근출,도착 주요도시 ) */
+            var areaCode = $( this ).attr( 'data-montelena-acode' );
+            if( ts_fnIsNotNull( areaCode ) ) {
+                var areaCodeObj = {
+                        dstad : code.toLowerCase()
+                        ,type : cookieName.substr( cookieName.length -1 , 1 ).toLowerCase()
+                };
+                
+                //키워드 검색결과만 별도처리
+                if( '200003247' == areaCode ) {
+                    areaCodeObj.keyword = $( '#box__layer-air-finder--select-airport .form__input-finder' ).val().toLowerCase();
+                }
+            }
+            
+            AIRFINDER.search.finderInputIsEmptyDetect();
+            controlLayer( '#box__layer-air-finder--select-airport', 'C' );
+            ts_fnSetSearchAreaCode( $('.button__finder-sbmit') );
+        });
+    };
+
+    //좌석/인원 선택 레이어 제어
+    var seatQuantityLayerControl = function(){
+        var seat = AIRFINDER.set.seat.val; // 좌석 타입값
+        var code = AIRFINDER.set.seat.code;
+        var p1 = AIRFINDER.set.passenger.vals[0]; //성인 인원 값
+        var p2 = AIRFINDER.set.passenger.vals[1]; //소아 인원 값
+        var p3 = AIRFINDER.set.passenger.vals[2]; //유아 인원 값
+        var totalval = Number(p1)+Number(p2)+Number(p3); //총인원 초기값
+        var $numInput = $('#box__layer-air-finder--select-seat .list__quantity').find('input[type="number"]');
+        var adultsNum,
+            childNum,
+            infantNum;
+        var button = '#box__layer-air-finder--select-seat .js-number-control';
+        var buttonSubmit = '#box__layer-air-finder--select-seat .button__confirm'
+        var printButton = function(){
+            $(buttonSubmit).html('<span class="text__seat">'+seat+', 승객 '+totalval+'명</span><span class="text__state">선택완료</span>'); //버튼에 표시
+        };
+        
+        $(document).on('click','.js-button__select',function(){
+            var $others = $(this).parents('.list-item').siblings().find('.js-button__select');
+            var activeClass = 'button__seat--active';
+            $(this).addClass(activeClass);
+            $others.removeClass(activeClass);
+            seat = $(this).text();
+            code = $(this).attr('data-code');
+            totalval = 0;
+            $numInput.each(function(){
+                totalval += parseInt($(this).val());
+            });
+            printButton();
+        });
+        
+        //탑승 인원 증가/감소 버튼 클릭 시 제어
+        $(document).on('click',button,function(){ //버튼클릭 시 마다
+            totalval = 0;
+            var $this = $(this);
+            var $box = $this.parents('.box__input');
+            var $input = $box.find('input[type="number"]');
+            var val = $input.val();
+            var $minus = $box.find('.button__number-control--minus');
+            var $plus = $box.find('.button__number-control--plus');
+            adultsNum = parseInt($numInput.eq(0).val());
+            childNum = parseInt($numInput.eq(1).val());
+            infantNum = parseInt($numInput.eq(2).val());
+
+            $numInput.each(function(){
+                    totalval += parseInt($(this).val());
+            });
+
+            if($this.hasClass('button__number-control--plus')){  //증가버튼일 시
+                val ++;
+                totalval ++;
+                $minus.removeAttr('disabled');
+                if ( $(this).attr('data-control') == 'infant' && val >= adultsNum ) { 
+                    $numInput.eq(2).next().prop('disabled',true);
+                } else if ( $(this).attr('data-control') == 'adult' && val >= infantNum ) { 
+                    $numInput.eq(2).next().removeAttr('disabled');
+                } //성인,유아 1:1 제한
+            }else{//감소버튼 일시
+                val --;
+                totalval --;
+                if ( $(this).attr('data-control') == 'adult' && adultsNum <= 1) return;
+                $('.button__number-control--plus').removeAttr('disabled');
+                if ( $(this).attr('data-control') == 'adult' && val <= infantNum ) { 
+                    $numInput.eq(2).val(val);
+                    if (val < infantNum){totalval --;}
+                    $numInput.eq(2).next().prop('disabled',true);
+                } else if ($(this).attr('data-control') == 'toddler' && adultsNum == infantNum) {
+                    $numInput.eq(2).next().prop('disabled',true);
+                } //성인,유아 1:1 제한 (유아 자동감소)
+            }
+            $input.val(val);
+            if( val <= 0 ){ $minus.prop('disabled',true);}
+            printButton();
+            if (totalval >= 9) {
+                $('.button__number-control--plus').prop('disabled',true); 
+                return;
+            } //총 탑승 인원 9명까지 제한
+        });
+        
+        //선택완료 버튼 클릭 시
+        $(document).on('click',buttonSubmit,function(){
+            //데이터 저장
+            AIRFINDER.set.seat.val = seat;
+            AIRFINDER.set.seat.code = code;
+            AIRFINDER.set.passenger.totalVal = totalval;
+            for(i=0; i < AIRFINDER.set.passenger.vals.length; i++){
+                AIRFINDER.set.passenger.vals[i] = Number( $numInput.eq(i).val() );
+            };
+            //input print
+            $('#'+AIRFINDER.set.seat.id).val(seat);
+            $('#'+AIRFINDER.set.passenger.id).val(totalval);
+            var text =  '승객 '+totalval+'명, '+seat;
+            $('.link__seat-set').text(text);
+            controlLayer( '#box__layer-air-finder--select-seat', 'C' );
+            ts_fnSetSearchAreaCode( $('.button__finder-sbmit') );
+        });
+        
+        //도시검색 키워드 삭제
+        $(document).on('click','.js-button__delete-keyword',function(){
+            $(this).prev('.form__input-finder').val('').trigger('keyup');
+        });
+    };
+
+    //직항 버튼 클릭시
+    var checkStraight = function(){
+        $(document).on('change','#form__checkbox--straight',function(){
+            if($(this).is(':checked')){
+                AIRFINDER.set.seat.chkVal = 'checked';
+            }else{ AIRFINDER.set.seat.chkVal = '';}
+            ts_fnSetSearchAreaCode( $('.button__finder-sbmit') );
+        });
+    };
+    
+    //검색기 구간 탭 제어
+    var finderTabControl = function(){
+        $(document).on('click','.box__air-finder .js-link__air-type',function(e){
+            e.preventDefault();
+            var $this = $(this);
+            var $target = $($this.attr('href'));
+            var listActiveClass = 'list-item--active';
+            var contentActiveClass = 'box__air-type-content--active';
+            var $box = $('#box__air-finder');
+            $this.parent('.js-list-item').addClass(listActiveClass).siblings('.js-list-item').removeClass(listActiveClass);
+            $target.show().addClass(contentActiveClass).siblings('.js-box__tab-content').hide().removeClass(contentActiveClass);
+            AIRFINDER.lineType = $(this).attr('data-line-type');
+            var $calendar = $('#box__layer-calendar');
+            if (AIRFINDER.lineType ==='RT'){
+                $calendar.attr('class','box__layer-air-finder box__layer-air-finder-calendar box__layer-air-finder-calendar--roundtrip');
+            } else if (AIRFINDER.lineType ==='OW'){
+                $calendar.attr('class','box__layer-air-finder box__layer-air-finder-calendar box__layer-air-finder-calendar--oneway');
+            } else{
+                $calendar.attr('class','box__layer-air-finder box__layer-air-finder-calendar box__layer-air-common-calendar--multi');
+            }
+            
+            var lineType = AIRFINDER.lineType;
+            var dncode = AIRFINDER.set[lineType]['start'][0].ncode;
+            var ancode = AIRFINDER.set[lineType]['end'][0].ncode;                    
+            
+            if( 'MD' == lineType ) {
+                setSeatType.init( 'global' );
+            } else {
+                if( 'KR' == dncode ) {
+                    if( ts_fnIsEmpty( ancode ) ) {
+                        setSeatType.init( setSeatType.getInitType() );
+                    } else {
+                        if( 'KR' == ancode ) {
+                            setSeatType.init( 'local' );
+                        } else {
+                            setSeatType.init( 'global' );
+                        }
+                    }
+                } else {
+                    setSeatType.init( 'global' );
+                }
+            }
+            ts_fnSetSearchAreaCode( $('.button__finder-sbmit') );
+        });
+    };
+    
+    airtportSelect(); //공항선택
+    seatQuantityLayerControl(); //좌석/인원 선택 레이어
+    checkStraight();
+    finderTabControl(); // 검색기 구간탭 제어
+    AIRFINDER.search.init();
+ 
+    $(document).on('keyup', '.form__input-finder' ,function() {
+        citySearch( $( this ) );
+    });
+    
+    /*
+     * input tpye="number"인 경우 "e(69)"가 들어가는 경우 
+     * $(this).val() 값이 ""로 리턴되어 data-value에 저장하여 이전 입력한 값으로 활용 
+     */
+    $(document).on('keyup', '.form__input-birth' ,function(e) {
+        var key = e.keyCode?e.keyCode:e.which;
+        
+        var val = $(this).val();
+        if( '' != val || ( '' == val && ( key == 8  || key == 46 ) ) ) {
+            $(this).attr( 'data-value', $(this).val().replace( /[^\d]/g, '' ).substr(0, 8) );
+        }
+        $(this).val($(this).attr( 'data-value' ));
+        
+        var $textAge = $( '.text__age-result' );
+        if( $textAge.is( ':visible' ) ) {
+            $textAge.text( '' ).hide();
+        }
+    });
+    
+    //검색기 레이어 열기 :: 목업확인용
+    $(document).on('click','.link__condition--re-search',function(e){
+        e.preventDefault();
+        var hash = $(this).attr('href');
+        $(hash).show();
+    });
+    
+    $(document).on('click','.link__condition--check',function(e){
+        e.preventDefault();
+        $('.link__condition--re-search').trigger('click');
+    });
+
+    //검색기 레이어 닫기
+     $(document).on('click','#box__air-finder .js-button__close',function(e){
+        e.preventDefault();
+        $('#box__air-finder').hide();
+    });
+    
+    //최근검색도시 삭제
+    $(document).on('click', '.button__remove-item' ,function() {
+        var idx = $( '.button__remove-item' ).index( this );
+        var key = 'TSRSCA';
+        if ( VERTICALCOMMONUI.savedHashLayerOpener.parent().hasClass( 'box__area-division--depart' ) ) {
+            key = 'TSRSCD';
+        }
+        var cookie = ts_fnGetRecentSearchData( key );
+        var objCookie = JSON.parse( cookie );
+        objCookie.splice( idx, 1 );             
+        $( this ).parents( '.list-item__info' ).remove();
+        
+        var isLocalStorage = ts_fnIsNull( localStorage );
+        var date = new Date();
+        var expire = 24;
+        
+        if( 1 > objCookie.length ) {
+            $( '.list__air-category--recently' ).hide();
+            expire = -48;
+        }
+        
+        if( isLocalStorage ) {
+            cookie = ts_fnSetCookie( key, JSON.stringify( objCookie ), expire );
+        } else {
+            if( 0 > expire ) {
+                localStorage.removeItem( key );
+                localStorage.removeItem( key + '_EXPIRE' );
+            } else {
+                localStorage.setItem( key, JSON.stringify( objCookie ) );
+                localStorage.setItem( key + '_EXPIRE', Math.round( date.setSeconds( date.getSeconds() + ( expire * 60 * 60 ) ) / 1000 ) );
+            } 
+        }
+    });
+    
+    //검색하기 클릭
+    $(document).on('click', '.button__finder-sbmit' ,function() {
+        mtrst.setSubmitData();
+        mtrst.submit();
+    });
+ 
+    //최근검색 삭제
+    $(document).on('click', '.js-button__remove' ,function() {
+        
+        var idx = $( '.js-button__remove' ).index( this );
+        var elLi = $( this ).parent();
+        var cb_success = function( result ) {
+        	mtrst.rvh = result.data;
+        	ts_fnCreateRVH( mtrst.rvh );
+        };
+        
+        fn_req_ajax( "/commonSrp/delRecentlySearch.do", {search:JSON.stringify( mtrst.rvh[idx] )}, cb_success, null, null, null, null, null, null );
+    });
+    
+    $(document).on('click', '#box__layer-air-finder--select-seat .button__calculate', function() {
+         
+        var result = '정확한 생년월일(예: 20191212)을 입력하세요.';
+        var ddate = AIRFINDER.set.date[AIRFINDER.lineType][0].sVal;
+        
+        if( ts_fnIsEmpty( ddate ) ) {
+            alert( '가는날 선택 후 나이계산이 가능합니다' );
+            location.replace( '#box__layer-calendar' );
+            return false;
+        }
+        
+        var strDday = ts_fnConvertDateFormat( ddate, '' );
+        var dday = Number( strDday );
+        var $textAge = $( '.text__age-result' );
+        $textAge.addClass( 'text__age-result--error' );
+        
+        if( !isNaN( dday ) && 8 == strDday.length ) {
+            
+            var limit = Number( $( '.ts_age_intdom_ind' ).eq(0).text() );
+            var strInput = $( '.form__input-birth' ).val();
+            var input = Number( strInput );
+             
+            if( !isNaN( input ) ) {
+                if( 8 == input.toString().length ) {
+                    var year = Number( strInput.substr(0, 4) );
+                    var month = Number( strInput.substr(4, 2) )-1;
+                    var day = Number( strInput.substr(6, 2) );
+                    var date = new Date( year, month, day );
+                    
+                    if( 2100 > year && month == date.getMonth() && day == date.getDate() ) {
+                        
+                        var infLimit = Number( ts_fnAddDate( input, 2, 'Y', '' ) );
+                        var chdLimit = Number( ts_fnAddDate( input, limit, 'Y', '' ) );
+                        var age = '성인'; 
+                        if( infLimit > dday ) {
+                            age = '유아';
+                        } else if( chdLimit > dday ) {
+                             age = '소아';
+                        }
+                        result = '가는날(' + ddate + ')기준으로 ' + age + '입니다.';
+                        $textAge.removeClass( 'text__age-result--error' );
+                    }
+                }
+            }
+        }
+        
+        $( '.text__age-result' ).text( result ).show();
+    });
+    
+    //LP, SRP 프로모션 및 배너 링크
+    $(document).on( 'click', '.link--coupon, .link--my-reservation, .link__carousel', function(e) {
+        
+        if( ts_fnMobileAppCheck() ) {
+            e.preventDefault();
+            
+            var url = $(this).attr( 'href' );
+            var title = '기획전';
+            if( $(this).hasClass('link--my-reservation' ) ) {
+                title = 'myG';
+            }
+            
+            var sfcAppCheck = ts_fnSfcAppCheck();
+            
+            if( 'A' == sfcAppCheck ) {
+                location.href = 'gmarketsfc://openwindow?title=' + encodeURIComponent( title ) + '&targetUrl=' + encodeURIComponent( url );
+            } else if( 'G' == sfcAppCheck ) {
+                location.href = 'gmarket://openwindow?new=true&title=' + encodeURIComponent( title ) + '&targetUrl=' + encodeURIComponent( url );
+            } else {
+                location.href = url;
+            }
+        }
+    });
+    
+    //LP 인기도시
+    $(document).on( 'click', '.box__air-sale a', function() {
+        
+        var cityCode = $(this).attr( 'city_code' );
+        
+        location.href='/mgm/init/srp/srpResultpView.do?ASTAD=' + cityCode;
+        
+        return false;
+    });
+    
+    $(document).on('click','.box__layer-air-common--align .list__align .form__radio-align',function(){
+        
+        if( 'local' == mtrst.data.TTYPE ) {
+            var sortObj = $( '#box__layer-align ul input:radio:checked' );
+            $( '.box__layer-air-common--align .button__confirm' ).attr( 'data-montelena-sorttype', sortObj.attr( 'data-sortKey' ).toLowerCase() + '^' + sortObj.attr( 'data-orderKey' ).toLowerCase() ).attr( 'data-montelena-ttype', 'l' );
+        } else {
+            $( '.box__layer-air-common--align .button__confirm' ).attr( 'data-montelena-sorttype', $( '#box__layer-align--outsea ul input:radio:checked' ).val().toLowerCase() ).attr( 'data-montelena-ttype', 'g' );
+        }
+    });
+    
+    //ie9 지원
+    if(!window.HashChangeEvent)(function(){
+        var lastURL=document.URL;
+        window.addEventListener("hashchange",function(event){
+            Object.defineProperty(event,"oldURL",{enumerable:true,configurable:true,value:lastURL});
+            Object.defineProperty(event,"newURL",{enumerable:true,configurable:true,value:document.URL});
+            lastURL=document.URL;
+        });
+    }());
+     
+    //hash tag 뒤로가기 이벤트 등록
+    window.addEventListener("hashchange", function(e){
+        var layerId = [ 'box__layer-air-finder--select-airport', 'box__layer-calendar', 'box__layer-air-finder--select-seat', 'box__layer-sns-share'
+                        , 'box__layer-align', 'box__layer-detail-condition', 'box__layer-align--outsea', 'box__layer-detail-condition--outsea'
+                        , 'box__layer-air-common--detail-lines', 'box__layer__srp-detail', 'box__layer-detail-fare' ];
+        var oldUrl = e.oldURL.split( '#' )[1];
+        var newUrl = e.newURL.split( '#' )[1];
+         
+        if( !TS_FINDER_CONFIG.close && ts_fnIsNotEmpty( newUrl ) && -1 < $.inArray( newUrl, layerId ) ) {
+            
+            if( !( 'box__layer__srp-detail' == newUrl && 'box__layer-detail-fare' == oldUrl ) ) {
+                layerOpenControl( '#' + newUrl, VERTICALCOMMONUI.savedHashLayerOpener );
+            }
+        }
+         
+        if( ts_fnIsNotEmpty( oldUrl ) && -1 < $.inArray( oldUrl, layerId ) ) {
+            if( newUrl != 'box__layer-detail-fare' ) {
+            	
+                if( ts_fnIsNotEmpty( newUrl ) && oldUrl != 'box__layer-detail-fare' && 'local' != mtrst.data.TTYPE ) {
+            		
+            		setTimeout( function() {
+            			
+            			if( $( '#' + oldUrl ).is( ':visible' ) ) {
+            				layerCloseControl( '#' + oldUrl );
+            			}
+            		}, 300 );
+            	} else {
+            		layerCloseControl( '#' + oldUrl );
+            	}
+            }
+        }
+        
+        /* 국내선용 체크 */
+        if( 'SRP' == TS_FINDER_CONFIG.page && 'local' == mtrst.data.TTYPE ) {
+            
+            if( ( $( '.section__layer-access--wait-kor' ).is( ':visible' ) || $( '.section__layer-access--fail' ).is( ':visible' ) ) && 'queue' != newUrl ) {
+                fnDmstHash.queueBack();
+            } else {
+                
+                // 편도 가는편 선택후 뒤로가기
+                if( '1' == gvDmstHistory && ts_fnIsEmpty( newUrl ) ) {
+                    fnDmstHash.auction( 'leave' );
+                }
+                // 왕복 가는편 선택후 뒤로가기
+                else if( '2' == gvDmstHistory && ts_fnIsEmpty( newUrl ) ) {
+                    fnDmstHash.auction( 'leave' );
+                }
+                // 왕복 오는편 선택후 뒤로가기
+                else if( '3' == gvDmstHistory && 'step2' == newUrl ) {
+                    fnDmstHash.auction( 'enter' );
+                }
+                
+            }
+            
+        }
+        
+        TS_FINDER_CONFIG.close = false;
+    }, false);
+});

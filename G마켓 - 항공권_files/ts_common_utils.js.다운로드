@@ -1,0 +1,311 @@
+/**
+ * Is Null
+ */
+function ts_fnIsNull( str ) {
+    if( null == str || undefined == str ) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Is Not Null
+ */
+function ts_fnIsNotNull( str ) {
+    return !ts_fnIsNull( str );
+}
+
+/**
+ * Is Empty
+ */
+function ts_fnIsEmpty( str ) {
+    if( ts_fnIsNull( str ) || "undefined" == str || '' == str || 1 > str.length ) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Is Not Empty
+ */
+function ts_fnIsNotEmpty( str ) {
+    return !ts_fnIsEmpty( str );
+}
+
+/**
+ * 3 Digits Comma
+ */
+function ts_fn3DigitsComma( num ){
+    
+    if( ts_fnIsNotEmpty( num ) ) {
+        
+        if( typeof num === 'number' ) {
+            num = num.toString();
+        }
+        
+        if( typeof num === 'string') {
+            
+            if( !isNaN(Number( num ) ) ){
+                
+                var arrNum = num.split('.');
+                num = arrNum[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                
+                if( 1 < arrNum.length ) {
+                    num = num + '.' + arrNum[1];
+                }
+            }
+        }
+    }
+    
+    return num;
+}
+
+/**
+ * Convert Date Format
+ * Y(4), M(2), D(2)
+ * EX) YMD:20190101, YM:201901. MD:0101
+ */
+function ts_fnConvertDateFormat( date, separator, type ) {
+    
+    if( ts_fnIsNotEmpty( date ) ) {
+        
+        if( date instanceof Date ) {
+            date = '' + date.getFullYear() + ( '0' + ( date.getMonth()+1 ) ).slice(-2) + ( '0' + date.getDate() ).slice(-2);
+        }
+        
+        if( typeof date === 'string' ) {
+            date = date.replace( /[^\d]/g, '' );
+        }
+        
+        if( typeof date === 'number' ) {
+            date = date.toString();
+        }
+        
+        if( ts_fnIsNotEmpty( date ) && 8 == date.length ) {
+            
+            if( ts_fnIsEmpty( separator ) ) {
+                separator = '';
+            }
+            
+            if( ts_fnIsEmpty( type ) ) {
+                type = 'YMD';
+            }
+            
+            var arr = [];
+            if( -1 < type.indexOf( 'Y' ) ) {
+                arr.push( date.substr( 0, 4 ) );
+            }
+            
+            if( -1 < type.indexOf( 'M' ) ) {
+                arr.push( date.substr( 4, 2 ) );
+            }
+            
+            if( -1 < type.indexOf( 'D' ) ) {
+                arr.push( date.substr( 6, 2 ) );
+            }
+            
+            if( ts_fnIsNotEmpty( arr ) ) {
+                date = arr.join( separator );
+            }
+        }
+    }
+    
+    return date;
+}
+
+/**
+ * Convert Date Format To Date Object
+ */
+function ts_fnConvertDateObject( date ) {
+    
+    if( ts_fnIsNotEmpty( date ) ) {
+        
+        if( typeof date === 'string' ) {
+            date = date.replace( /[^\d]/g, '' );
+        }
+        
+        if( typeof date === 'number' ) {
+            date = date.toString();
+        }
+        
+        if( 8 == date.length ) {
+            date = new Date( Number( date.substr( 0, 4 ) ), Number( date.substr( 4, 2 ) )-1, Number( date.substr( 6, 4 ) ) );
+        }
+    }
+    
+    return date;
+}
+
+/**
+ * Add Date To Date Format
+ * add : Number
+ * addType : 'Y'(year), 'M'(month), 'D'(day), 'H'(hour), 'I'(minute)
+ * dateSeparator : '/' then YYYY/MM/DD
+ * timeType : 'H'(YYYYMMDDHH24), 'M'(YYYYMMDDHH24MI)
+ * timeSeparator : when timeType is 'M', ':' then HH24:MI
+ * blank : ' ' then YYYYMMDD HH24MI or '/' then YYYYMMDD/HH24MI    
+ */
+function ts_fnAddDate( date, add, addType, dateSeparator, timeType, timeSeparator, blank ) {
+    
+    var time = '';
+    date = ts_fnConvertDateObject( date );
+    
+    if( date instanceof Date ) {
+        
+        add = Number( add );
+        
+        if( !isNaN( add ) ) {
+            
+            if( 'Y' == addType ) {
+                date.setYear( date.getFullYear() + add );
+            }
+            
+            if( 'M' == addType ) {
+                date.setMonth( date.getMonth() + add );
+            }
+            
+            if( 'D' == addType ) {
+                date.setDate( date.getDate() + add );
+            }
+            
+            if( 'H' == addType ) {
+                date.setHours( date.getHours() + add );
+            }
+            
+            if( 'I' == addType ) {
+                date.setMinutes( date.getMinutes() + add );
+            }
+        }
+        
+        if( 'H' == timeType || 'M' == timeType ) {
+            
+            if( 'H' == timeType ) {
+                time += ( '0' + date.getHours() ).slice(-2);
+            }
+            
+            if( 'M' == timeType ) {
+                
+                if( ts_fnIsEmpty( timeSeparator ) ) {
+                    timeSeparator = '';
+                }
+                
+                time += ( '0' + date.getHours() ).slice(-2);
+                time += timeSeparator;
+                time += ( '0' + date.getMinutes() ).slice(-2);
+            }
+        }
+        
+        if( ts_fnIsEmpty( blank ) ) {
+            blank = '';
+        }
+        
+        date = ts_fnConvertDateFormat( date, dateSeparator ) + blank + time;
+    }
+    
+    return date;
+}
+
+/**
+ * Get Week Day
+ */
+function ts_fnGetWeekDay( date ) {
+    
+    if( ts_fnIsNotEmpty( date ) ) {
+        var week = ['일', '월', '화' ,'수' ,'목', '금', '토'];
+        date = ts_fnConvertDateObject( date );
+        date = week[ date.getDay() ];
+    }
+    
+    return date;
+}
+
+/**
+ * Calculate Duration between Two Dates
+ */
+function ts_fnGetBetweenDates( date1, date2 ) {
+    
+    var diff = 0;
+    date1 = ts_fnConvertDateObject( date1 );
+    date2 = ts_fnConvertDateObject( date2 );
+    
+    if( date1 instanceof Date && date1 instanceof Date ) {
+        diff = ( date1.getTime() - date2.getTime() ) / ( 24*60*60*1000 );
+    }
+    
+    return diff;
+}
+
+/**
+ * Replace All
+ * replace : Default is ''
+ */
+function ts_fnReplaceAll( str, serach, replace ) {
+    
+    if( ts_fnIsNotEmpty( str ) ) {
+        
+        if( ts_fnIsEmpty( replace ) ) {
+            replace = '';
+        }
+        
+        str = str.split( serach ).join( replace );
+    }
+    
+    return str;
+}
+
+/**
+ * Pad String
+ * pos : 'L' is Left(Default), 'R' is Right
+ */
+function ts_fnPadString( str, pad, len, pos  ) {
+    
+    if( ts_fnIsNotEmpty( str ) ) {
+        
+        if( typeof str === 'number' ) {
+            str = str.toString();
+        }
+        
+        if( typeof str === 'string') {
+            
+            len = Number( len );
+            if( !isNaN( len ) ) {
+                
+                pad = new Array( len - str.length + 1 ).join( pad );
+                
+                if( "R" == pos ) {
+                    str = str + pad;
+                } else {
+                    str = pad + str;
+                }
+            }
+        }
+    }
+    
+    return str;
+}
+
+/**
+ * Set Cookie
+ */
+function ts_fnSetCookie( key, value, hour ) {
+    
+    var date = new Date();
+    date.setTime( date.getTime() + ( 60 * 60 * 1000 * hour ) );
+    document.cookie = key + '=' + encodeURIComponent( value ) + '; expires=' + date.toGMTString() + '; path=/';
+}
+
+/**
+ * Get Cookie
+ */
+function ts_fnGetCookie( key ) {
+    
+    var value = ( "; " + document.cookie ).split("; " + key + "=");
+    
+    if ( 2 == value.length ) {
+        value = value[1].split(";")[0];
+    } else {
+        value = '';
+    }
+    
+    return decodeURIComponent( value );
+}

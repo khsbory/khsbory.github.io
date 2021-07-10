@@ -1,0 +1,136 @@
+@charset "utf-8";
+
+/* sprite */
+.sprite__air-lp,
+.sprite__air-lp--before::before,
+.sprite__air-lp--after:after,.sprite__air-lp--after>a{display:inline-block;background:url(//pics.gmarket.co.kr/mobile/sprite/kr/vertical/air/lp/sprite__air-lp.png) no-repeat;background-size:250px auto}
+.sprite__air-lp--before:before,
+.sprite__air-lp--after:after{content:''}
+.service__air.page__lp .box__service{background:#eee;}
+
+/* rec_menu tab */
+.rec_menu {overflow:hidden;background-color:#FFF;box-shadow:1px 1px 1px rgba(0,0,0,.1)}
+.rec_menu ul {display:table;width:100%;table-layout:fixed}
+.rec_menu ul li{display:table-cell;width:25%;text-align:center;vertical-align:middle;font-weight:normal}
+.rec_menu ul li a{display:block;padding:13px 0 8px;font-size:15px;color:#5e636d;border-bottom:1px solid #fff}
+.rec_menu ul li.active a{color:#000;font-weight:bold;border-bottom:1px solid #15c068}
+
+/* box__finder-recently */
+.box__finder-recently{padding:18px 20px 8px;background:#fff;box-shadow: 0 1px 0 0 #dedede}
+.box__finder-recently .text__section-title{line-height:21px;letter-spacing:-0.5px;font-size:17px;font-weight:bold;color:#222;}
+.box__finder-recently .list-item{position:relative;padding:16px 0;border-top:1px solid #eee;}
+.box__finder-recently .list-item:first-child{border:none;}
+.box__finder-recently .link__recently{display:block;padding:0 20px 0 80px}
+.box__finder-recently .list-item:before{display:inline-block;content:'';position:absolute;top:50%;left:0;-webkit-transform:translateY(-50%);transform:translateY(-50%);width:64px;height:64px;border-radius:32px;overflow:hidden;background:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--default.png) no-repeat;background-size:64px 64px}
+.box__finder-recently .list-item--BCN:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--BCN.png);}
+.box__finder-recently .list-item--BJS:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--BJS.png);}
+.box__finder-recently .list-item--BKI:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--BKI.png);}
+.box__finder-recently .list-item--BKK:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--BKK.png);}
+.box__finder-recently .list-item--CHI:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--CHI.png);}
+.box__finder-recently .list-item--CJU:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--CJU.png);}
+.box__finder-recently .list-item--DAD:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--DAD.png);}
+.box__finder-recently .list-item--DPS:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--DPS.png);}
+.box__finder-recently .list-item--FRA:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--FRA.png);}
+.box__finder-recently .list-item--FUK:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--FUK.png);}
+.box__finder-recently .list-item--GUM:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--GUM.png);}
+.box__finder-recently .list-item--HAN:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--HAN.png);}
+.box__finder-recently .list-item--HKG:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--HKG.png);}
+.box__finder-recently .list-item--HKT:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--HKT.png);}
+.box__finder-recently .list-item--HNL:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--HNL.png);}
+.box__finder-recently .list-item--IST:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--IST.png);}
+.box__finder-recently .list-item--KLO:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--KLO.png);}
+.box__finder-recently .list-item--LAX:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--LAX.png);}
+.box__finder-recently .list-item--LON:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--LON.png);}
+.box__finder-recently .list-item--MEL:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--MEL.png);}
+.box__finder-recently .list-item--MFM:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--MFM.png);}
+.box__finder-recently .list-item--MIL:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--MIL.png);}
+.box__finder-recently .list-item--MNL:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--MNL.png);}
+.box__finder-recently .list-item--NGO:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--NGO.png);}
+.box__finder-recently .list-item--NHA:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--NHA.png);}
+.box__finder-recently .list-item--NYC:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--NYC.png);}
+.box__finder-recently .list-item--OKA:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--OKA.png);}
+.box__finder-recently .list-item--OSA:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--OSA.png);}
+.box__finder-recently .list-item--PAR:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--PAR.png);}
+.box__finder-recently .list-item--PPS:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--PPS.png);}
+.box__finder-recently .list-item--PRG:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--PRG.png);}
+.box__finder-recently .list-item--PUS:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--PUS.png);}
+.box__finder-recently .list-item--PVG:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--PVG.png);}
+.box__finder-recently .list-item--REP:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--REP.png);}
+.box__finder-recently .list-item--ROM:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--ROM.png);}
+.box__finder-recently .list-item--RSU:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--RSU.png);}
+.box__finder-recently .list-item--SFO:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--SFO.png);}
+.box__finder-recently .list-item--SGN:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--SGN.png);}
+.box__finder-recently .list-item--SIN:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--SIN.png);}
+.box__finder-recently .list-item--SPK:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--SPK.png);}
+.box__finder-recently .list-item--SPN:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--SPN.png);}
+.box__finder-recently .list-item--SYD:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--SYD.png);}
+.box__finder-recently .list-item--TAG:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--TAG.png);}
+.box__finder-recently .list-item--TPE:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--TPE.png);}
+.box__finder-recently .list-item--TYO:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--TYO.png);}
+.box__finder-recently .list-item--VCE:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--VCE.png);}
+.box__finder-recently .list-item--VIE:before{background-image:url(//pics.gmarket.co.kr/mobile/single/kr/vertical/air/lp/recently/image__recently--VIE.png);}
+
+.box__finder-recently .box__area{display:block;font-size:16px;line-height:20px;letter-spacing:-0.5px;color:#94989f;}
+.box__finder-recently .text__code{color:#222;}
+.box__finder-recently .text__date{display:block;padding-top:5px;font-size:14px;line-height:18px;color:#2e8de5;}
+.box__finder-recently .text__seat{display:block;padding-top:5px;font-size:14px;letter-spacing:-0.5px;line-height:18px;color:#94989f;}
+.box__finder-recently .button__remove{position:absolute;top:16px;right:-6px;width:26px;height:26px;padding:7px;background:none;border:0;font-size:0;}
+.box__finder-recently .button__remove:before{display:inline-block;width:12px;height:12px;background-position:-17px -25px}
+
+/* list__air-checking */
+.list__air-checking{position:relative;margin-top:10px;background:#fff;font-size:0;box-shadow: 0 1px 0 0 #dedede}
+.list__air-checking:after{position:absolute;top:0;left:50%;content:'';display:inline-block;width:1px;height:52px;background:#f2f2f2;}
+.list__air-checking .list-item{display:inline-block;width:50%;height:52px;}
+.list__air-checking .link{display:block;position:relative;height:52px;text-align:center;font-size:15px;letter-spacing:-0.5px;line-height:54px;color:#5e636d;}
+.list__air-checking .link--coupon:before{position:relative;top:2px;margin-right:8px;width:26px;height:15px;background-position:-102px 0;}
+.list__air-checking .link--my-reservation:before{position:relative;top:1px;margin-right:7px;width:16px;height:15px;background-position:-133px 0;}
+
+/* box__air-promotion-carousel */
+.box__air-promotion-carousel-wrap{overflow:hidden;position:relative;margin-top:10px;padding:20px 16px 0;background:#fff;box-shadow: 0 1px 0 0 #dedede}
+.box__air-promotion-carousel-wrap .swiper-container{overflow:hidden;position:relative;padding-bottom:37px;}
+.box__air-promotion-carousel-wrap .swiper-container .swiper-slide{overflow:hidden;float:left;width:calc(50% - 5.5px) !important;/*height:225px;*/border:1px solid #eee;border-radius:2px;}
+.box__air-promotion-carousel-wrap .swiper-container .image__carousel{width:100%}
+.box__air-promotion-carousel-wrap .swiper-container-horizontal > .swiper-pagination{bottom:16px;font-size:0;}
+.box__air-promotion-carousel-wrap .swiper-container-horizontal > .swiper-pagination .swiper-pagination-bullet{width:5px;height:5px;margin:0 2px 0 3px;border-radius:50%;}
+.box__air-promotion-carousel-wrap .swiper-pagination-bullet{background:#dedede;opacity:1}
+.box__air-promotion-carousel-wrap .swiper-pagination-bullet-active{background:#41d241;}
+.box__air-promotion-carousel-wrap .link__carousel{display:block;border-radius:2px;overflow:hidden;}
+
+/* .box__air-sale */
+.box__air-sale{margin-top:10px;padding:18px 20px 24px;background:#fff}
+.box__air-sale .text__section-title{padding-bottom:4px;line-height:21px;letter-spacing:-0.5px;font-size:17px;font-weight:bold;color:#222;}
+.box__air-sale .list__air-sale .list-item{position:relative;margin-top:12px;}
+.box__air-sale .link{display:block;}
+.box__air-sale .image__sale-banner{ width:100%;border-radius:2px;}
+.box__air-sale .box__text-info{position:absolute;top:23px;left:24px;}
+.box__air-sale .text__title-sale{display:block;font-size:30px;font-weight:normal;line-height:32px;letter-spacing:-0.75px;color:#fff;}
+.box__air-sale .text__price{margin-top:2px;font-size:20px;line-height:24px;font-weight:bold;color:#fff;}
+.box__air-sale .text__unit{font-size:17px;}
+
+/* box__air-info */
+.box__air-info{position:relative;margin-top:10px;}
+.box__air-info .text__section-title{margin-bottom:16px;font-size:17px;font-weight:600;color:#222;}
+.box__air-faq{padding:7px 70px 1px 16px;}
+.box__air-faq .link__more{position:absolute;top:6px;right:16px;padding-right:9px;;font-size:14px;color:#94989f;}
+.box__air-faq .link__more::after{position:absolute;top:2px;right:0;width:5px;height:14px;background-position:-200px -25px;}
+.list__air-faq .list-item{margin-bottom:4px;}
+.list__air-faq .list-item .link{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;font-size:14px;letter-spacing:-0.5px;line-height:1.29;color:#757c8a;}
+.box__air-agency-center{background:#fff;box-shadow:0 1px 0 0 #dedede;}
+.box__air-agency-center .text__section-title{padding:18px 16px 0 20px;}
+.box__air-agency-center--inner{overflow:hidden;padding:0 16px 4px 20px;background:#fff;box-shadow:0 1px 0 0 #dedede;}
+.box__air-agency-center .text__title{margin-bottom:10px;font-size:14px;letter-spacing:-0.5px;color:#5e636d;}
+.box__air-agency-center .button__more-agency{display:none;width:100%;height:44px;border-top:1px solid #e5e5e5;text-align:center;font-size:14px;letter-spacing:-0.5px;color:#5e636d;}
+.box__air-agency-center .button__more-agency .text{display:inline-block;position:relative;padding-right:25px;line-height:43px;}
+.box__air-agency-center .button__more-agency .text::after{position:absolute;top:10px;right:0;width:25px;height:25px;background-position:-90px -42px;}
+.list__air-agency-center{overflow:hidden;}
+.list__air-agency-center + .text__title{margin-top:6px;}
+.list__air-agency-center .list-item{float:left;width:50%;margin-bottom:12px;font-size:14px;line-height:16px;letter-spacing:-0.5px;color:#94989f;}
+.list__air-agency-center .text__agency{display:block}
+.list__air-agency-center .text__phone-number{position:relative;padding-right:16px;font-weight:500;letter-spacing:0;color:#5e636d;}
+.list__air-agency-center .text__phone-number::after{position:absolute;top:3px;right:0;width:12px;height:12px;background-position:-210px -25px;}
+.box__air-customer-center{margin-bottom:10px;padding:18px 16px 16px 20px;background:#f9f9f9;box-shadow:0 1px 0 0 #dedede;}
+.box__air-customer-center .text__phone-number{position:relative;padding:0 40px 6px 0;font-size:16px;line-height:16px;color:#5e636d;}
+/* .box__air-customer-center .text__phone-number::after{position:absolute;top:0;right:0;width:36px;height:36px;background-position:-50px -42px;} */
+.box__air-customer-center .text__phone-number a{position:absolute;top:0;right:0;width:36px;height:36px;background-position:-50px -42px;}
+.box__air-customer-center .text__time{font-size:13px;line-height:13px;letter-spacing:-0.5px;color:#94989f;}
+.box__air-customer-center::after{content:'';display:block;position:absolute;bottom:-11px;left:0;right:0;height:10px;background-color:#eee;}

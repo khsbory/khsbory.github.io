@@ -1,0 +1,602 @@
+
+/****************************************************************************************************
+ * 공통 기능 함수 모음
+ ****************************************************************************************************/
+
+/**
+ * AJAX 서버 호출 커스텀
+ * 
+ * @param reqURL            request URL
+ * 설명 : "POST"또는 "GET"을 지정하여 HTTP 통신의 종류를 설정
+ * @param ajaxType          POST / GET      DEFAULT : POST
+ * 설명 : 초기값은 일반적으로 true이지만 dataType이 script의 경우에는 false입니다. 통신 결과를 캐시하지 않으에는 false로 설정 
+ * @param ajaxCache         ture / false    DEFAULT : false
+ * 설명 : 보내는 데이터
+ * @param paramData         DATA
+ * 설명 : 기본값은 true, 자동으로 "application / x - www - form - urlencoded"형식으로 변환. DOMDocument 자체 등의 다른 형식으로 데이터를 보내기 위하여 자동 변환하고 싶지 않은 경우는 false를 지정
+ * @param ajaxProcessData   ture / false    DEFAULT : true
+ * 설명 : 서버에 데이터를 보낼 때 사용 content - type 헤더의 값. 기본값은 'application/x-www-form-urlencoded; charset=utf-8' 대부분의 경우 이 설정으로 문제 없음('application/json; charset=utf-8')
+ * @param ajaxContentType                   DEFAULT : 'application/x-www-form-urlencoded'
+ * 설명 : 파라미터 직렬화를 기존 방식으로 사용할 지 여부를 나타냄
+ * @param ajaxTraditional   true / false    DEFAULT : true
+ * 설명 : 서버에서 반환되는 데이터 형식을 지정
+ * @param ajaxDataType      JSON / XML      DEFAULT : JSON
+ * 설명 : 비동기 통신 플래그. 기본값은 true (비동기 통신)에서 요청이 던져에서 응답할 때까지 사용자 에이전트는 비동기 처리를 계속합니다. false로 설정 (동기 통신)하면 통신에 응답이있을 때까지 브라우저는 잠겨 조작을 받아들이지 않음
+ * @param ajaxAsync         true / false    DEFAULT : true
+ * @param cb_success        success callback function
+ * @param fn_beforeSend     beforeSend function
+ * @param cb_complete       complete callback function
+ * @param cb_error          error callback function
+ */
+function fn_req_ajax_cost( reqURL, ajaxType, ajaxCache, paramData, ajaxProcessData, ajaxContentType, ajaxTraditional, ajaxDataType, ajaxAsync, cb_success, fn_beforeSend, cb_complete, cb_error ) {
+
+    if( undefined == ajaxType || null == ajaxType || "" == ajaxType ) {
+        ajaxType = "POST";
+    }
+
+    if( undefined == ajaxCache || null == ajaxCache || "" === ajaxCache ) {
+        ajaxCache = false;
+    }
+
+    if( undefined == ajaxProcessData || null == ajaxProcessData || "" === ajaxProcessData ) {
+        ajaxProcessData = true;
+    }
+    
+
+    if( undefined == ajaxContentType || null == ajaxContentType || "" == ajaxContentType ) {
+        ajaxContentType = "application/x-www-form-urlencoded; charset=utf-8";
+    }
+
+    if( undefined == ajaxTraditional || null == ajaxTraditional || "" === ajaxTraditional ) {
+        ajaxTraditional = true;
+    }
+
+    if( undefined == ajaxDataType || null == ajaxDataType || "" == ajaxDataType ) {
+        ajaxDataType = "JSON";
+    }
+
+    if( undefined == ajaxAsync || null == ajaxAsync || "" === ajaxAsync ) {
+        ajaxAsync = true;
+    }
+
+    $.ajax({
+
+        url         : reqURL,
+        type        : ajaxType,
+        cache       : ajaxCache,
+        data        : paramData,
+        processData : ajaxProcessData,
+        contentType : ajaxContentType,
+        traditional : ajaxTraditional,
+        dataType    : ajaxDataType,
+        async       : ajaxAsync,
+        success     : function( result ) {
+            if( result.ErrorCode == "1" ) {
+                alert( result.ErrorDesc );
+            } else {
+                cb_success( result );
+            }
+        },
+        beforeSend  : function() {
+            if( null != fn_beforeSend && undefined != fn_beforeSend ) {
+                fn_beforeSend();
+            }
+        },
+        complete    : function( result ) {
+            if( null != cb_complete && undefined != cb_complete ) {
+                cb_complete( $.parseJSON( result.responseText ) );
+            }
+        },
+        error       : function( result ) {
+            if( "XML" == ajaxDataType ) { // XML 일때는 여기서 에러 처리
+                var xmlData = $.parseJSON( xhr.responseText );
+            } else {
+                cb_error( xhr, status, error );
+            }
+        }
+
+    });
+
+}
+
+/**
+ * AJAX 호출 공통 함수
+ * 
+ * @param reqURL            request URL
+ * @param paramData         DATA
+ * @param cb_success        success callback function
+ * @param fn_beforeSend     beforeSend function
+ * @param cb_complete       complete callback function
+ * @param cb_error          error callback function
+ * @param async_tf          동기화 방식( true : false )
+ * @param dType             dataType( JSON : XML )
+ * @param traditional_tf    직렬화 여부( true : false // null이면 false 셋팅 )
+ */
+function fn_req_ajax( reqURL, paramData, cb_success, fn_beforeSend, cb_complete, cb_error, async_tf, dType, traditional_tf ) {
+
+    if( undefined == cb_error || null == cb_error ) {
+        cb_error = function( xhr, status, error ) {
+
+            // 항공 어드민에서 사용
+            if( xhr.responseText.indexOf( "parent.parent" ) != -1 || xhr.responseText.indexOf( "login.do" ) != -1 ) {
+                if( parent.parent.logout != undefined ) {
+                    parent.parent.logout();    
+                } else if( parent.logout != undefined ) {
+                    parent.logout();
+                } else {
+                    location.replace("/login.do");
+                }
+            }
+
+        };
+    }
+
+    // 동기화 여부
+    var async;
+    if( undefined == async_tf || null == async_tf || "" === async_tf ) {
+        async = true;
+    } else {
+        async = async_tf;
+    }
+
+    // dataType
+    var data_Type = "JSON";
+    if( undefined == dType || null == dType || "" == dType ) {
+        data_Type = "JSON";
+    } else {
+        data_Type = dType;
+    }
+
+    // 직렬화 여부
+    if( undefined == traditional_tf || null == traditional_tf || "" === traditional_tf ) {
+        jQuery.ajaxSettings.traditional = false;
+    } else {
+        jQuery.ajaxSettings.traditional = traditional_tf;
+    }
+
+    $.ajax({
+
+        url         : reqURL,
+        type        : 'POST',
+        cache       : false,
+        data        : paramData,
+//        contentType : 'application/json; charset=utf-8',
+//        contentType : false, // 멀티파트일때 필요
+        dataType    : data_Type,
+        async       : async, // true : async, false : sync
+        success     : function( result ) {
+//            if( result.ErrorCode != "0" && result.ErrorCode == undefined && result.ErrorCode == "" ) { // 정상
+//                cb_success( result );
+//            } else { // JAVA 서비스쪽에서 문제 발생
+//                alert( result.ErrorDesc );
+//            }
+            if( result.ErrorCode == "1" ) {
+                alert( result.ErrorDesc );
+            } else {
+                cb_success( result );
+            }
+        },
+        beforeSend  : function() {
+            if( null != fn_beforeSend && undefined != fn_beforeSend ) {
+                fn_beforeSend();
+            }
+        },
+        complete    : function( result ) {
+            if( null != cb_complete && undefined != cb_complete ) {
+                cb_complete( $.parseJSON( result.responseText ) );
+            }
+        },
+        error       : function( xhr, status, error ) {
+            if( "XML" == data_Type ) { // XML 일때는 여기서 에러 처리
+                var xmlData = $.parseJSON( xhr.responseText );
+            } else {
+                cb_error( xhr, status, error );
+            }
+        }
+
+    });
+
+}
+
+
+/**
+ * 공통코드에서 데이터 가져와 DROP-DOWN 만들어주는 함수
+ * 데이터가 없을 경우 만들지 않음.
+ * 
+ * @param   groupCode       부모코드
+ * @param   targetSpanId    SELECTBOX를 넣을 SPAN ID
+ * @param   selBoxId        해당 SELECTBOX 객체가 가질 고유 ID
+ * @param   headerName      '전체', '선택' 등을 셋팅 / null
+ * @param   selected        DEFAULT로 선택할 코드의 값 / null
+ * @param   className       스타일시트를 적용할 클래스명 / null
+ * @param   addStyle        추가적으로 적용할 스타일시트 / null, (예) width:100px; color:red, 주의사항 : ' 문자 넣지 말것!!!
+ * @param   siteInd         사이트 구분( 전체 : AL, Gmarket : GM, G9 : G9, Auction : AU // null )
+ * @param   multiple        multiple option( true:false // null )
+ */
+function fn_code_selBox( groupCode, targetSpanId, selBoxId, headerName, selected, className, addStyle, siteInd, multiple ) {
+
+    // 부모코드가 없는 경우는 실행하지 않음
+    if( undefined == groupCode || null == groupCode || '' == groupCode ) {
+        return;
+    }
+
+    // SELECTBOX를 넣을 SPAN ID가 없으면 실행하지 않음
+    if( undefined == targetSpanId || null == targetSpanId || '' == targetSpanId ) {
+        return;
+    }
+
+    // SELECTBOX ID가 없을 경우 실행하지 않음
+    if( undefined == selBoxId || null == selBoxId || '' == selBoxId ) {
+        return;
+    }
+
+    if( undefined == siteInd || null == siteInd || '' == siteInd ) {
+        siteInd = "AL";
+    }
+
+    var param = { "CMN_GRP_CD" : groupCode, "SITE_IND" : siteInd };
+
+    $.ajax({
+
+        url         : '/common/codeList.do',
+        type        : 'POST',
+        cache       : false,
+        data        : JSON.stringify( param ),
+        contentType : 'application/json; charset=utf-8',
+        traditional : true,
+        dataType    : 'JSON',
+        async       : false,
+        success     : function( result ) {
+
+            if( null != result && result.length != 0 && result.success != "false" ) {
+
+                var jsonObj = result;
+                var strHtml = "<select name='" + selBoxId + "' id='" + selBoxId + "'";
+
+                // 스타일시트의 클래스명 입력
+                if( undefined != className && null != className && '' != className ) {
+                    strHtml += " class='" + className + "'";
+                }
+
+                // 강제로 스타일 적용
+                if( undefined != addStyle && null != addStyle && '' != addStyle ) {
+                    strHtml += " style='" + addStyle + "'";
+                }
+
+                // 강제로 스타일 적용
+                if( undefined != multiple && null != multiple && '' != multiple ) {
+                    strHtml += " multiple='multiple'";
+                }
+
+                strHtml += ">";
+
+                // headerName 셋팅
+                if( undefined != headerName && null != headerName && '' != headerName ) {
+                    strHtml += "<option value=''>" + headerName + "</option>";
+                }
+
+                // DB에서 조회된 결과로 셋팅
+                for( var i in jsonObj ) {
+
+                    strHtml += "<option value='" + jsonObj[i].CMN_CD + "'";
+
+                    // selected 값이 있을 경우 DEFAULT로 선택해준다.
+                    if( undefined != selected && null != selected && '' != selected ) {
+                        if( selected == jsonObj[i].CMN_CD ) {
+                            strHtml += " selected='selected'";
+                        }
+                    }
+
+                    // 추가사항 있을시 추가
+                    if( jsonObj[i].opt1 ) {
+                        strHtml =+ " data-option='" + jsonObj[i].opt1 + "'";
+                    }
+
+                    strHtml += ">" + jsonObj[i].CMN_DESC + "</option>";
+
+                }
+
+                strHtml += "</select>";
+
+                // 실제로 targetSpanId에 넣어주는 작업
+                if( 'string' == typeof targetSpanId ) {
+                    var targetTagName = $( "#" + targetSpanId ).prop( "tagName" );
+                    $( "#" + targetSpanId ).html( strHtml );
+                }
+
+            }
+
+        },
+        error       : function( result ) {
+            // 에러시 디버깅
+            console.log( "error!!!" );
+        }
+
+    });
+
+}
+
+/**
+ * 공통코드에서 데이터 가져와 RADIO BUTTON 만들어주는 함수
+ * 데이터가 없을 경우 만들지 않음.
+ *
+ * @param groupCode     부모코드
+ * @param targetSpanId  RADIO BUTTON을 넣을 SPAN ID
+ * @param radioId       해당 RADIO BUTTON 객체가 가질 고유 ID
+ * @param selected      DEFAULT로 선택할 코드의 값 / null
+ * @param className     스타일시트를 적용할 클래스명 / null
+ * @param addStyle      추가적으로 적용할 스타일시트 / null, (예) width:100px; color:red, 주의사항 : ' 문자 넣지 말것!!!
+ * @param   siteInd         사이트 구분( 전체 : AL, Gmarket : GM, G9 : G9, Auction : AU // null )
+ */
+function fn_code_radioBtn( groupCode, targetSpanId, radioId, selected, className, addStyle, siteInd ) {
+
+    // 부모코드가 없는 경우는 실행하지 않음
+    if( undefined == groupCode || null == groupCode || '' == groupCode ) {
+        return;
+    }
+
+    // SELECTBOX를 넣을 SPAN ID가 없으면 실행하지 않음
+    if( undefined == targetSpanId || null == targetSpanId || '' == targetSpanId ) {
+        return;
+    }
+
+    if( undefined == siteInd || null == siteInd || '' == siteInd ) {
+        siteInd = "AL";
+    }
+
+    var param = { "CMN_GRP_CD" : groupCode, "SITE_IND" : siteInd };
+
+    $.ajax({
+
+        url         : '/common/codeList.do',
+        type        : 'POST',
+        cache       : false,
+        data        : JSON.stringify( param ),
+        contentType : 'application/json; charset=utf-8',
+        traditional : true,
+        dataType    : 'JSON',
+        async       : false,
+        success     : function( result ) {
+
+            if( null != result && result.length != 0 && result.success != "false" ) {
+
+                var jsonObj = result;
+                var strHtml = "";
+
+                // DB에서 조회된 결과로 셋팅
+                for( var i in jsonObj ) {
+
+                    strHtml += "<input type='radio' name='" + radioId + "' id='" + radioId + "_" + i + "'";
+
+                    // 스타일시트의 클래스명 입력
+                    if( undefined != className && null != className && '' != className ) {
+                        strHtml += " class='" + className + "'";
+                    }
+
+                    // 강제로 스타일 적용
+                    if( undefined != addStyle && null != addStyle && '' != addStyle ) {
+                        strHtml += " style='" + addStyle + "'";
+                    }
+
+                    strHtml += " value='" + jsonObj[i].CMN_CD + "'";
+
+                    // selected 값이 있을 경우 DEFAULT로 선택해준다.
+                    if( undefined != selected && null != selected && '' != selected ) {
+                        if( selected == jsonObj[i].CMN_CD ) {
+                            strHtml += " checked";
+                        }
+                    }
+
+                    // 추가사항 있을시 추가
+                    if( jsonObj[i].opt1 ) {
+                        strHtml =+ " data-option='" + jsonObj[i].opt1 + "'";
+                    }
+
+                    strHtml += "><label for=" + radioId + "_" + i + ">" + jsonObj[i].CMN_DESC + "</label></>";
+
+                }
+
+                // 실제로 targetSpanId에 넣어주는 작업
+                if( 'string' == typeof targetSpanId ) {
+                    var targetTagName = $( "#" + targetSpanId ).prop( "tagName" );
+                    $( "#" + targetSpanId ).html( strHtml );
+                }
+
+            }
+
+        },
+        error       : function( result ) {
+            // 에러시 디버깅
+            console.log( "error!!!" );
+        }
+
+    });
+
+}
+
+/**
+ * 공통코드에서 데이터 가져와 CHECKBOX 만들어주는 함수
+ * 데이터가 없을 경우 만들지 않음.
+ * 
+ * @param groupCode     부모코드
+ * @param targetSpanId  CHECKBOX를 넣을 SPAN ID
+ * @param checkId       해당 CHECKBOX 객체가 가질 고유 ID
+ * @param arraySelected DEFAULT로 선택할 코드의 값(array) / null
+ * @param className     스타일시트를 적용할 클래스명 / null
+ * @param addStyle      추가적으로 적용할 스타일시트 / null, (예) width:100px; color:red, 주의사항 : ' 문자 넣지 말것!!!
+ * @param   siteInd         사이트 구분( 전체 : AL, Gmarket : GM, G9 : G9, Auction : AU // null )
+ */
+function fn_code_checkBox( groupCode, targetSpanId, checkId, arraySelected, className, addStyle, siteInd ) {
+
+    // 부모코드가 없는 경우는 실행하지 않음
+    if( undefined == groupCode || null == groupCode || '' == groupCode ) {
+        return;
+    }
+
+    // SELECTBOX를 넣을 SPAN ID가 없으면 실행하지 않음
+    if( undefined == targetSpanId || null == targetSpanId || '' == targetSpanId ) {
+        return;
+    }
+
+    if( undefined == siteInd || null == siteInd || '' == siteInd ) {
+        siteInd = "AL";
+    }
+
+    var param = { "CMN_GRP_CD" : groupCode, "SITE_IND" : siteInd };
+
+    $.ajax({
+
+        url         : '/common/codeList.do',
+        type        : 'POST',
+        cache       : false,
+        data        : JSON.stringify( param ),
+        contentType : 'application/json; charset=utf-8',
+        traditional : true,
+        dataType    : 'JSON',
+        async       : false,
+        success     : function( result ) {
+
+            if( null != result && result.length != 0 && result.success != "false" ) {
+
+                var jsonObj = result;
+                var strHtml = "";
+
+                // DB에서 조회된 결과로 셋팅
+                for( var i in jsonObj ) {
+
+                    strHtml += "<input type='checkbox' name='" + checkId + "' id='" + checkId + "_" + i + "'";
+
+                    // 스타일시트의 클래스명 입력
+                    if( undefined != className && null != className && '' != className ) {
+                        strHtml += " class='" + className + "'";
+                    }
+
+                    // 강제로 스타일 적용
+                    if( undefined != addStyle && null != addStyle && '' != addStyle ) {
+                        strHtml += " style='" + addStyle + "'";
+                    }
+
+                    strHtml += " value='" + jsonObj[i].CMN_CD + "'";
+
+                    if( undefined != arraySelected && null != arraySelected && arraySelected.length > 0 ) {
+                        for( var j in arraySelected ) {
+                            if( arraySelected[j] == jsonObj[i].CMN_CD ) {
+                                strHtml += " checked";
+                            }
+                        }
+                    }
+
+                    // 추가사항 있을시 추가
+                    if( jsonObj[i].opt1 ) {
+                        strHtml =+ " data-option='" + jsonObj[i].opt1 + "'";
+                    }
+
+                    strHtml += ">" + jsonObj[i].CMN_DESC + "</>";
+
+                }
+
+                // 실제로 targetSpanId에 넣어주는 작업
+                if( 'string' == typeof targetSpanId ) {
+                    var targetTagName = $( "#" + targetSpanId ).prop( "tagName" );
+                    $( "#" + targetSpanId ).html( strHtml );
+                }
+
+            }
+
+        },
+        error       : function( result ) {
+            // 에러시 디버깅
+            console.log( "error!!!" );
+        }
+
+    });
+
+}
+
+/**
+ * 해당 영역의 엘리먼트들을 스캔해서 전체적으로 초기화 시켜주는 함수
+ * 
+ * @param areaID        INPUT을 감싸고 있는 컨테이너( DIV )의 ID  ex) codeSearchArea
+ * @param keepReadonly  readonly="readonly" 옵션이 있는 항목 초기화 제외( true : 초기화 제외, false : 초기화 // null = false ) 
+ */
+function fn_reset( areaID, keepReadonly )
+{
+    var areaID = "#"+areaID; 
+    var area = $(areaID);
+    var curRadioGroupName;
+    var prevRadioGroupName;
+    
+    if( keepReadonly == true )
+    {
+        // readonly로 되어 있는 필드는 초기화 안함
+        $(area).find('input[type="text"][readonly!="readonly"], textarea').val('');
+        $(area).find('select[readonly!="readonly"]').each(function(){
+            $(this).find('option:eq(0)').prop( "selected", "selected" );
+        });
+        $(area).find('input[type="checkbox"][readonly!="readonly"]').prop('checked', false);
+        
+        $(area).find('input:radio[readonly!="readonly"]').each(function(index){
+            var curRadio = $(area).find('input:radio');
+            curRadioGroupName = $(curRadio).eq(index).prop('name');
+            
+            if( curRadioGroupName != prevRadioGroupName )
+            {
+                prevRadioGroupName = curRadioGroupName; 
+                $(curRadio).eq(index).prop('checked', true);
+            }
+        });
+        
+    }else{
+        // text, textarea, select, checkbox, radio 초기화
+        $(area).find('input[type="text"], textarea').val('');
+        $(area).find('select').each(function(){
+            $(this).find('option:eq(0)').prop( "selected", "selected" );
+        });
+        $(area).find('input[type="checkbox"]').prop('checked', false);
+        
+        $(area).find('input:radio').each(function(index){
+            var curRadio = $(area).find('input:radio');
+            curRadioGroupName = $(curRadio).eq(index).prop('name');
+            
+            if( curRadioGroupName != prevRadioGroupName )
+            {
+                prevRadioGroupName = curRadioGroupName; 
+                $(curRadio).eq(index).prop('checked', true);
+            }
+        });
+    }
+    
+}
+
+
+/**
+ * 페이징 할때 클릭한 페이지 셋팅
+ * 
+ * @param field
+ * @param value
+ * @returns
+ */
+function fn_page_set( field, value ) {
+    resultPaging[field] = value ;
+    return resultPaging;
+}
+
+/**
+ * 팝업
+ * 
+ * @param url, title, width , height , option
+ * @param value
+ * @returns
+ */
+function fn_window_open(url, t, w, h , o) {
+    var leftPosition =(screen.width - w)/2;
+    var topPosition =(screen.height - h)/2;
+    
+    var optionStr = "width="+w+",height="+h+",top="+topPosition+",left="+leftPosition;
+    if(o != 'undefined' && o != '') {
+        optionStr += ","+o;
+    }
+    var openWinFocus = window.open(url, t, optionStr);
+    openWinFocus.focus();
+}
+
