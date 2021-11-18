@@ -1,11 +1,13 @@
 
 <html lang='en'>
 	<head>
-		<title>My Dream Alarm Clock</title>
+		<title>영상 1</title>
 		<meta charset='UFT-8' name='viewport' content='width=device-width, initial=scale=1.0' >
 		<link rel='stylesheet' type='text/css' href='clock.css'>
 	</head>
 	<body>
+		<div id="alarmSection">
+		<div>
 		<div id='main-container'>
 			<h2 id='clock'></h2>
 		</div>
@@ -47,7 +49,10 @@
 				<button  id='clearButton' onClick='alarmClear()'>Clear Alarm</button>
 			</div>
 		</div>
-
+		</div>
+		<div id="videoSection">
+		<video controls id="myVideo" src="short.mp4"></video>
+	</div>
 		<script type='text/javascript' src='script.js'></script>
 	</body>
 </html>

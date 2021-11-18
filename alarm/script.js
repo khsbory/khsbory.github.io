@@ -1,7 +1,5 @@
 
 
-var sound = new Audio("https://www.freespecialeffects.co.uk/soundfx/animals/duck1.wav");
-		sound.loop = true;
 
 var h2 = document.getElementById('clock');
 
@@ -33,7 +31,6 @@ var currentTime = setInterval(function(){
 	h2.textContent = addZero(hours) + ":" + addZero(minutes) + ":" + addZero(seconds) + "" + ampm;
 	
 },1000);
-
 
 /*functions to get hour, min, secs, 
   am or pm, add zero, set alarm time and sound, clear alarm
@@ -140,7 +137,9 @@ setInterval(function(){
 	
 
 	if (alarmTime == currentTime) {
-		sound.play();
+		var video = document.getElementById("myVideo");
+		video.play();
+			document.getElementById("alarmSection").style.display = "none";
 		}
 
 },1000);
@@ -157,7 +156,6 @@ function alarmClear() {
 	document.getElementById('alarmmins').disabled = false;
 	document.getElementById('alarmsecs').disabled = false;
 	document.getElementById('ampm').disabled = false;
-	sound.pause();
-}
+};
 
 

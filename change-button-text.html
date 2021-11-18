@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <title>버튼 텍스트 변경 접근성 적용하기</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://a11y-nvisions.github.io/js/announceForAccessibility.js"></script>
     <script>
         $(document).ready(function() {
             var btn = $("#button");
@@ -37,7 +38,7 @@
 
 <div class="good">
     <h2>접근성 적용</h2>
-    <button aria-live="polite" aria-relevant="removals" id="button2">사용하기</button>
+    <button screen-reader-live id="button2">사용하기</button>
 </div>
 
 </main>
