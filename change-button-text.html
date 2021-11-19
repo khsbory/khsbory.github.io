@@ -22,9 +22,11 @@
             btn2.on('click',function() {
                 if (btn2.text() == "사용하기") {
                     btn2.text("취소하기");
+                    btn2.attr("aria-label","취소");
                                     } else {
                     btn2.text("사용하기");
-                }
+                    btn2.attr("aria-label","사용");
+                                    };
             });
                                 });
     </script>
@@ -37,8 +39,8 @@
 </div>
 
 <div class="good">
-    <h2>접근성 적용</h2>
-    <button screen-reader-live id="button2">사용하기</button>
+    <h2>접근성 적용 버전</h2>
+    <button screen-reader-live id="button2" aria-label="사용">사용하기</button>
 </div>
 
 </main>
